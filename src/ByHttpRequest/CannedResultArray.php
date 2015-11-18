@@ -144,7 +144,15 @@ class CannedResultArray extends ResultArray {
 			);
 		}
 
-		if ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP &&
+		// Units of measurement can not be assumed to be declared on a wiki
+		// therefore don't try to recreate a DataValue and use the DV created
+		// from the raw API response
+		if ( $this->mPrintRequest->getMode() === PrintRequest::PRINT_PROP &&
+		     $property->findPropertyTypeId() === '_qty' ) {
+			return $content;
+		}
+
+		if ( $this->mPrintRequest->getMode() === PrintRequest::PRINT_PROP &&
 		     $property->findPropertyTypeId() === '_rec' ) {
 
 			if ( $this->mPrintRequest->getParameter( 'index' ) === false ) {
