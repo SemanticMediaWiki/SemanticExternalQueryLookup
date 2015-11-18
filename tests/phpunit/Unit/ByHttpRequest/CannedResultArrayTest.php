@@ -162,7 +162,7 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 			->will( $this->returnValue( array( $dataValue ) ) );
 
 		$this->jsonResponseParser->expects( $this->any() )
-			->method( 'findPropertyFromRemoteRepositoryInMemoryCache' )
+			->method( 'findPropertyFromInMemoryExternalRepositoryCache' )
 			->with(
 				$this->equalTo( new DIProperty( 'ABC' ) ) )
 			->will( $this->returnValue( new DIProperty( 'DEF' ) ) );

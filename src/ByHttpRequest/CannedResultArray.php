@@ -139,7 +139,7 @@ class CannedResultArray extends ResultArray {
 		}
 
 		if ( $this->mPrintRequest->getData() !== null ) {
-			$property = $this->jsonResponseParser->findPropertyFromRemoteRepositoryInMemoryCache(
+			$property = $this->jsonResponseParser->findPropertyFromInMemoryExternalRepositoryCache(
 				$this->mPrintRequest->getData()->getDataItem()
 			);
 		}
@@ -178,13 +178,13 @@ class CannedResultArray extends ResultArray {
 			$content = $content->getDataItem();
 		}
 
-		$content = DataValueFactory::getInstance()->newDataItemValue( $content, $diProperty );
+		$dataValue = DataValueFactory::getInstance()->newDataItemValue( $content, $diProperty );
 
 		if ( $this->mPrintRequest->getOutputFormat() ) {
-			$content->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
+			$dataValue->setOutputFormat( $this->mPrintRequest->getOutputFormat() );
 		}
 
-		return $content;
+		return $dataValue;
 	}
 
 	/**
