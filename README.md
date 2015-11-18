@@ -65,7 +65,7 @@ $GLOBALS['smwgQuerySources'] = array(
 
 Register interwiki details for a query source by either inserting
 details directly into MediaWiki's interwiki table or use
-$GLOBALS['seqlgExternalRepositoryEndpoints'] setting add the information in form of:
+`$GLOBALS['seqlgExternalRepositoryEndpoints']` setting add the information in form of:
 
 ```
 $GLOBALS['seqlgExternalRepositoryEndpoints'] = array(

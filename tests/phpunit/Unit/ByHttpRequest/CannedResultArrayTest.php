@@ -78,9 +78,9 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 			$this->jsonResponseParser
 		);
 
-		$this->assertEquals(
-			array( $subject ),
-			$instance->getContent()
+		$this->assertDataItem(
+			$subject,
+			$instance
 		);
 	}
 
@@ -110,21 +110,9 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 			$this->jsonResponseParser
 		);
 
-		$this->assertEquals(
+		$this->assertDataItem(
 			$category,
-			$instance->getNextDataItem()
-		);
-
-		$instance->reset();
-
-		$this->assertInstanceOf(
-			'\SMWDataValue',
-			$instance->getNextDataValue()
-		);
-
-		$this->assertEquals(
-			array( $category ),
-			$instance->getContent()
+			$instance
 		);
 	}
 
@@ -184,6 +172,81 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 			$printRequest,
 			$this->jsonResponseParser
 		);
+
+		$this->assertDataItem(
+			$dataItem,
+			$instance
+		);
+	}
+
+	public function testGetContentOnQuantityTypeForMode_PRINT_PROP() {
+
+		$subject = new DIWiKiPage( 'Foo', NS_MAIN );
+
+		$property = new DIProperty( 'QuantityType' );
+		$property->setPropertyTypeId( '_qty' );
+
+		$dataItem = new DINumber( 1001 );
+
+		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertyValue->expects( $this->any() )
+			->method( 'isValid' )
+			->will( $this->returnValue( true ) );
+
+		$propertyValue->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( new DIProperty( 'ABC' ) ) );
+
+		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+			->disableOriginalConstructor()
+			->setMethods( array( 'getDataItem' ) )
+			->getMockForAbstractClass();
+
+		$dataValue->expects( $this->any() )
+			->method( 'getDataItem' )
+			->will( $this->returnValue( $dataItem ) );
+
+		$this->jsonResponseParser->expects( $this->any() )
+			->method( 'getPropertyValuesFor' )
+			->with(
+				$this->equalTo( $subject ),
+				$this->equalTo( new DIProperty( 'ABC' ) ) )
+			->will( $this->returnValue( array( $dataValue ) ) );
+
+		$this->jsonResponseParser->expects( $this->any() )
+			->method( 'findPropertyFromInMemoryExternalRepositoryCache' )
+			->with(
+				$this->equalTo( new DIProperty( 'ABC' ) ) )
+			->will( $this->returnValue( $property ) );
+
+		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$printRequest->expects( $this->any() )
+			->method( 'getMode' )
+			->will( $this->returnValue( \SMW\Query\PrintRequest::PRINT_PROP ) );
+
+		$printRequest->expects( $this->any() )
+			->method( 'getData' )
+			->will( $this->returnValue( $propertyValue ) );
+
+		$instance = new CannedResultArray(
+			$subject,
+			$printRequest,
+			$this->jsonResponseParser
+		);
+
+		$this->assertDataItem(
+			$dataItem,
+			$instance
+		);
+	}
+
+	private function assertDataItem( $dataItem, $instance ) {
 
 		$this->assertEquals(
 			$dataItem,
