@@ -47,7 +47,7 @@ the `source` parameter to retrieve query results from the selected external sour
 ```
 
 If a `source` setting is maintained then `Special:Ask` will provide an selection parameter for
-availables query sources.
+available query sources.
 
 ### Features and limitations
 

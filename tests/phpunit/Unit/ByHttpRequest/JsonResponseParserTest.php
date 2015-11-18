@@ -54,7 +54,7 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 		if ( $property !== null ) {
 			$this->assertEquals(
 				$property,
-				$instance->findPropertyFromRemoteRepositoryInMemoryCache( $property )
+				$instance->findPropertyFromInMemoryExternalRepositoryCache( $property )
 			);
 		}
 	}

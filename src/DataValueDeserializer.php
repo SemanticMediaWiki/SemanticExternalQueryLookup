@@ -45,6 +45,8 @@ class DataValueDeserializer {
 	 *
 	 * @param DIProperty $property
 	 * @param array|string $value
+	 *
+	 * @return DataValue
 	 */
 	public function newDataValueFrom( DIProperty $property, $value ) {
 

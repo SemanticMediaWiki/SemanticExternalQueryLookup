@@ -74,7 +74,7 @@ class JsonResponseParser {
 	 *
 	 * @return DIProperty
 	 */
-	public function findPropertyFromRemoteRepositoryInMemoryCache( DIProperty $property ) {
+	public function findPropertyFromInMemoryExternalRepositoryCache( DIProperty $property ) {
 		return isset( $this->printRequestPropertyList[$property->getKey()] ) ? $this->printRequestPropertyList[$property->getKey()] : $property;
 	}
 
