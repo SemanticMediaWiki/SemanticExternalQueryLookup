@@ -1,9 +1,10 @@
 {
 	"@metadata": {
 		"authors": [
-			"mwjames"
+			"mwjames",
+			"Kghbln"
 		]
 	},
-	"seql-desc": "Integrate query results from a remote [https://semantic-mediawiki.org Semantic MediaWiki] into a local wiki.",
-	"seql-interwiki-prefix-is-missing": "Missing an interwiki prefix that matches the selected \"$1\" source."
+	"seql-desc": "Allows to integrate query results from a remote [https://semantic-mediawiki.org Semantic MediaWiki] into a local wiki",
+	"seql-interwiki-prefix-is-missing": "The selected \"$1\" source is missing a matching interwiki prefix."
 }
