@@ -42,8 +42,38 @@ class QueryEncoder {
 		//	'source=' . $query->getQuerySource()
 		);
 
-		$serialized['sort'] = array();
-		$serialized['order'] = array();
+		list( $serialized['sort'], $serialized['order'] ) = self::doSerializeSortKeys( $query );
+		$serialized['printouts'] = self::doSerializePrintouts( $query );
+
+		$encoded = $serialized['conditions'] . '|' .
+			( $serialized['printouts'] !== array() ? implode( '|', $serialized['printouts'] ) . '|' : '' ) .
+			implode( '|', $serialized['parameters'] ) .
+			( $serialized['sort'] !==  array() ? '|sort=' . implode( ',', $serialized['sort'] ) : '' ) .
+			( $serialized['order'] !== array() ? '|order=' . implode( ',', $serialized['order'] ) : '' );
+
+		return $encoded;
+	}
+
+	private static function doSerializePrintouts( $query ) {
+
+		$printouts = array();
+
+		foreach ( $query->getExtraPrintouts() as $printout ) {
+			$serialization = $printout->getSerialisation();
+			if ( $serialization !== '?#' ) {
+				// #show adds an extra = at the end which is interpret as
+				// requesting an empty result hence it is removed
+				$printouts[] = substr( $serialization, -1 ) === '=' ? substr( $serialization, 0, -1 ) : $serialization;
+			}
+		}
+
+		return $printouts;
+	}
+
+	private static function doSerializeSortKeys( $query ) {
+
+		$sort = array();
+		$order = array();
 
 		foreach ( $query->getSortKeys() as $key => $value ) {
 
@@ -51,26 +81,11 @@ class QueryEncoder {
 				continue;
 			}
 
-			$serialized['sort'][] = $key;
-			$serialized['order'][] = $value;
+			$sort[] = $key;
+			$order[] = strtolower( $value );
 		}
 
-		$serialized['printouts'] = array();
-
-		foreach ( $query->getExtraPrintouts() as $printout ) {
-			$serialization = $printout->getSerialisation();
-			if ( $serialization !== '?#' ) {
-				// #show adds an extra = at the end which is interpret as
-				// requesting an empty result hence it is removed
-				$serialized['printouts'][] = substr( $serialization, -1 ) === '=' ? substr( $serialization, 0, -1 ) : $serialization;
-			}
-		}
-
-		return $serialized['conditions'] . '|' .
-			( $serialized['printouts'] !== array() ? implode( '|', $serialized['printouts'] ) . '|' : '' ) .
-			implode( '|', $serialized['parameters'] ) .
-			( $serialized['sort'] !==  array() ? '|sort=' . implode( ',', $serialized['sort'] ) : '' ) .
-			( $serialized['order'] !== array() ? '|order=' . implode( ',', $serialized['order'] ) : '' );
+		return array( $sort, $order );
 	}
 
 }

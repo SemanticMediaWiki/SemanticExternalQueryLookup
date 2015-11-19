@@ -73,16 +73,16 @@ class QueryEncoderTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = array(
 			array( 'Foobar' => 'DESC' ),
 			array(),
-			'[[Foo::bar]]|limit=42|offset=0|mainlabel=|sort=Foobar|order=DESC',
-			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%7Corder%3DDESC'
+			'[[Foo::bar]]|limit=42|offset=0|mainlabel=|sort=Foobar|order=desc',
+			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%7Corder%3Ddesc'
 		);
 
 		#2
 		$provider[] = array(
 			array( 'Foobar' => 'DESC', 'Foobaz' => 'ASC' ),
 			array(),
-			'[[Foo::bar]]|limit=42|offset=0|mainlabel=|sort=Foobar,Foobaz|order=DESC,ASC',
-			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%2CFoobaz%7Corder%3DDESC%2CASC'
+			'[[Foo::bar]]|limit=42|offset=0|mainlabel=|sort=Foobar,Foobaz|order=desc,asc',
+			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%2CFoobaz%7Corder%3Ddesc%2Casc'
 		);
 
 		#3
