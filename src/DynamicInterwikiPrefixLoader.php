@@ -3,8 +3,8 @@
 namespace SEQL;
 
 /**
- * Allows to dynamically to assign interwiki prefixes without having to
- * create an interwiki entry.
+ * Allows to dynamically assign interwiki prefixes without having to
+ * create an interwiki table entry.
  * 
  * @license GNU GPL v2+
  * @since 0.1
@@ -16,15 +16,15 @@ class DynamicInterwikiPrefixLoader {
 	/**
 	 * @var array
 	 */
-	private $interwikiPrefixMap = array();
+	private $enabledExternalRepositoryEndpoints = array();
 
 	/**
 	 * @since 0.1
 	 *
-	 * @param array $interwikiPrefixMap
+	 * @param array $enabledExternalRepositoryEndpoints
 	 */
-	public function __construct( array $interwikiPrefixMap = array() ) {
-		$this->interwikiPrefixMap = $interwikiPrefixMap;
+	public function __construct( array $enabledExternalRepositoryEndpoints = array() ) {
+		$this->enabledExternalRepositoryEndpoints = $enabledExternalRepositoryEndpoints;
 	}
 
 	/**
@@ -32,8 +32,8 @@ class DynamicInterwikiPrefixLoader {
 	 *
 	 * @param string $prefix
 	 */
-	public function isPrefixForExternalRepository( $prefix ) {
-		return isset( $this->interwikiPrefixMap[$prefix] );
+	public function isEnabledPrefixForExternalRepository( $prefix ) {
+		return isset( $this->enabledExternalRepositoryEndpoints[$prefix] );
 	}
 
 	/**
@@ -44,11 +44,11 @@ class DynamicInterwikiPrefixLoader {
 	 */
 	public function tryToLoadIwMapForExternalRepository( $prefix, &$interwiki ) {
 
-		if ( !$this->isPrefixForExternalRepository( $prefix ) ) {
+		if ( !$this->isEnabledPrefixForExternalRepository( $prefix ) ) {
 			return true;
 		}
 
-		list( $iw_url, $iw_api, $iw_local ) = $this->interwikiPrefixMap[$prefix];
+		list( $iw_url, $iw_api, $iw_local ) = $this->enabledExternalRepositoryEndpoints[$prefix];
 
 		$interwiki = array(
 			'iw_prefix' => $prefix,
