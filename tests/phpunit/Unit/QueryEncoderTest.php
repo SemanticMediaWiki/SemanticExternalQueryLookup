@@ -61,6 +61,7 @@ class QueryEncoderTest extends \PHPUnit_Framework_TestCase {
 
 	public function queryElementProvider() {
 
+		#0
 		$provider[] = array(
 			array(),
 			array(),
@@ -68,6 +69,7 @@ class QueryEncoderTest extends \PHPUnit_Framework_TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D'
 		);
 
+		#1
 		$provider[] = array(
 			array( 'Foobar' => 'DESC' ),
 			array(),
@@ -75,6 +77,7 @@ class QueryEncoderTest extends \PHPUnit_Framework_TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%7Corder%3DDESC'
 		);
 
+		#2
 		$provider[] = array(
 			array( 'Foobar' => 'DESC', 'Foobaz' => 'ASC' ),
 			array(),
@@ -82,6 +85,7 @@ class QueryEncoderTest extends \PHPUnit_Framework_TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%2CFoobaz%7Corder%3DDESC%2CASC'
 		);
 
+		#3
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -89,6 +93,22 @@ class QueryEncoderTest extends \PHPUnit_Framework_TestCase {
 		$printRequest->expects( $this->any() )
 			->method( 'getSerialisation' )
 			->will( $this->returnValue( '?ABC' ) );
+
+		$provider[] = array(
+			array(),
+			array( $printRequest ),
+			'[[Foo::bar]]|?ABC|limit=42|offset=0|mainlabel=',
+			'%5B%5BFoo%3A%3Abar%5D%5D%7C%3FABC%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D'
+		);
+
+		#4 (#show returns with an extra =)
+		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$printRequest->expects( $this->any() )
+			->method( 'getSerialisation' )
+			->will( $this->returnValue( '?ABC=' ) );
 
 		$provider[] = array(
 			array(),
