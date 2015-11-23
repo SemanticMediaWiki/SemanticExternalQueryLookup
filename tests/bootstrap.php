@@ -10,6 +10,7 @@ if ( !is_readable( $autoloaderClassPath = __DIR__ . '/../../SemanticMediaWiki/te
 
 print sprintf( "\n%-20s%s\n", "Semantic External Query Lookup: ", SEQL_VERSION );
 
-$autoloader = require $autoloaderClassPath;
-$autoloader->addPsr4( 'SEQL\\Tests\\', __DIR__ . '/phpunit/Unit' );
-$autoloader->addPsr4( 'SEQL\\Tests\\Integration\\', __DIR__ . '/phpunit/Integration' );
+$autoLoader = require $autoloaderClassPath;
+$autoLoader->addPsr4( 'SEQL\\Tests\\', __DIR__ . '/phpunit/Unit' );
+$autoLoader->addPsr4( 'SEQL\\Tests\\Integration\\', __DIR__ . '/phpunit/Integration' );
+unset( $autoLoader );
