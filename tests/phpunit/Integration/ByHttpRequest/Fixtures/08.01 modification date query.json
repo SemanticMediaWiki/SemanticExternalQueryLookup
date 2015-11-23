@@ -1,0 +1,89 @@
+{
+	"query": "[[Modification%20date::%2B]]|%3FModification%20date|%3FModification%20date=AnotherModificationDate|sort%3DModification%20date|order%3Ddesc|limit=2",
+	"query-source": "api-foo",
+	"expected":{
+		"hasFurtherResults": true,
+		"subjectList":[
+			"Lorem ipsum#0#api-foo#",
+			"Foo#0#api-foo#"
+		]
+
+	},
+	"api-response": {
+		"query-continue-offset": 2,
+		"query": {
+			"printrequests": [
+				{
+					"label": "",
+					"key": "",
+					"typeid": "_wpg",
+					"mode": 2
+				},
+				{
+					"label": "Modification date",
+					"key": "_MDAT",
+					"typeid": "_dat",
+					"mode": 1,
+					"format": ""
+				},
+				{
+					"label": "AnotherModificationDate",
+					"key": "_MDAT",
+					"typeid": "_dat",
+					"mode": 1,
+					"format": ""
+				}
+			],
+			"results": {
+				"Lorem ipsum": {
+					"printouts": {
+						"Modification date": [
+							{
+								"timestamp": "1448024032",
+								"raw": "1/2015/11/20/12/53/52"
+							}
+						],
+						"AnotherModificationDate": [
+							{
+								"timestamp": "1448024032",
+								"raw": "1/2015/11/20/12/53/52"
+							}
+						]
+					},
+					"fulltext": "Lorem ipsum",
+					"fullurl": "http://localhost:8080/mw-25-01/index.php/Lorem_ipsum",
+					"namespace": 0,
+					"exists": ""
+				},
+				"Foo": {
+					"printouts": {
+						"Modification date": [
+							{
+								"timestamp": "1448019501",
+								"raw": "1/2015/11/20/11/38/21"
+							}
+						],
+						"AnotherModificationDate": [
+							{
+								"timestamp": "1448019501",
+								"raw": "1/2015/11/20/11/38/21"
+							}
+						]
+					},
+					"fulltext": "Foo",
+					"fullurl": "http://localhost:8080/mw-25-01/index.php/Foo",
+					"namespace": 0,
+					"exists": ""
+				}
+			},
+			"serializer": "SMW\\Serializers\\QueryResultSerializer",
+			"version": 0.8,
+			"meta": {
+				"hash": "8afc7caf282739d4c7d70c2a67d21a48",
+				"count": 2,
+				"offset": 0,
+				"source": ""
+			}
+		}
+	}
+}

@@ -21,11 +21,10 @@ class HookRegistry {
 	/**
 	 * @since 1.0
 	 *
-	 * @param Store $store
 	 * @param array $options
 	 */
-	public function __construct( Store $store, array $options ) {
-		$this->addCallbackHandlers( $store, $options );
+	public function __construct( array $options ) {
+		$this->addCallbackHandlers( $options );
 	}
 
 	/**
@@ -59,7 +58,7 @@ class HookRegistry {
 		return isset( $this->handlers[$name] ) ? $this->handlers[$name] : false;
 	}
 
-	private function addCallbackHandlers( $store, $options ) {
+	private function addCallbackHandlers( $options ) {
 
 		$dynamicInterwikiPrefixLoader = new DynamicInterwikiPrefixLoader(
 			$options['externalRepositoryEndpoints']

@@ -1,7 +1,6 @@
 <?php
 
 use SEQL\HookRegistry;
-use SMW\ApplicationFactory;
 
 /**
  * @see https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/
@@ -40,7 +39,8 @@ call_user_func( function () {
 	);
 
 	// Alias to keep LocalSettings independent from the internal NS usage
-	class_alias( 'SEQL\ByHttpRequestQueryLookup', 'SMWExternalQueryLookup' );
+	class_alias( 'SEQL\ByHttpRequestQueryLookup', 'SMWExternalQueryLookup' ); // deprecated
+	class_alias( 'SEQL\ByHttpRequestQueryLookup', 'SMWExternalAskQueryLookup' );
 
 	// Register message files
 	$GLOBALS['wgMessagesDirs']['semantic-external-query-lookup'] = __DIR__ . '/i18n';
@@ -55,7 +55,6 @@ call_user_func( function () {
 		);
 
 		$hookRegistry = new HookRegistry(
-			ApplicationFactory::getInstance()->getStore(),
 			$options
 		);
 

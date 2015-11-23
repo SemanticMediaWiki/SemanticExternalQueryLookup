@@ -1,0 +1,85 @@
+{
+	"query": "[[Category:Quantity%20example]]|?Has%20area|?Has%20wattage",
+	"query-source": "api-foo",
+	"expected":{
+		"hasFurtherResults": false,
+		"subjectList":[
+			"Example/Qty/01#0#api-foo#",
+			"Example/Qty/02#0#api-foo#_0c6245f557bf42d6399366e6322e985d"
+		]
+
+	},
+	"api-response": {
+		"query": {
+			"printrequests": [
+				{
+					"label": "",
+					"typeid": "_wpg",
+					"mode": 2
+				},
+				{
+					"label": "Has area",
+					"typeid": "_qty",
+					"mode": 1,
+					"format": ""
+				},
+				{
+					"label": "Has wattage",
+					"typeid": "_qty",
+					"mode": 1,
+					"format": ""
+				}
+			],
+			"results": {
+				"Example/Qty/01": {
+					"printouts": {
+						"Has area": [
+							{
+								"value": 0.2,
+								"unit": "km\u00b2"
+							}
+						],
+						"Has wattage": [
+							{
+								"value": 10000,
+								"unit": "W"
+							}
+						]
+					},
+					"fulltext": "Example/Qty/01",
+					"fullurl": "http://localhost:8080/test-03/index.php/Example/Qty/01",
+					"namespace": 0,
+					"exists": ""
+				},
+				"Example/Qty/02# 0c6245f557bf42d6399366e6322e985d": {
+					"printouts": {
+						"Has area": [
+							{
+								"value": 30,
+								"unit": "km\u00b2"
+							}
+						],
+						"Has wattage": [
+							{
+								"value": 10,
+								"unit": "W"
+							}
+						]
+					},
+					"fulltext": "Example/Qty/02# 0c6245f557bf42d6399366e6322e985d",
+					"fullurl": "http://localhost:8080/test-03/index.php/Example/Qty/02#_0c6245f557bf42d6399366e6322e985d",
+					"namespace": 0,
+					"exists": ""
+				}
+			},
+			"serializer": "SMW\\Serializers\\QueryResultSerializer",
+			"version": 0.7,
+			"meta": {
+				"hash": "fb0126201dcb45c931025e8020bc35e6",
+				"count": 2,
+				"offset": 0,
+				"source": ""
+			}
+		}
+	}
+}

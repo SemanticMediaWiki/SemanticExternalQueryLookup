@@ -60,7 +60,7 @@ class QueryResultFactory {
 		$queryResult = new ByHttpRequestQueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,
-			$jsonResponseParser->getResultSubjects(),
+			$jsonResponseParser->getResultSubjectList(),
 			$this->store,
 			$jsonResponseParser->hasFurtherResults()
 		);

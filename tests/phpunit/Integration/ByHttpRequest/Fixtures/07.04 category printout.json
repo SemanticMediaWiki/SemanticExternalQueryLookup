@@ -1,0 +1,69 @@
+{
+	"query": "[[Category:Quantity%20example]]|?Has%20area|?Has%20wattage",
+	"query-source": "api-foo",
+	"expected":{
+		"hasFurtherResults": false,
+		"subjectList":[
+			"Example/Qty/01#0#api-foo#",
+			"Example/Qty/02#0#api-foo#_0c6245f557bf42d6399366e6322e985d"
+		]
+
+	},
+	"api-response": {
+		"query": {
+			"printrequests": [
+				{
+					"label": "",
+					"typeid": "_wpg",
+					"mode": 2
+				},
+				{
+					"label": "Category",
+					"typeid": "_wpg",
+					"mode": 0,
+					"format": ""
+				}
+			],
+			"results": {
+				"Example/Qty/01": {
+					"printouts": {
+						"Category": [
+							{
+								"fulltext": "Category:Quantity example",
+								"fullurl": "http://localhost:8080/test-03/index.php/Category:Quantity_example",
+								"namespace": 14
+							}
+						]
+					},
+					"fulltext": "Example/Qty/01",
+					"fullurl": "http://localhost:8080/test-03/index.php/Example/Qty/01",
+					"namespace": 0,
+					"exists": ""
+				},
+				"Example/Qty/02# 0c6245f557bf42d6399366e6322e985d": {
+					"printouts": {
+						"Category": [
+							{
+								"fulltext": "Category:Quantity example",
+								"fullurl": "http://localhost:8080/test-03/index.php/Category:Quantity_example",
+								"namespace": 14
+							}
+						]
+					},
+					"fulltext": "Example/Qty/02# 0c6245f557bf42d6399366e6322e985d",
+					"fullurl": "http://localhost:8080/test-03/index.php/Example/Qty/02#_0c6245f557bf42d6399366e6322e985d",
+					"namespace": 0,
+					"exists": ""
+				}
+			},
+			"serializer": "SMW\\Serializers\\QueryResultSerializer",
+			"version": 0.7,
+			"meta": {
+				"hash": "b53dff2cee5f8144c48d431bb944f6b5",
+				"count": 2,
+				"offset": 0,
+				"source": ""
+			}
+		}
+	}
+}
