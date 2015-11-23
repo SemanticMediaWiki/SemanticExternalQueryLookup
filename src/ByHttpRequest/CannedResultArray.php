@@ -23,7 +23,7 @@ class CannedResultArray extends ResultArray {
 	private $mPrintRequest;
 
 	/**
-	 * @var SMWDIWikiPage
+	 * @var DIWikiPage
 	 */
 	private $mResult;
 
@@ -40,9 +40,9 @@ class CannedResultArray extends ResultArray {
 	/**
 	 * @since 0.1
 	 *
-	 * @param SMWDIWikiPage $resultPage
+	 * @param DIWikiPage $resultPage
 	 * @param PrintRequest $printRequest
-	 * @param JsonResponseParser $store
+	 * @param JsonResponseParser $jsonResponseParser
 	 */
 	public function __construct( DIWikiPage $resultPage, PrintRequest $printRequest, JsonResponseParser $jsonResponseParser ) {
 		$this->mResult = $resultPage;
