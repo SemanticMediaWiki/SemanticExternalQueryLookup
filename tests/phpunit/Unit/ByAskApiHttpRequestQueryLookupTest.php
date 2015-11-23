@@ -5,7 +5,7 @@ namespace SEQL\Tests;
 use SMWQuery as Query;
 
 /**
- * @covers \SEQL\ByHttpRequestQueryLookup
+ * @covers \SEQL\ByAskApiHttpRequestQueryLookup
  * @group semantic-external-query-lookup
  *
  * @license GNU GPL v2+
@@ -13,11 +13,11 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class ByHttpRequestQueryLookupTest extends \PHPUnit_Framework_TestCase {
+class ByAskApiHttpRequestQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$instance = $this->getMockBuilder( '\SEQL\ByHttpRequestQueryLookup' )
+		$instance = $this->getMockBuilder( '\SEQL\ByAskApiHttpRequestQueryLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,7 +41,7 @@ class ByHttpRequestQueryLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getDescription' )
 			->will( $this->returnValue( $description ) );
 
-		$instance = $this->getMockBuilder( '\SEQL\ByHttpRequestQueryLookup' )
+		$instance = $this->getMockBuilder( '\SEQL\ByAskApiHttpRequestQueryLookup' )
 			->disableOriginalConstructor()
 			->setMethods( null )
 			->getMock();
@@ -69,7 +69,7 @@ class ByHttpRequestQueryLookupTest extends \PHPUnit_Framework_TestCase {
 		$query->expects( $this->once() )
 			->method( 'addErrors' );
 
-		$instance = $this->getMockBuilder( '\SEQL\ByHttpRequestQueryLookup' )
+		$instance = $this->getMockBuilder( '\SEQL\ByAskApiHttpRequestQueryLookup' )
 			->disableOriginalConstructor()
 			->setMethods( null )
 			->getMock();
@@ -108,7 +108,7 @@ class ByHttpRequestQueryLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSortKeys' )
 			->will( $this->returnValue( array() ) );
 
-		$instance = $this->getMockBuilder( '\SEQL\ByHttpRequestQueryLookup' )
+		$instance = $this->getMockBuilder( '\SEQL\ByAskApiHttpRequestQueryLookup' )
 			->disableOriginalConstructor()
 			->setMethods( array( 'tryToMatchInterwikiFor' ) )
 			->getMock();

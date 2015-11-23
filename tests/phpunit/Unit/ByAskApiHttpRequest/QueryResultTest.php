@@ -1,12 +1,12 @@
 <?php
 
-namespace SEQL\ByHttpRequest\Tests;
+namespace SEQL\ByAskApiHttpRequest\Tests;
 
-use SEQL\ByHttpRequest\QueryResult;
+use SEQL\ByAskApiHttpRequest\QueryResult;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SEQL\ByHttpRequest\QueryResult
+ * @covers \SEQL\ByAskApiHttpRequest\QueryResult
  * @group semantic-external-query-lookup
  *
  * @license GNU GPL v2+
@@ -35,14 +35,14 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 		$results = array();
 
 		$this->assertInstanceOf(
-			'\SEQL\ByHttpRequest\QueryResult',
+			'\SEQL\ByAskApiHttpRequest\QueryResult',
 			new QueryResult( $printRequests, $query, $results, $this->store, false )
 		);
 	}
 
 	public function testGetNext() {
 
-		$jsonResponseParser = $this->getMockBuilder( '\SEQL\ByHttpRequest\JsonResponseParser' )
+		$jsonResponseParser = $this->getMockBuilder( '\SEQL\ByAskApiHttpRequest\JsonResponseParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -67,7 +67,7 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 
 		foreach ( $instance->getNext() as $result ) {
 			$this->assertInstanceOf(
-				'\SEQL\ByHttpRequest\CannedResultArray',
+				'\SEQL\ByAskApiHttpRequest\CannedResultArray',
 				$result
 			);
 		}
@@ -87,7 +87,7 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jsonResponseParser = $this->getMockBuilder( '\SEQL\ByHttpRequest\JsonResponseParser' )
+		$jsonResponseParser = $this->getMockBuilder( '\SEQL\ByAskApiHttpRequest\JsonResponseParser' )
 			->disableOriginalConstructor()
 			->getMock();
 

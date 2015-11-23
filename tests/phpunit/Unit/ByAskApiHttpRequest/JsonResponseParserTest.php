@@ -1,12 +1,12 @@
 <?php
 
-namespace SEQL\ByHttpRequest\Tests;
+namespace SEQL\ByAskApiHttpRequest\Tests;
 
-use SEQL\ByHttpRequest\JsonResponseParser;
+use SEQL\ByAskApiHttpRequest\JsonResponseParser;
 use SMW\DIProperty;
 
 /**
- * @covers \SEQL\ByHttpRequest\JsonResponseParser
+ * @covers \SEQL\ByAskApiHttpRequest\JsonResponseParser
  * @group semantic-external-query-lookup
  *
  * @license GNU GPL v2+
@@ -23,7 +23,7 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SEQL\ByHttpRequest\JsonResponseParser',
+			'\SEQL\ByAskApiHttpRequest\JsonResponseParser',
 			new JsonResponseParser( $dataValueDeserializer )
 		);
 	}

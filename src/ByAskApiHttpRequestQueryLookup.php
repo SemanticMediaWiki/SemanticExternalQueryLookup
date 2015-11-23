@@ -3,8 +3,8 @@
 namespace SEQL;
 
 use Onoi\HttpRequest\HttpRequestFactory;
-use SEQL\ByHttpRequest\JsonResponseParser;
-use SEQL\ByHttpRequest\QueryResultFetcher;
+use SEQL\ByAskApiHttpRequest\JsonResponseParser;
+use SEQL\ByAskApiHttpRequest\QueryResultFetcher;
 use SMW\SQLStore\SQLStore;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
@@ -16,7 +16,7 @@ use Interwiki;
  *
  * @author mwjames
  */
-class ByHttpRequestQueryLookup extends SQLStore {
+class ByAskApiHttpRequestQueryLookup extends SQLStore {
 
 	/**
 	 * @var QueryResultFactory

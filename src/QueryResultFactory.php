@@ -2,8 +2,8 @@
 
 namespace SEQL;
 
-use SEQL\ByHttpRequest\JsonResponseParser;
-use SEQL\ByHttpRequest\QueryResult as ByHttpRequestQueryResult;
+use SEQL\ByAskApiHttpRequest\JsonResponseParser;
+use SEQL\ByAskApiHttpRequest\QueryResult as ByAskApiHttpRequestQueryResult;
 use SMW\Store;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
@@ -55,9 +55,9 @@ class QueryResultFactory {
 	 *
 	 * @return QueryResult
 	 */
-	public function newByHttpRequestQueryResult( Query $query, JsonResponseParser $jsonResponseParser ) {
+	public function newByAskApiHttpRequestQueryResult( Query $query, JsonResponseParser $jsonResponseParser ) {
 
-		$queryResult = new ByHttpRequestQueryResult(
+		$queryResult = new ByAskApiHttpRequestQueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,
 			$jsonResponseParser->getResultSubjectList(),
