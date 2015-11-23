@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Gomoko"
+		]
+	},
+	"seql-desc": "Permet d’intégrer les résultats de recherche depuis un [https://semantic-mediawiki.org MédiaWiki Sémantique] distant dans un wiki local",
+	"seql-interwiki-prefix-is-missing": "La source « $1 » sélectionnée n’a pas de préfixe interwiki correspondant."
+}

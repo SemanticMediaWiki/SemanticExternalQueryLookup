@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Liuxinyu970226"
+		]
+	},
+	"seql-desc": "允许将来自远程[https://semantic-mediawiki.org Semantic MediaWiki]的查询结果一体化到一个本地wiki",
+	"seql-interwiki-prefix-is-missing": "选择的“$1”来源丢失匹配的跨wiki前缀。"
+}

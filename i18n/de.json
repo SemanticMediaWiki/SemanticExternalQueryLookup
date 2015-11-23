@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kghbln"
+		]
+	},
+	"seql-desc": "Ermöglicht das Abfragen semantischer Daten eines fremden semantischen Wikis im lokalen semantischen Wiki",
+	"seql-interwiki-prefix-is-missing": "Der angegebenen Quelle „$1“ wurden keine Interwiki-Daten zugeordnet."
+}
