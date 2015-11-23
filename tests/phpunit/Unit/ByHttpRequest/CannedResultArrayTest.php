@@ -3,8 +3,6 @@
 namespace SEQL\ByHttpRequest\Tests;
 
 use SEQL\ByHttpRequest\CannedResultArray;
-use SEQL\QueryResultFactory;
-use SMW\DIWiKiPage;
 use SMW\DIProperty;
 use SMWDINumber as DINumber;
 

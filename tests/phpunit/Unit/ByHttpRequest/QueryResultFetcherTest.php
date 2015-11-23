@@ -4,7 +4,6 @@ namespace SEQL\ByHttpRequest\Tests;
 
 use SEQL\ByHttpRequest\QueryResultFetcher;
 use SEQL\QueryResultFactory;
-use SMW\DIWiKiPage;
 
 /**
  * @covers \SEQL\ByHttpRequest\QueryResultFetcher

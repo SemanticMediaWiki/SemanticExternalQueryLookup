@@ -3,7 +3,6 @@
 namespace SEQL\ByHttpRequest\Tests;
 
 use SEQL\ByHttpRequest\QueryResult;
-use SMW\DIWiKiPage;
 
 /**
  * @covers \SEQL\ByHttpRequest\QueryResult
