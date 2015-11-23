@@ -20,7 +20,7 @@ if ( defined( 'SEQL_VERSION' ) ) {
 	return 1;
 }
 
-define( 'SEQL_VERSION', '0.1' );
+define( 'SEQL_VERSION', '1.0.0-alpha' );
 
 /**
  * @codeCoverageIgnore

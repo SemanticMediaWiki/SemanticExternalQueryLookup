@@ -48,7 +48,7 @@ class HookRegistry {
 	}
 
 	/**
-	 * @since  1.1
+	 * @since  1.0
 	 *
 	 * @param string $name
 	 *

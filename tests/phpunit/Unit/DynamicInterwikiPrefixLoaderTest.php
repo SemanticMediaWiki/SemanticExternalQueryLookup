@@ -31,7 +31,7 @@ class DynamicInterwikiPrefixLoaderTest extends \PHPUnit_Framework_TestCase {
 			'mw-foo' => array(
 				'http://example.org:8080/mw-foo/index.php/$1', // corresponds to iw_url
 				'http://example.org:8080/mw-foo/api.php',      // corresponds to iw_api
-				true                                           // corresponds to iw_local 
+				true                                           // corresponds to iw_local
 			)
 		);
 

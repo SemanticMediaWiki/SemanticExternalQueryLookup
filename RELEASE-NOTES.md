@@ -1,3 +1,6 @@
 This file contains the RELEASE-NOTES of the Semantic External Query Lookup (a.k.a. SEQL) extension.
 
-### 0.1
+### 1.0.0 (2015-??-??)
+
+- Initial release
+- Added `ByAskApiHttpRequestQueryLookup` to retrieve query results from an external endpoint specified in `$GLOBALS['seqlgExternalRepositoryEndpoints']`

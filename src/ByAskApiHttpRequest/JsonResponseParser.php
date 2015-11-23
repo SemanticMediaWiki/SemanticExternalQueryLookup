@@ -8,7 +8,7 @@ use SMW\DIWikiPage;
 
 /**
  * @license GNU GPL v2+
- * @since 0.1
+ * @since 1.0
  *
  * @author mwjames
  */
@@ -50,7 +50,7 @@ class JsonResponseParser {
 	private $rawResponseResult = array();
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param DataValueDeserializer $dataValueDeserializer
 	 */
@@ -59,7 +59,7 @@ class JsonResponseParser {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param DIProperty $property
 	 *
@@ -70,7 +70,7 @@ class JsonResponseParser {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param DIWikiPage[]
 	 */
@@ -79,7 +79,7 @@ class JsonResponseParser {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param []
 	 */
@@ -88,7 +88,7 @@ class JsonResponseParser {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param []
 	 */
@@ -97,7 +97,7 @@ class JsonResponseParser {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @return boolean
 	 */
@@ -106,7 +106,7 @@ class JsonResponseParser {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @return array
 	 */
@@ -115,7 +115,7 @@ class JsonResponseParser {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param DIWikiPage $subject
 	 * @param DIProperty $property
@@ -135,7 +135,7 @@ class JsonResponseParser {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param array $result
 	 */

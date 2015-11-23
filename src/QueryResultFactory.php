@@ -10,7 +10,7 @@ use SMWQueryResult as QueryResult;
 
 /**
  * @license GNU GPL v2+
- * @since 0.1
+ * @since 1.0
  *
  * @author mwjames
  */
@@ -22,7 +22,7 @@ class QueryResultFactory {
 	private $store;
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param Store $store
 	 */
@@ -31,7 +31,7 @@ class QueryResultFactory {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param Query $query
 	 *
@@ -48,7 +48,7 @@ class QueryResultFactory {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param Query $query
 	 * @param JsonResponseParser $jsonResponseParser

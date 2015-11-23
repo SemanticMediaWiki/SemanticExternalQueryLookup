@@ -25,19 +25,19 @@ The recommended way to install Semantic External Query Lookup is by using [Compo
 ```json
 {
 	"require": {
-		"mediawiki/semantic-external-query-lookup": "~0.1"
+		"mediawiki/semantic-external-query-lookup": "~1.0"
 	}
 }
 ```
 1. From your MediaWiki installation directory, execute
-   `composer require mediawiki/semantic-external-query-lookup:~0.1`
+   `composer require mediawiki/semantic-external-query-lookup:~1.0`
 2. Navigate to _Special:Version_ on your wiki and verify that the package
    have been successfully installed.
 
 ## Usage
 
-A standard `#ask` query just has to add the `source` parameter (after a query source has
-been registered and enabled) to retrieve query results from a selected external source.
+A standard `#ask` query only requires to add a `source` parameter (given that query source has
+been registered and was enabled) to retrieve query results from a selected external endpoint.
 
 ```
 {{#ask: [[Modification date::+]]
@@ -47,14 +47,14 @@ been registered and enabled) to retrieve query results from a selected external 
 }}
 ```
 
-If an external source is maintained then `Special:Ask` will provide a selection box to choose
-from available query endpoints.
+If external query endpoints are made available then `Special:Ask` will provide a selection
+box to choose from external query sources.
 
 ### Features and limitations
 
 - Images (`File:`) are only displayed as normal wiki links (becuase the file information/location is not
   available outside of the original wiki)
-- T display historic dates correctly, the response parser expects API version `0.7` or later
+- To display historic dates correctly, the response parser expects an Ask API version of `0.7` or later
 
 ## Configuration
 

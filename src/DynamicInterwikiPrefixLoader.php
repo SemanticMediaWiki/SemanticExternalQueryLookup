@@ -5,9 +5,9 @@ namespace SEQL;
 /**
  * Allows to dynamically assign interwiki prefixes without having to
  * create an interwiki table entry.
- * 
+ *
  * @license GNU GPL v2+
- * @since 0.1
+ * @since 1.0
  *
  * @author mwjames
  */
@@ -19,7 +19,7 @@ class DynamicInterwikiPrefixLoader {
 	private $enabledExternalRepositoryEndpoints = array();
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param array $enabledExternalRepositoryEndpoints
 	 */
@@ -28,7 +28,7 @@ class DynamicInterwikiPrefixLoader {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param string $prefix
 	 */
@@ -37,7 +37,7 @@ class DynamicInterwikiPrefixLoader {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param string $prefix
 	 * @param array &$interwiki

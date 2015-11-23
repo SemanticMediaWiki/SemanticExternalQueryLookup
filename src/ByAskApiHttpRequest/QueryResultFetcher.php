@@ -9,7 +9,7 @@ use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+
- * @since 0.1
+ * @since 1.0
  *
  * @author mwjames
  */
@@ -41,7 +41,7 @@ class QueryResultFetcher {
 	private $repositoryTargetUrl = '';
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param HttpRequestFactory $httpRequestFactory
 	 * @param QueryResultFactory $queryResultFactory
@@ -54,7 +54,7 @@ class QueryResultFetcher {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param string $httpRequestEndpoint
 	 */
@@ -63,7 +63,7 @@ class QueryResultFetcher {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param string $repositoryTargetUrl
 	 */
@@ -72,7 +72,7 @@ class QueryResultFetcher {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param Query $query
 	 *
