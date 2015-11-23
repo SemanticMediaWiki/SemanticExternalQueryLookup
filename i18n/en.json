@@ -6,5 +6,6 @@
 		]
 	},
 	"seql-desc": "Allows to integrate query results from a remote [https://semantic-mediawiki.org Semantic MediaWiki] into a local wiki",
-	"seql-interwiki-prefix-is-missing": "The selected \"$1\" source is missing a matching interwiki prefix."
+	"seql-interwiki-prefix-is-missing": "The selected \"$1\" source is missing a matching interwiki prefix.",
+	"seql-debug-query-not-supported": "The display of results for a debug query is not supported when using an external query source."
 }
