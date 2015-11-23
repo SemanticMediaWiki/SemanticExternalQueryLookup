@@ -3,9 +3,9 @@
 namespace SEQL\ByHttpRequest;
 
 use Onoi\HttpRequest\HttpRequestFactory;
-use SMWQuery as Query;
 use SEQL\QueryEncoder;
 use SEQL\QueryResultFactory;
+use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+

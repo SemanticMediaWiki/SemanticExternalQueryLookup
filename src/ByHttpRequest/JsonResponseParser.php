@@ -3,12 +3,8 @@
 namespace SEQL\ByHttpRequest;
 
 use SEQL\DataValueDeserializer;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\DataValueFactory;
-use SMWDITime as DITime;
-use SMWContainerSemanticData as ContainerSemanticData;
-use SMWDIContainer as DIContainer;
+use SMW\DIWikiPage;
 
 /**
  * @license GNU GPL v2+

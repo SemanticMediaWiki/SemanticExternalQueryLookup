@@ -2,12 +2,12 @@
 
 namespace SEQL;
 
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\DataValueFactory;
-use SMWDITime as DITime;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
+use SMWDITime as DITime;
 
 /**
  * @license GNU GPL v2+
