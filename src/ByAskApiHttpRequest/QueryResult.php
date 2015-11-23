@@ -7,7 +7,7 @@ use SMWQueryResult as RootQueryResult;
 
 /**
  * @license GNU GPL v2+
- * @since 0.1
+ * @since 1.0
  *
  * @author mwjames
  */
@@ -24,7 +24,7 @@ class QueryResult extends RootQueryResult {
 	private $jsonResponseParser;
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param string $remoteTargetUrl
 	 */
@@ -33,7 +33,7 @@ class QueryResult extends RootQueryResult {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param JsonResponseParser $jsonResponseParser
 	 */
@@ -42,7 +42,7 @@ class QueryResult extends RootQueryResult {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @return array
 	 */
@@ -51,7 +51,7 @@ class QueryResult extends RootQueryResult {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @return CannedResultArray[]|false
 	 */
@@ -73,7 +73,7 @@ class QueryResult extends RootQueryResult {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @return SMWInfolink
 	 */

@@ -6,14 +6,14 @@ use SMWQuery as Query;
 
 /**
  * @license GNU GPL v2+
- * @since 0.1
+ * @since 1.0
  *
  * @author mwjames
  */
 class QueryEncoder {
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param Query $query
 	 *
@@ -24,7 +24,7 @@ class QueryEncoder {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param Query $query
 	 *

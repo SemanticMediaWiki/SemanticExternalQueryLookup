@@ -11,7 +11,7 @@ use SMW\DIWikiPage;
  * @group semantic-external-query-lookup
  *
  * @license GNU GPL v2+
- * @since 0.1
+ * @since 1.0
  *
  * @author mwjames
  */

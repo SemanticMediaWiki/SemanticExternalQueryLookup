@@ -11,7 +11,7 @@ use SMWResultArray as ResultArray;
 
 /**
  * @license GNU GPL v2+
- * @since 0.1
+ * @since 1.0
  *
  * @author mwjames
  */
@@ -38,7 +38,7 @@ class CannedResultArray extends ResultArray {
 	private $mContent;
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param DIWikiPage $resultPage
 	 * @param PrintRequest $printRequest

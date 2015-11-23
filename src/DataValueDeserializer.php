@@ -11,7 +11,7 @@ use SMWDITime as DITime;
 
 /**
  * @license GNU GPL v2+
- * @since 0.1
+ * @since 1.0
  *
  * @author mwjames
  */
@@ -23,7 +23,7 @@ class DataValueDeserializer {
 	private $querySource;
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param string $querySource
 	 */
@@ -32,7 +32,7 @@ class DataValueDeserializer {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @return string
 	 */
@@ -41,7 +41,7 @@ class DataValueDeserializer {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param DIProperty $property
 	 * @param array|string $value
@@ -72,7 +72,7 @@ class DataValueDeserializer {
 	}
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param array $value
 	 *

@@ -12,7 +12,7 @@ use Interwiki;
 
 /**
  * @license GNU GPL v2+
- * @since 0.1
+ * @since 1.0
  *
  * @author mwjames
  */
@@ -24,7 +24,7 @@ class ByAskApiHttpRequestQueryLookup extends SQLStore {
 	private $queryResultFactory;
 
 	/**
-	 * @since 0.1
+	 * @since 1.0
 	 *
 	 * @param Query $query
 	 *
