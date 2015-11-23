@@ -3,8 +3,7 @@
 namespace SEQL\ByHttpRequest\Tests;
 
 use SEQL\ByHttpRequest\CannedResultArray;
-use SEQL\QueryResultFactory;
-use SMW\DIWiKiPage;
+use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMWDINumber as DINumber;
 
@@ -36,13 +35,13 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SEQL\ByHttpRequest\CannedResultArray',
-			new CannedResultArray( new DIWiKiPage( 'Foo', NS_MAIN ), $printRequest, $this->jsonResponseParser )
+			new CannedResultArray( new DIWikiPage( 'Foo', NS_MAIN ), $printRequest, $this->jsonResponseParser )
 		);
 	}
 
 	public function testGetResultSubject() {
 
-		$subject = new DIWiKiPage( 'Foo', NS_MAIN );
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -62,7 +61,7 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetContentForMode_PRINT_THIS() {
 
-		$subject = new DIWiKiPage( 'Foo', NS_MAIN );
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -86,8 +85,8 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetContentForMode_PRINT_CCAT() {
 
-		$subject = new DIWiKiPage( 'Foo', NS_MAIN );
-		$category = new DIWiKiPage( 'Bar', NS_CATEGORY, 'mw-foo' );
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$category = new DIWikiPage( 'Bar', NS_CATEGORY, 'mw-foo' );
 
 		$this->jsonResponseParser->expects( $this->any() )
 			->method( 'getPropertyValuesFor' )
@@ -118,7 +117,7 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetContentForMode_PRINT_PROP() {
 
-		$subject = new DIWiKiPage( 'Foo', NS_MAIN );
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$dataItem = new DINumber( 1001 );
 
 		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
@@ -181,7 +180,7 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetContentOnQuantityTypeForMode_PRINT_PROP() {
 
-		$subject = new DIWiKiPage( 'Foo', NS_MAIN );
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$property = new DIProperty( 'QuantityType' );
 		$property->setPropertyTypeId( '_qty' );

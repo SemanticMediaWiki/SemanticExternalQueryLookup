@@ -3,7 +3,7 @@
 namespace SEQL\ByHttpRequest\Tests;
 
 use SEQL\ByHttpRequest\QueryResult;
-use SMW\DIWiKiPage;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SEQL\ByHttpRequest\QueryResult
@@ -59,7 +59,7 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$results = array(
-			new DIWiKiPage( 'Foo', NS_MAIN )
+			new DIWikiPage( 'Foo', NS_MAIN )
 		);
 
 		$instance = new QueryResult( $printRequests, $query, $results, $this->store, false );

@@ -2,8 +2,6 @@
 
 namespace SEQL\Tests;
 
-use SEQL\ByHttpRequestQueryLookup;
-
 /**
  * @covers \SEQL\ByHttpRequestQueryLookup
  * @group semantic-external-query-lookup
