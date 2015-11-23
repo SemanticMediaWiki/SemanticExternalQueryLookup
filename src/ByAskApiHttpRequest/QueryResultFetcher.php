@@ -1,6 +1,6 @@
 <?php
 
-namespace SEQL\ByHttpRequest;
+namespace SEQL\ByAskApiHttpRequest;
 
 use Onoi\HttpRequest\HttpRequestFactory;
 use SEQL\QueryEncoder;
@@ -95,7 +95,7 @@ class QueryResultFetcher {
 
 		$this->jsonResponseParser->doParse( $result  );
 
-		$queryResult = $this->queryResultFactory->newByHttpRequestQueryResult(
+		$queryResult = $this->queryResultFactory->newByAskApiHttpRequestQueryResult(
 			$query,
 			$this->jsonResponseParser
 		);

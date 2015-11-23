@@ -1,0 +1,113 @@
+{
+	"query": "[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc|limi%3D5",
+	"query-source": "api-foo",
+	"expected":{
+		"hasFurtherResults": true,
+		"subjectList":[
+			"Example01/\u00f8\u00e6\u00e5\u00d8\u00c6\u00c5abcABC#0#api-foo#",
+			"Example01#0#api-foo#",
+			"Example01/\u00f8\u00e6\u00e5\u00f8\u00e6\u00e5abcabc#0#api-foo#",
+			"Example02#0#api-foo#",
+			"Example03#0#api-foo#"
+		]
+
+	},
+	"api-response": {
+		"query-continue-offset": 5,
+		"query": {
+			"printrequests": [
+				{
+					"label": "",
+					"typeid": "_wpg",
+					"mode": 2
+				},
+				{
+					"label": "Modification date",
+					"typeid": "_dat",
+					"mode": 1,
+					"format": ""
+				}
+			],
+			"results": {
+				"Example01/\u00f8\u00e6\u00e5\u00d8\u00c6\u00c5abcABC": {
+					"printouts": {
+						"Modification date": [
+							{
+								"timestamp": "1447935995",
+								"raw": "1/2015/11/19/12/26/35"
+							}
+						]
+					},
+					"fulltext": "Example01/\u00f8\u00e6\u00e5\u00d8\u00c6\u00c5abcABC",
+					"fullurl": "http://localhost:8080/test-03/index.php/Example01/%C3%B8%C3%A6%C3%A5%C3%98%C3%86%C3%85abcABC",
+					"namespace": 0,
+					"exists": ""
+				},
+				"Example01": {
+					"printouts": {
+						"Modification date": [
+							{
+								"timestamp": "1447935093",
+								"raw": "1/2015/11/19/12/11/33"
+							}
+						]
+					},
+					"fulltext": "Example01",
+					"fullurl": "http://localhost:8080/test-03/index.php/Example01",
+					"namespace": 0,
+					"exists": ""
+				},
+				"Example01/\u00f8\u00e6\u00e5\u00f8\u00e6\u00e5abcabc": {
+					"printouts": {
+						"Modification date": [
+							{
+								"timestamp": "1447934799",
+								"raw": "1/2015/11/19/12/6/39"
+							}
+						]
+					},
+					"fulltext": "Example01/\u00f8\u00e6\u00e5\u00f8\u00e6\u00e5abcabc",
+					"fullurl": "http://localhost:8080/test-03/index.php/Example01/%C3%B8%C3%A6%C3%A5%C3%B8%C3%A6%C3%A5abcabc",
+					"namespace": 0,
+					"exists": ""
+				},
+				"Example02": {
+					"printouts": {
+						"Modification date": [
+							{
+								"timestamp": "1447927092",
+								"raw": "1/2015/11/19/9/58/12"
+							}
+						]
+					},
+					"fulltext": "Example02",
+					"fullurl": "http://localhost:8080/test-03/index.php/Pellentesque_ante_iaculis/Query/Example01",
+					"namespace": 0,
+					"exists": ""
+				},
+				"Example03": {
+					"printouts": {
+						"Modification date": [
+							{
+								"timestamp": "1447925089",
+								"raw": "1/2015/11/19/9/24/49"
+							}
+						]
+					},
+					"fulltext": "Example03",
+					"fullurl": "http://localhost:8080/test-03/index.php/Example03",
+					"namespace": 0,
+					"exists": ""
+				}
+			},
+			"serializer": "SMW\\Serializers\\QueryResultSerializer",
+			"version": 0.7,
+			"meta": {
+				"hash": "269345944d6664706e8c1c5cb53e949d",
+				"count": 5,
+				"offset": 0,
+				"source": ""
+			}
+		}
+	}
+}

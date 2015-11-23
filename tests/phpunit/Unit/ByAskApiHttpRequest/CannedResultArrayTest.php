@@ -1,14 +1,14 @@
 <?php
 
-namespace SEQL\ByHttpRequest\Tests;
+namespace SEQL\ByAskApiHttpRequest\Tests;
 
-use SEQL\ByHttpRequest\CannedResultArray;
+use SEQL\ByAskApiHttpRequest\CannedResultArray;
 use SMW\DIWikiPage;
 use SMW\DIProperty;
 use SMWDINumber as DINumber;
 
 /**
- * @covers \SEQL\ByHttpRequest\CannedResultArray
+ * @covers \SEQL\ByAskApiHttpRequest\CannedResultArray
  * @group semantic-external-query-lookup
  *
  * @license GNU GPL v2+
@@ -22,7 +22,7 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		$this->jsonResponseParser = $this->getMockBuilder( '\SEQL\ByHttpRequest\JsonResponseParser' )
+		$this->jsonResponseParser = $this->getMockBuilder( '\SEQL\ByAskApiHttpRequest\JsonResponseParser' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -34,7 +34,7 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SEQL\ByHttpRequest\CannedResultArray',
+			'\SEQL\ByAskApiHttpRequest\CannedResultArray',
 			new CannedResultArray( new DIWikiPage( 'Foo', NS_MAIN ), $printRequest, $this->jsonResponseParser )
 		);
 	}

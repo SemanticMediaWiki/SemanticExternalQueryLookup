@@ -1,13 +1,13 @@
 <?php
 
-namespace SEQL\ByHttpRequest\Tests;
+namespace SEQL\ByAskApiHttpRequest\Tests;
 
-use SEQL\ByHttpRequest\QueryResultFetcher;
+use SEQL\ByAskApiHttpRequest\QueryResultFetcher;
 use SEQL\QueryResultFactory;
 use SMW\DIWikiPage;
 
 /**
- * @covers \SEQL\ByHttpRequest\QueryResultFetcher
+ * @covers \SEQL\ByAskApiHttpRequest\QueryResultFetcher
  * @group semantic-external-query-lookup
  *
  * @license GNU GPL v2+
@@ -39,7 +39,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 			->method( 'newCurlRequest' )
 			->will( $this->returnValue( $httpRequest ) );
 
-		$this->jsonResponseParser = $this->getMockBuilder( '\SEQL\ByHttpRequest\JsonResponseParser' )
+		$this->jsonResponseParser = $this->getMockBuilder( '\SEQL\ByAskApiHttpRequest\JsonResponseParser' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -51,7 +51,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SEQL\ByHttpRequest\QueryResultFetcher',
+			'\SEQL\ByAskApiHttpRequest\QueryResultFetcher',
 			new QueryResultFetcher( $this->httpRequestFactory, $queryResultFactory, $this->jsonResponseParser )
 		);
 	}

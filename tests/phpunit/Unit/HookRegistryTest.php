@@ -15,15 +15,6 @@ use SEQL\HookRegistry;
  */
 class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
-	private $store;
-
-	protected function setUp() {
-
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-	}
-
 	public function testCanConstruct() {
 
 		$options = array(
@@ -32,22 +23,17 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SEQL\HookRegistry',
-			new HookRegistry( $this->store , $options )
+			new HookRegistry( $options )
 		);
 	}
 
 	public function testRegister() {
-
-		$store = $this->getMockBuilder( '\SMW\Store' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
 
 		$options = array(
 			'externalRepositoryEndpoints' => array(),
 		);
 
 		$instance = new HookRegistry(
-			$this->store,
 			$options
 		);
 

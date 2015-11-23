@@ -1,0 +1,91 @@
+{
+	"query": "[[Has%20record::%2B]][[Category:Record%20example]]|?Has%20record",
+	"query-source": "api-foo",
+	"expected":{
+		"hasFurtherResults": false,
+		"subjectList":[
+			"Example/Rec/01#0#api-foo#",
+			"Example/Rec/02#0#api-foo#_4c5f42343c4615d6ad5fcc9c7070c1d8"
+		]
+
+	},
+	"api-response": {
+		"query": {
+			"printrequests": [
+				{
+					"label": "",
+					"typeid": "_wpg",
+					"mode": 2
+				},
+				{
+					"label": "Has record",
+					"typeid": "_rec",
+					"mode": 1,
+					"format": ""
+				}
+			],
+			"results": {
+				"Example/Rec/01": {
+					"printouts": {
+						"Has record": [
+							{
+								"Has text": {
+									"label": "Has text",
+									"typeid": "_txt",
+									"item": [
+										"Foo"
+									]
+								},
+								"Has status": {
+									"label": "Has status",
+									"typeid": "_txt",
+									"item": [
+										"closed"
+									]
+								}
+							}
+						]
+					},
+					"fulltext": "Example/Rec/01",
+					"fullurl": "http://localhost:8080/test-03/index.php/Example/Rec/01",
+					"namespace": 0,
+					"exists": ""
+				},
+				"Example/Rec/02# 4c5f42343c4615d6ad5fcc9c7070c1d8": {
+					"printouts": {
+						"Has record": [
+							{
+								"Has text": {
+									"label": "Has text",
+									"typeid": "_txt",
+									"item": [
+										"Foo"
+									]
+								},
+								"Has status": {
+									"label": "Has status",
+									"typeid": "_txt",
+									"item": [
+										"closed"
+									]
+								}
+							}
+						]
+					},
+					"fulltext": "Example/Rec/02# 4c5f42343c4615d6ad5fcc9c7070c1d8",
+					"fullurl": "http://localhost:8080/test-03/index.php/Example/Rec/02#_4c5f42343c4615d6ad5fcc9c7070c1d8",
+					"namespace": 0,
+					"exists": ""
+				}
+			},
+			"serializer": "SMW\\Serializers\\QueryResultSerializer",
+			"version": 0.7,
+			"meta": {
+				"hash": "fb6e791358c50d83c9986f521d00393c",
+				"count": 2,
+				"offset": 0,
+				"source": ""
+			}
+		}
+	}
+}

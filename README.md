@@ -36,43 +36,47 @@ The recommended way to install Semantic External Query Lookup is by using [Compo
 
 ## Usage
 
-After a query source has been registered and enabled, a standard `#ask` query only has to add
-the `source` parameter to retrieve query results from the selected external source.
+A standard `#ask` query just has to add the `source` parameter (after a query source has
+been registered and enabled) to retrieve query results from a selected external source.
 
 ```
 {{#ask: [[Modification date::+]]
- |source=mw-foo
+ |?Modification date
  |limit=5
+ |source=mw-foo
 }}
 ```
 
-If a `source` setting is maintained then `Special:Ask` will provide an selection parameter for
-available query sources.
+If an external source is maintained then `Special:Ask` will provide a selection box to choose
+from available query endpoints.
 
 ### Features and limitations
 
-- Images (`File:`) are only displayed as normal wiki links (as file information are not available outside of the original wiki)
+- Images (`File:`) are only displayed as normal wiki links (becuase the file information/location is not
+  available outside of the original wiki)
+- T display historic dates correctly, the response parser expects API version `0.7` or later
 
 ## Configuration
 
-Register an external source with an arbitrary key:
+For a `#ask` query to retrieve results from a remote location, an external source is required to be registered
+with an arbitrary key to be assigned to a lookup processor such as:
 
 ```
 $GLOBALS['smwgQuerySources'] = array(
-    'mw-foo' => 'SMWExternalQueryLookup',
+    'mw-foo' => 'SMWExternalAskQueryLookup',
 );
 ```
 
-Register interwiki details for a query source by either inserting
-details directly into MediaWiki's interwiki table or use
-`$GLOBALS['seqlgExternalRepositoryEndpoints']` setting add the information in form of:
+A corresponding interwiki prefix detail for a query source is expected to be either inserted
+into into MediaWiki's interwiki table directly or if it is more convenient to use the
+`$GLOBALS['seqlgExternalRepositoryEndpoints']` setting for the information to be added in form of:
 
 ```
 $GLOBALS['seqlgExternalRepositoryEndpoints'] = array(
     'mw-foo' => array(
         'http://example.org:8080/mw-foo/index.php/$1', // corresponds to iw_url
         'http://example.org:8080/mw-foo/api.php',      // corresponds to iw_api
-        true                                           // corresponds to iw_local 
+        true                                           // corresponds to iw_local
     )
 );
 ````

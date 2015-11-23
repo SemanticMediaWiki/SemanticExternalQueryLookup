@@ -1,9 +1,9 @@
 <?php
 
-namespace SEQL\ByHttpRequest;
+namespace SEQL\ByAskApiHttpRequest;
 
 use SMWInfolink as Infolink;
-use SMWQueryResult as BQueryResult;
+use SMWQueryResult as RootQueryResult;
 
 /**
  * @license GNU GPL v2+
@@ -11,7 +11,7 @@ use SMWQueryResult as BQueryResult;
  *
  * @author mwjames
  */
-class QueryResult extends BQueryResult {
+class QueryResult extends RootQueryResult {
 
 	/**
 	 * @var string

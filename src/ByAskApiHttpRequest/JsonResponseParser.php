@@ -1,6 +1,6 @@
 <?php
 
-namespace SEQL\ByHttpRequest;
+namespace SEQL\ByAskApiHttpRequest;
 
 use SEQL\DataValueDeserializer;
 use SMW\DIProperty;
@@ -74,8 +74,26 @@ class JsonResponseParser {
 	 *
 	 * @param DIWikiPage[]
 	 */
-	public function getResultSubjects() {
+	public function getResultSubjectList() {
 		return $this->subjectList;
+	}
+
+	/**
+	 * @since 0.1
+	 *
+	 * @param []
+	 */
+	public function getPrintouts() {
+		return $this->printouts;
+	}
+
+	/**
+	 * @since 0.1
+	 *
+	 * @param []
+	 */
+	public function getPrintRequestPropertyList() {
+		return $this->printRequestPropertyList;
 	}
 
 	/**
