@@ -25,4 +25,7 @@
             <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
+    <php>
+       <var name="seqlgHttpResponseCacheType" value="hash"/>
+    </php>
 </phpunit>

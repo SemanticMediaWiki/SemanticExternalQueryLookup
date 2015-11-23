@@ -6,6 +6,7 @@ use Onoi\HttpRequest\HttpRequestFactory;
 use SEQL\ByAskApiHttpRequest\JsonResponseParser;
 use SEQL\ByAskApiHttpRequest\QueryResultFetcher;
 use SMW\SQLStore\SQLStore;
+use SMW\ApplicationFactory;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
 use Interwiki;
@@ -22,6 +23,11 @@ class ByAskApiHttpRequestQueryLookup extends SQLStore {
 	 * @var QueryResultFactory
 	 */
 	private $queryResultFactory;
+
+	/**
+	 * @var CacheFactory
+	 */
+	private $cacheFactory;
 
 	/**
 	 * @since 1.0
@@ -56,7 +62,7 @@ class ByAskApiHttpRequestQueryLookup extends SQLStore {
 	protected function fetchQueryResultFor( Query $query, $interwiki ) {
 
 		$queryResultFetcher = new QueryResultFetcher(
-			new HttpRequestFactory(),
+			new HttpRequestFactory( $this->getCacheFactory()->newMediaWikiCompositeCache( $GLOBALS['seqlgHttpResponseCacheType'] ) ),
 			$this->queryResultFactory,
 			new JsonResponseParser( new DataValueDeserializer( $query->getQuerySource() ) )
 		);
@@ -64,7 +70,19 @@ class ByAskApiHttpRequestQueryLookup extends SQLStore {
 		$queryResultFetcher->setHttpRequestEndpoint( $interwiki->getApi() );
 		$queryResultFetcher->setRepositoryTargetUrl( $interwiki->getUrl() );
 
+		$queryResultFetcher->setHttpResponseCachePrefix( $this->getCacheFactory()->getCachePrefix() );
+		$queryResultFetcher->setHttpResponseCacheLifetime( $GLOBALS['seqlgHttpResponseCacheLifetime'] );
+
 		return $queryResultFetcher->fetchQueryResult( $query );
+	}
+
+	private function getCacheFactory() {
+
+		if ( $this->cacheFactory === null ) {
+			$this->cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
+		}
+
+		return $this->cacheFactory;
 	}
 
 }

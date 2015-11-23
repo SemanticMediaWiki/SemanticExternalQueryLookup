@@ -58,6 +58,8 @@ box to choose from external query sources.
 
 ## Configuration
 
+### Endpoint
+
 For a `#ask` query to retrieve results from a remote location, an external source is required to be registered
 with an arbitrary key to be assigned to a lookup processor such as:
 
@@ -80,6 +82,12 @@ $GLOBALS['seqlgExternalRepositoryEndpoints'] = array(
     )
 );
 ````
+### Cache
+
+`$GLOBALS['seqlgHttpResponseCacheType']` allows to specify a cache type (using `CACHE_NONE` will disable
+the caching completely and reroute each request to the selected endpoint) to filter repeated requests
+of the same signature (== same query to the same API endpoint) and return responses from cache for the time
+specified in `$GLOBALS['seqlgHttpResponseCacheLifetime']`.
 
 ## Contribution and support
 
