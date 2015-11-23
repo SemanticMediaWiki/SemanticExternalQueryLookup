@@ -93,6 +93,9 @@ class QueryResultFetcher {
 			$property->setInterwiki( $querySource );
 
 			$printrequests->getData()->setDataItem( $property );
+
+			// Reset label after dataItem was re-added
+			$printrequests->setLabel( $printrequests->getLabel() );
 		}
 
 		$result = $this->doMakeHttpRequestFor( $query );

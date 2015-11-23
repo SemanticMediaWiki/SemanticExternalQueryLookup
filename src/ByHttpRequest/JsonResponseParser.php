@@ -42,7 +42,7 @@ class JsonResponseParser {
 	/**
 	 * @var array
 	 */
-	private $categoryLabelMap = array();
+	private $internalLabelToKeyMap = array();
 
 	/**
 	 * @var string
@@ -109,8 +109,8 @@ class JsonResponseParser {
 		$key  = $property->getKey();
 		$hash = $subject->getHash();
 
-		if ( isset( $this->categoryLabelMap[$property->getKey()] ) ) {
-			$key = $this->categoryLabelMap[$property->getKey()];
+		if ( isset( $this->internalLabelToKeyMap[$property->getKey()] ) ) {
+			$key = $this->internalLabelToKeyMap[$property->getKey()];
 		}
 
 		return isset( $this->printouts[$hash][$key] ) ? $this->printouts[$hash][$key] : array();
@@ -164,10 +164,10 @@ class JsonResponseParser {
 			$property = DIProperty::newFromUserLabel( $pk );
 			$pk = $property->getKey();
 
-			// Need to match the property to its orignal API label as internally
-			// it is only represented as _INST
-			if ( isset( $this->categoryLabelMap[$pk] ) ) {
-				$pk = $this->categoryLabelMap[$pk];
+			// Need to match the property to its possible internal
+			// representation (_INST etc.()
+			if ( isset( $this->internalLabelToKeyMap[$pk] ) ) {
+				$pk = $this->internalLabelToKeyMap[$pk];
 			}
 
 			if ( !isset( $this->printRequestPropertyList[$pk] ) ) {
@@ -182,7 +182,12 @@ class JsonResponseParser {
 					$this->printouts[$hash][$pk] = array();
 				}
 
-				$this->printouts[$hash][$pk][] = $this->dataValueDeserializer->newDataValueFrom( $property, $pvalue );
+				// Unique row value display
+				$vhash = md5( json_encode( $pvalue ) );
+
+				if ( !isset( $this->printouts[$hash][$pk][$vhash] ) ) {
+					$this->printouts[$hash][$pk][$vhash] = $this->dataValueDeserializer->newDataValueFrom( $property, $pvalue );
+				}
 			}
 		}
 	}
@@ -195,14 +200,24 @@ class JsonResponseParser {
 
 		if ( $value['mode'] == 0 ) {
 			$property = new DIProperty( '_INST' );
-			$this->categoryLabelMap[$value['label']] = $property->getKey();
+			$this->internalLabelToKeyMap[$value['label']] = $property->getKey();
 		} else {
 			$property = DIProperty::newFromUserLabel( $value['label'] );
 			$property->setPropertyTypeId( $value['typeid'] );
 		}
 
+		// Map something like _MDAT to a local label for cases the property is referenced
+		// by a user defined label
+		if ( $this->isPredefinedPropertyByKey( $value, $property ) ) {
+			$this->internalLabelToKeyMap[$value['key']] = $value['label'];
+		}
+
 		$property->setInterwiki( $this->dataValueDeserializer->getQuerySource() );
 		$this->printRequestPropertyList[$property->getKey()] = $property;
+	}
+
+	private function isPredefinedPropertyByKey( $value, $property ) {
+		return isset( $value['key'] ) && ( ( $key = $value['key'] ) !== '' ) && $key{0} == '_' && $property->isUserDefined();
 	}
 
 }
