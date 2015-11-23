@@ -42,11 +42,6 @@ class JsonResponseParser {
 	/**
 	 * @var array
 	 */
-	private $errors = array();
-
-	/**
-	 * @var array
-	 */
 	private $categoryLabelMap = array();
 
 	/**
