@@ -41,6 +41,16 @@ class QueryResultFetcher {
 	private $repositoryTargetUrl = '';
 
 	/**
+	 * @var string
+	 */
+	private $httpResponseCachePrefix;
+
+	/**
+	 * @var integer
+	 */
+	private $httpResponseCacheLifetime;
+
+	/**
 	 * @since 1.0
 	 *
 	 * @param HttpRequestFactory $httpRequestFactory
@@ -69,6 +79,24 @@ class QueryResultFetcher {
 	 */
 	public function setRepositoryTargetUrl( $repositoryTargetUrl ) {
 		$this->repositoryTargetUrl = $repositoryTargetUrl;
+	}
+
+	/**
+	 * @since 1.0
+	 *
+	 * @param string $httpResponseCachePrefix
+	 */
+	public function setHttpResponseCachePrefix( $httpResponseCachePrefix ) {
+		$this->httpResponseCachePrefix = $httpResponseCachePrefix;
+	}
+
+	/**
+	 * @since 1.0
+	 *
+	 * @param integer $httpResponseCacheLifetime
+	 */
+	public function setHttpResponseCacheLifetime( $httpResponseCacheLifetime ) {
+		$this->httpResponseCacheLifetime = $httpResponseCacheLifetime;
 	}
 
 	/**
@@ -129,7 +157,10 @@ class QueryResultFetcher {
 
 	private function doMakeHttpRequestFor( $query ) {
 
-		$httpRequest = $this->httpRequestFactory->newCurlRequest();
+		$httpRequest = $this->httpRequestFactory->newCachedCurlRequest();
+
+		$httpRequest->setOption( ONOI_HTTP_REQUEST_RESPONSECACHE_TTL, $this->httpResponseCacheLifetime );
+		$httpRequest->setOption( ONOI_HTTP_REQUEST_RESPONSECACHE_PREFIX, $this->httpResponseCachePrefix . ':' );
 
 		$httpRequest->setOption( CURLOPT_FOLLOWLOCATION, true );
 

@@ -45,6 +45,23 @@ call_user_func( function () {
 	// Register message files
 	$GLOBALS['wgMessagesDirs']['semantic-external-query-lookup'] = __DIR__ . '/i18n';
 
+	/**
+	 * Specifies how long a response is cached before a new request is routed
+	 * to the endpoint. This avoids that repeated requests with the same signature
+	 * are made to an endpoint.
+	 *
+	 * This is important if the endpoint has an API access request limitation.
+	 */
+	$GLOBALS['seqlgHttpResponseCacheLifetime'] = 60 * 5; // in seconds
+
+	/**
+	 * Type of the cache to be used, using CACHE_NONE will disable the caching
+	 * and reroutes every request to the endpoint.
+	 *
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgMainCacheType
+	 */
+	$GLOBALS['seqlgHttpResponseCacheType'] = CACHE_ANYTHING;
+
 	$GLOBALS['seqlgExternalRepositoryEndpoints'] = array();
 
 	// Finalize extension setup
