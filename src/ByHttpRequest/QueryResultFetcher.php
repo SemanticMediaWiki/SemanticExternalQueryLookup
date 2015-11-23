@@ -26,7 +26,7 @@ class QueryResultFetcher {
 	private $queryResultFactory;
 
 	/**
-	 * @var HttpResponseParser
+	 * @var JsonResponseParser
 	 */
 	private $httpResponseParser;
 
@@ -50,7 +50,7 @@ class QueryResultFetcher {
 	 * 
 	 * @param HttpRequestFactory $httpRequestFactory
 	 * @param QueryResultFactory $queryResultFactory
-	 * @param HttpResponseParser $httpResponseParser
+	 * @param JsonResponseParser $httpResponseParser
 	 */
 	public function __construct( HttpRequestFactory $httpRequestFactory, QueryResultFactory $queryResultFactory, JsonResponseParser $httpResponseParser ) {
 		$this->httpRequestFactory = $httpRequestFactory;
