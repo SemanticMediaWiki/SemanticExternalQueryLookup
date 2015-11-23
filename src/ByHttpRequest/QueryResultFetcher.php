@@ -41,11 +41,6 @@ class QueryResultFetcher {
 	private $repositoryTargetUrl = '';
 
 	/**
-	 * @var HttpRequest
-	 */
-	private $httpRequest;
-
-	/**
 	 * @since 0.1
 	 * 
 	 * @param HttpRequestFactory $httpRequestFactory
