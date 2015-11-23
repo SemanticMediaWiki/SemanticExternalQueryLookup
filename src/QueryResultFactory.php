@@ -2,11 +2,11 @@
 
 namespace SEQL;
 
-use SMWQueryResult as QueryResult;
-use SEQL\ByHttpRequest\QueryResult as ByHttpRequestQueryResult;
 use SEQL\ByHttpRequest\JsonResponseParser;
-use SMWQuery as Query;
+use SEQL\ByHttpRequest\QueryResult as ByHttpRequestQueryResult;
 use SMW\Store;
+use SMWQuery as Query;
+use SMWQueryResult as QueryResult;
 
 /**
  * @license GNU GPL v2+

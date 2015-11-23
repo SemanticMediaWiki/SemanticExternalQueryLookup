@@ -2,9 +2,8 @@
 
 namespace SEQL;
 
-use SMW\ApplicationFactory;
-use SMW\Store;
 use Hooks;
+use SMW\Store;
 
 /**
  * @license GNU GPL v2+

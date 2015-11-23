@@ -2,10 +2,10 @@
 
 namespace SEQL\ByHttpRequest;
 
-use SMW\Query\PrintRequest;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Query\PrintRequest;
 use SMWDataValue as DataValue;
 use SMWResultArray as ResultArray;
 

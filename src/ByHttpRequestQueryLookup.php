@@ -3,11 +3,11 @@
 namespace SEQL;
 
 use Onoi\HttpRequest\HttpRequestFactory;
-use SMWQuery as Query;
-use SMW\SQLStore\SQLStore;
-use SMWQueryResult as QueryResult;
-use SEQL\ByHttpRequest\QueryResultFetcher;
 use SEQL\ByHttpRequest\JsonResponseParser;
+use SEQL\ByHttpRequest\QueryResultFetcher;
+use SMW\SQLStore\SQLStore;
+use SMWQuery as Query;
+use SMWQueryResult as QueryResult;
 
 /**
  * @license GNU GPL v2+

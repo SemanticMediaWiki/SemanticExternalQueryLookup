@@ -2,8 +2,8 @@
 
 namespace SEQL\ByHttpRequest;
 
-use SMWQueryResult as BQueryResult;
 use SMWInfolink as Infolink;
+use SMWQueryResult as BQueryResult;
 
 /**
  * @license GNU GPL v2+
