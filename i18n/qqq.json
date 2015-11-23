@@ -6,5 +6,6 @@
 		]
 	},
 	"seql-desc": "{{desc|name=Semantic External Query Lookup|url=https://www.mediawiki.org/wiki/Extension:Semantic_External_Query_Lookup}}",
-	"seql-interwiki-prefix-is-missing": "This is an error message.\n\n* $1 holds the label of the configured query source."
+	"seql-interwiki-prefix-is-missing": "This is an error message.\n\n* $1 holds the label of the configured query source.",
+	"seql-debug-query-not-supported": "This is an error message."
 }

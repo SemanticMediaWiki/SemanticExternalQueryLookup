@@ -28,7 +28,7 @@ class QueryResultFetcher {
 	/**
 	 * @var JsonResponseParser
 	 */
-	private $httpResponseParser;
+	private $jsonResponseParser;
 
 	/**
 	 * @var string
@@ -42,20 +42,20 @@ class QueryResultFetcher {
 
 	/**
 	 * @since 0.1
-	 * 
+	 *
 	 * @param HttpRequestFactory $httpRequestFactory
 	 * @param QueryResultFactory $queryResultFactory
-	 * @param JsonResponseParser $httpResponseParser
+	 * @param JsonResponseParser $jsonResponseParser
 	 */
-	public function __construct( HttpRequestFactory $httpRequestFactory, QueryResultFactory $queryResultFactory, JsonResponseParser $httpResponseParser ) {
+	public function __construct( HttpRequestFactory $httpRequestFactory, QueryResultFactory $queryResultFactory, JsonResponseParser $jsonResponseParser ) {
 		$this->httpRequestFactory = $httpRequestFactory;
 		$this->queryResultFactory = $queryResultFactory;
-		$this->httpResponseParser = $httpResponseParser;
+		$this->jsonResponseParser = $jsonResponseParser;
 	}
 
 	/**
 	 * @since 0.1
-	 * 
+	 *
 	 * @param string $httpRequestEndpoint
 	 */
 	public function setHttpRequestEndpoint( $httpRequestEndpoint ) {
@@ -64,7 +64,7 @@ class QueryResultFetcher {
 
 	/**
 	 * @since 0.1
-	 * 
+	 *
 	 * @param string $repositoryTargetUrl
 	 */
 	public function setRepositoryTargetUrl( $repositoryTargetUrl ) {
@@ -73,30 +73,14 @@ class QueryResultFetcher {
 
 	/**
 	 * @since 0.1
-	 * 
+	 *
 	 * @param Query $query
 	 *
 	 * @return QueryResult
 	 */
 	public function fetchQueryResult( Query $query ) {
 
-		$querySource = $query->getQuerySource();
-
-		// Reset to get the correct IW
-		foreach ( $query->getExtraPrintouts() as $printrequests ) {
-
-			if ( $printrequests->getData() === null ) {
-				continue;
-			}
-
-			$property = $printrequests->getData()->getDataItem();
-			$property->setInterwiki( $querySource );
-
-			$printrequests->getData()->setDataItem( $property );
-
-			// Reset label after dataItem was re-added
-			$printrequests->setLabel( $printrequests->getLabel() );
-		}
+		$this->doResetPrintRequestsToQuerySource( $query );
 
 		$result = $this->doMakeHttpRequestFor( $query );
 
@@ -109,11 +93,11 @@ class QueryResultFetcher {
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
 		}
 
-		$this->httpResponseParser->doParse( $result  );
+		$this->jsonResponseParser->doParse( $result  );
 
 		$queryResult = $this->queryResultFactory->newByHttpRequestQueryResult(
 			$query,
-			$this->httpResponseParser
+			$this->jsonResponseParser
 		);
 
 		$queryResult->setRemoteTargetUrl(
@@ -121,6 +105,26 @@ class QueryResultFetcher {
 		);
 
 		return $queryResult;
+	}
+
+	private function doResetPrintRequestsToQuerySource( $query ) {
+
+		$querySource = $query->getQuerySource();
+
+		foreach ( $query->getExtraPrintouts() as $printRequest ) {
+
+			if ( $printRequest->getData() === null ) {
+				continue;
+			}
+
+			$property = $printRequest->getData()->getDataItem();
+			$property->setInterwiki( $querySource );
+
+			$printRequest->getData()->setDataItem( $property );
+
+			// Reset label after dataItem was re-added
+			$printRequest->setLabel( $printRequest->getLabel() );
+		}
 	}
 
 	private function doMakeHttpRequestFor( $query ) {
