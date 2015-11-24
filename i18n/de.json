@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kghbln"
+			"Kghbln",
+			"Metalhead64"
 		]
 	},
 	"seql-desc": "Ermöglicht das Abfragen semantischer Daten eines fremden semantischen Wikis im lokalen semantischen Wiki",
-	"seql-interwiki-prefix-is-missing": "Der angegebenen Quelle „$1“ wurden keine Interwiki-Daten zugeordnet."
+	"seql-interwiki-prefix-is-missing": "Der angegebenen Quelle „$1“ wurden keine Interwiki-Daten zugeordnet.",
+	"seql-debug-query-not-supported": "Die Anzeige der Ergebnisse für eine Fehlerbehebungsabfrage wird nicht unterstützt, wenn eine externe Abfrage verwendet wird."
 }
