@@ -224,18 +224,8 @@ class JsonResponseParser {
 			$property->setPropertyTypeId( $value['typeid'] );
 		}
 
-		// Map something like _MDAT to a local label for cases the property is referenced
-		// by a user defined label
-		if ( $this->isPredefinedPropertyByKey( $value, $property ) ) {
-			$this->internalLabelToKeyMap[$value['key']] = $value['label'];
-		}
-
 		$property->setInterwiki( $this->dataValueDeserializer->getQuerySource() );
 		$this->printRequestPropertyList[$property->getKey()] = $property;
-	}
-
-	private function isPredefinedPropertyByKey( $value, $property ) {
-		return isset( $value['key'] ) && ( ( $key = $value['key'] ) !== '' ) && $key{0} == '_' && $property->isUserDefined();
 	}
 
 }

@@ -138,11 +138,7 @@ class CannedResultArray extends ResultArray {
 			return false;
 		}
 
-		if ( $this->mPrintRequest->getData() !== null ) {
-			$property = $this->jsonResponseParser->findPropertyFromInMemoryExternalRepositoryCache(
-				$this->mPrintRequest->getData()->getDataItem()
-			);
-		}
+		$property = $this->getMatchablePropertyFromPrintRequest();
 
 		// Units of measurement can not be assumed to be declared on a wiki
 		// therefore don't try to recreate a DataValue and use the DV created
@@ -225,9 +221,9 @@ class CannedResultArray extends ResultArray {
 				if ( $propertyValue->isValid() ) {
 					$this->mContent = $this->jsonResponseParser->getPropertyValuesFor(
 						$this->mResult,
-						$propertyValue->getDataItem()
+						$this->getMatchablePropertyFromPrintRequest()
 					);
-				}	
+				}
 
 			break;
 			default:
@@ -235,6 +231,30 @@ class CannedResultArray extends ResultArray {
 		}
 
 		reset( $this->mContent );
+	}
+
+	private function getMatchablePropertyFromPrintRequest() {
+
+		if ( $this->mPrintRequest->getMode() !== PrintRequest::PRINT_PROP ) {
+			return null;
+		}
+
+		$property = $this->mPrintRequest->getData()->getDataItem();
+
+		// The API may not deploy the natural property key (until 0.8+) hence something
+		// like |?Has population=Population (in K) does not return a valid result from
+		// the parser because "Has population" cannot be connected to "Population (in K)"
+		// without the extra "key" field therefore construct a new property to match the
+		// label
+		if ( $this->mPrintRequest->getLabel() !== '' && $this->mPrintRequest->getLabel() !== $property->getLabel() ) {
+			return $this->jsonResponseParser->findPropertyFromInMemoryExternalRepositoryCache(
+				DIProperty::newFromUserLabel( $this->mPrintRequest->getLabel() )
+			);
+		}
+
+		return $this->jsonResponseParser->findPropertyFromInMemoryExternalRepositoryCache(
+			$property
+		);
 	}
 
 }

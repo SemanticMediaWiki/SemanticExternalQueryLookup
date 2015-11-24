@@ -115,7 +115,7 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetContentForMode_PRINT_PROP() {
+	public function testGetContentOnDifferentPropertyLabelForMode_PRINT_PROP() {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 		$dataItem = new DINumber( 1001 );
@@ -145,14 +145,14 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyValuesFor' )
 			->with(
 				$this->equalTo( $subject ),
-				$this->equalTo( new DIProperty( 'ABC' ) ) )
+				$this->equalTo( new DIProperty( 'isPropertyFromInMemoryExternalRepositoryCache' ) ) )
 			->will( $this->returnValue( array( $dataValue ) ) );
 
 		$this->jsonResponseParser->expects( $this->any() )
 			->method( 'findPropertyFromInMemoryExternalRepositoryCache' )
 			->with(
-				$this->equalTo( new DIProperty( 'ABC' ) ) )
-			->will( $this->returnValue( new DIProperty( 'DEF' ) ) );
+				$this->equalTo( new DIProperty( 'withDifferentPropertyLabel' ) ) )
+			->will( $this->returnValue( new DIProperty( 'isPropertyFromInMemoryExternalRepositoryCache' ) ) );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -166,6 +166,10 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getData' )
 			->will( $this->returnValue( $propertyValue ) );
 
+		$printRequest->expects( $this->atLeastOnce() )
+			->method( 'getLabel' )
+			->will( $this->returnValue( 'withDifferentPropertyLabel' ) );
+
 		$instance = new CannedResultArray(
 			$subject,
 			$printRequest,
@@ -178,7 +182,7 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetContentOnQuantityTypeForMode_PRINT_PROP() {
+	public function testGetContentOnQuantityTypeWithSameLabelForMode_PRINT_PROP() {
 
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
@@ -212,7 +216,7 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getPropertyValuesFor' )
 			->with(
 				$this->equalTo( $subject ),
-				$this->equalTo( new DIProperty( 'ABC' ) ) )
+				$this->equalTo( $property ) )
 			->will( $this->returnValue( array( $dataValue ) ) );
 
 		$this->jsonResponseParser->expects( $this->any() )
@@ -232,6 +236,10 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 		$printRequest->expects( $this->any() )
 			->method( 'getData' )
 			->will( $this->returnValue( $propertyValue ) );
+
+		$printRequest->expects( $this->atLeastOnce() )
+			->method( 'getLabel' )
+			->will( $this->returnValue( '' ) );
 
 		$instance = new CannedResultArray(
 			$subject,

@@ -118,10 +118,14 @@ class DataValueDeserializer {
 			$dv = false;
 		}
 
-		return $dv;		
+		return $dv;
 	}
 
-	private function newDataValueFromDataItem( $property, $dataItem ) {
+	private function newDataValueFromDataItem( $property, $dataItem = false ) {
+
+		if ( $dataItem === false ) {
+			return false;
+		}
 
 		try{
 			$dv = DataValueFactory::newDataItemValue( $dataItem, $property );
@@ -129,7 +133,7 @@ class DataValueDeserializer {
 			$dv = false;
 		}
 
-		return $dv;		
+		return $dv;
 	}
 
 	private function newDiContainerOnRecordType( array $value, &$propertyList ) {

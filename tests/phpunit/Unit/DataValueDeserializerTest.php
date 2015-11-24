@@ -4,6 +4,8 @@ namespace SEQL\Tests;
 
 use SEQL\DataValueDeserializer;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
+use SMWDITime as DITime;
 
 /**
  * @covers \SEQL\DataValueDeserializer
@@ -36,6 +38,32 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			new DIWikiPage( 'Foo:abc_def', NS_MAIN ),
 			$instance->newDiWikiPage( $value )
+		);
+	}
+
+	public function testNewTimeValueForOutOfRangeTimestamp() {
+
+		$instance = new DataValueDeserializer( 'foo' );
+
+		$property = new DIProperty( 'Bar' );
+		$property->setPropertyTypeId( '_dat' );
+
+		$this->assertNotEquals(
+			DITime::doUnserialize( '2/-200' ),
+			$instance->newDataValueFrom( $property, '-2000101000000' )
+		);
+	}
+
+	public function testNewTimeValueForRawTimeFromat() {
+
+		$instance = new DataValueDeserializer( 'foo' );
+
+		$property = new DIProperty( 'Bar' );
+		$property->setPropertyTypeId( '_dat' );
+
+		$this->assertEquals(
+			DITime::doUnserialize( '2/-200' ),
+			$instance->newDataValueFrom( $property, array( 'raw' => '2/-200' ) )->getDataItem()
 		);
 	}
 
