@@ -10,7 +10,7 @@
 Semantic External Query Lookup (a.k.a. SEQL) is a [Semantic Mediawiki][smw] extension to seamlessly integrate
 query results from an external query source to a local repository or wiki.
 
-The following [video](https://youtu.be/sOCh9M2sSvU) demonstrates the functionality of this extension.
+The following [video](https://youtu.be/sOCh9M2sSvU) demonstrates the features of this extension.
 
 ## Requirements
 
@@ -36,7 +36,7 @@ The recommended way to install Semantic External Query Lookup is by using [Compo
 
 ## Usage
 
-A standard `#ask` query only requires to add a `source` parameter (given that query source has
+A normal `#ask` query only requires to add a `source` parameter (assuming that a query source has
 been registered and was enabled) to retrieve query results from a selected external endpoint.
 
 ```
@@ -47,31 +47,29 @@ been registered and was enabled) to retrieve query results from a selected exter
 }}
 ```
 
-If external query endpoints are made available then `Special:Ask` will provide a selection
-box to choose from external query sources.
+`Special:Ask` will provide a selection box to select query sources if those have been appropriately enabled.
 
 ### Features and limitations
 
-- Images (`File:`) are only displayed as normal wiki links (becuase the file information/location is not
+- Images (`File` namespace) are only displayed as normal wiki links (as file information/location are not
   available outside of the original wiki)
-- To display historic dates correctly, the response parser expects an Ask API version of `0.7` or later
+- Historic dates are only displayed correctly for when the endpoint Ask API supports version `0.7` or later
 
 ## Configuration
 
-### Endpoint
+### Query endpoint
 
-For a `#ask` query to retrieve results from a remote location, an external source is required to be registered
-with an arbitrary key to be assigned to a lookup processor such as:
+For a `#ask` query to retrieve results from a remote location, an external query source is required to be registered
+with a unique key and assigned to a lookup processor:
 
 ```
 $GLOBALS['smwgQuerySources'] = array(
     'mw-foo' => 'SMWExternalAskQueryLookup',
 );
 ```
-
-A corresponding interwiki prefix detail for a query source is expected to be either inserted
-into into MediaWiki's interwiki table directly or if it is more convenient to use the
-`$GLOBALS['seqlgExternalRepositoryEndpoints']` setting for the information to be added in form of:
+The key used to identify an endpoint is expected to correspond to an interwiki prefix. Details of that prefix can be
+either inserted directly into into MediaWiki's interwiki table or if it is more convenient the setting
+`$GLOBALS['seqlgExternalRepositoryEndpoints']` can be used in form of:
 
 ```
 $GLOBALS['seqlgExternalRepositoryEndpoints'] = array(
@@ -84,10 +82,13 @@ $GLOBALS['seqlgExternalRepositoryEndpoints'] = array(
 ````
 ### Cache
 
-`$GLOBALS['seqlgHttpResponseCacheType']` allows to specify a cache type (using `CACHE_NONE` will disable
-the caching completely and reroute each request to the selected endpoint) to filter repeated requests
-of the same signature (== same query to the same API endpoint) and return responses from cache for the time
-specified in `$GLOBALS['seqlgHttpResponseCacheLifetime']`.
+To help limit the amount of request made to an endpoint, SEQL provides:
+
+- `$GLOBALS['seqlgHttpResponseCacheType']` to specify a cache type to filter repeated requests
+ of the same signature (== same query to the same API endpoint), using `CACHE_NONE` will disable
+the cache entirely and reroute each request to the selected endpoint
+- `$GLOBALS['seqlgHttpResponseCacheLifetime']` specifies the duration of how long a response is
+  kept before a new "live" request is made to the endpoint (default is set to 5 min)
 
 ## Contribution and support
 
