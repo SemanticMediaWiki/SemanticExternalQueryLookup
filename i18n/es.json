@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Macofe"
+		]
+	},
+	"seql-desc": "Permite integrar resultados de consultas de [https://semantic-mediawiki.org MediaWiki semánticos] remotos a un wiki local",
+	"seql-interwiki-prefix-is-missing": "A la fuente seleccionada \"$1\" le falta un prefijo interwiki coincidente.",
+	"seql-debug-query-not-supported": "No se admite la visualización de resultados de una consulta de depuración cuando se usa una fuente de consulta externa."
+}
