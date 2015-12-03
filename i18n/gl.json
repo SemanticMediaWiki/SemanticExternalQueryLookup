@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Elisardojm"
+		]
+	},
+	"seql-desc": "Permite integrar resultados de buscas remotas de [https://semantic-mediawiki.org MediaWiki semántica] a unha wiki local"
+}
