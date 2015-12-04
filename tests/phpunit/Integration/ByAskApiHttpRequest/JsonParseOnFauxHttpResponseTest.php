@@ -10,6 +10,7 @@ use SEQL\QueryResultFactory;
 use SEQL\DataValueDeserializer;
 use SEQL\HookRegistry;
 use SMW\DIWikiPage;
+use SMW\DIProperty;
 
 /**
  * @group semantic-external-query-lookup
@@ -62,6 +63,11 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
 			$content['expected']['hasFurtherResults'],
 			$instance->hasFurtherResults()
 		);
+
+		$this->assertPrintRequestPropertyList(
+			$content['expected']['printRequestPropertyList'],
+			$instance->getPrintRequestPropertyList()
+		);
 	}
 
 	private function assertSubjectList( $expectedSubjectList, $subjectList ) {
@@ -79,6 +85,24 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEmpty(
 			$expectedSubjectList,
 			'Failed because of a missing match: ' . implode( ',', $expectedSubjectList )
+		);
+	}
+
+	private function assertPrintRequestPropertyList( $expectedPropertyList, $printRequestPropertyList ) {
+
+		foreach ( $printRequestPropertyList as $property ) {
+			foreach ( $expectedPropertyList as $key => $prop ) {
+				$prop = new DIProperty( str_replace( " ", "_", $prop ) );
+				if ( $property->equals( $prop ) ) {
+					unset( $expectedPropertyList[$key] );
+					break;
+				}
+			}
+		}
+
+		$this->assertEmpty(
+			$expectedPropertyList,
+			'Failed because of a missing match: ' . implode( ',', $expectedPropertyList )
 		);
 	}
 

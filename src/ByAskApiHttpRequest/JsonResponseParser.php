@@ -168,7 +168,18 @@ class JsonResponseParser {
 
 	private function addResultsToPrintoutList( $value ) {
 
+		// Most likely caused by `mainlabel=-` therefore mark it as special and
+		// restore row integrity
+		if ( !isset( $value['namespace'] ) || !isset( $value['fulltext'] ) ) {
+			 $value['namespace'] = 0;
+			 $value['fulltext'] = 'NO_SUBJECT';
+		}
+
 		$subject = $this->dataValueDeserializer->newDiWikiPage( $value );
+
+		if ( !$subject ) {
+			return;
+		}
 
 		$hash = $subject->getHash();
 		$this->subjectList[] = $subject;
@@ -178,34 +189,38 @@ class JsonResponseParser {
 		}
 
 		foreach ( $value['printouts'] as $pk => $pvalues ) {
+			$this->addPropertyValues( $hash, $pk, $pvalues );
+		}
+	}
 
-			$property = DIProperty::newFromUserLabel( $pk );
-			$pk = $property->getKey();
+	private function addPropertyValues( $hash, $pk, $pvalues ) {
 
-			// Need to match the property to its possible internal
-			// representation (_INST etc.()
-			if ( isset( $this->internalLabelToKeyMap[$pk] ) ) {
-				$pk = $this->internalLabelToKeyMap[$pk];
+		$property = DIProperty::newFromUserLabel( $pk );
+		$pk = $property->getKey();
+
+		// Need to match the property to its possible internal
+		// representation (_INST etc.()
+		if ( isset( $this->internalLabelToKeyMap[$pk] ) ) {
+			$pk = $this->internalLabelToKeyMap[$pk];
+		}
+
+		if ( !isset( $this->printRequestPropertyList[$pk] ) ) {
+			return;
+		}
+
+		$property = $this->printRequestPropertyList[$pk];
+
+		foreach ( $pvalues as $pvalue ) {
+
+			if ( !isset( $this->printouts[$hash][$pk] ) ) {
+				$this->printouts[$hash][$pk] = array();
 			}
 
-			if ( !isset( $this->printRequestPropertyList[$pk] ) ) {
-				continue;
-			}
+			// Unique row value display
+			$vhash = md5( json_encode( $pvalue ) );
 
-			$property = $this->printRequestPropertyList[$pk];
-
-			foreach ( $pvalues as $pvalue ) {
-
-				if ( !isset( $this->printouts[$hash][$pk] ) ) {
-					$this->printouts[$hash][$pk] = array();
-				}
-
-				// Unique row value display
-				$vhash = md5( json_encode( $pvalue ) );
-
-				if ( !isset( $this->printouts[$hash][$pk][$vhash] ) ) {
-					$this->printouts[$hash][$pk][$vhash] = $this->dataValueDeserializer->newDataValueFrom( $property, $pvalue );
-				}
+			if ( !isset( $this->printouts[$hash][$pk][$vhash] ) ) {
+				$this->printouts[$hash][$pk][$vhash] = $this->dataValueDeserializer->newDataValueFrom( $property, $pvalue );
 			}
 		}
 	}

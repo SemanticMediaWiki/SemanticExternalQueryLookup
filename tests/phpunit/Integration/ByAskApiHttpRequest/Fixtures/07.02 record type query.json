@@ -6,8 +6,8 @@
 		"subjectList":[
 			"Example/Rec/01#0#api-foo#",
 			"Example/Rec/02#0#api-foo#_4c5f42343c4615d6ad5fcc9c7070c1d8"
-		]
-
+		],
+		"printRequestPropertyList":[]
 	},
 	"api-response": {
 		"query": {

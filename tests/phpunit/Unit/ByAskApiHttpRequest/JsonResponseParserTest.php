@@ -61,6 +61,7 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function resultProvider() {
 
+		#0
 		$provider[] = array(
 			array( 'query' => array() ),
 			array(),
@@ -68,6 +69,7 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 			null
 		);
 
+		#1
 		$provider[] = array(
 			array(
 				'query-continue-offset' => 3,
@@ -78,6 +80,7 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 			null
 		);
 
+		#2
 		$provider[] = array(
 			array(
 				'query-continue-offset' => 3,
@@ -95,6 +98,27 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 			true,
 			new DIProperty( '_INST' )
 		);
+
+		#3
+		$provider[] = array(
+			array(
+				'query' => array(
+					'printrequests' => array(
+						array( 'label' => 'Category', 'mode' => 0 )
+					),
+				'results' => array()
+				),
+			),
+			array(
+				'printrequests' => array(
+					array( 'label' => 'Category', 'mode' => 0 )
+				),
+				'results' => array()
+			),
+			false,
+			null
+		);
+
 
 		return $provider;
 	}

@@ -76,9 +76,13 @@ class DataValueDeserializer {
 	 *
 	 * @param array $value
 	 *
-	 * @return DIWikiPage
+	 * @return DIWikiPage|false
 	 */
 	public function newDiWikiPage( array $value ) {
+
+		if ( !isset( $value['namespace'] ) || !isset( $value['fulltext'] ) ) {
+			return false;
+		}
 
 		$ns = (int)$value['namespace'] === NS_CATEGORY ? NS_CATEGORY : NS_MAIN;
 

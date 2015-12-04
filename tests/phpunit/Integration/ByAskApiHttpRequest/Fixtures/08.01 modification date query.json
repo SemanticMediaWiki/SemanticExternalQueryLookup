@@ -6,8 +6,8 @@
 		"subjectList":[
 			"Lorem ipsum#0#api-foo#",
 			"Foo#0#api-foo#"
-		]
-
+		],
+		"printRequestPropertyList":[]
 	},
 	"api-response": {
 		"query-continue-offset": 2,

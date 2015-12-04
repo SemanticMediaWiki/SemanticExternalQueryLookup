@@ -1,0 +1,79 @@
+{
+	"query": "[[Has%20number::%2B]]|source=api-foo|?Has%20number|mainlabel=-|?=Main",
+	"query-source": "api-foo",
+	"expected":{
+		"hasFurtherResults": false,
+		"subjectList":[
+			"Foo#0#api-foo#",
+			"Foo#0#api-foo#_8bec1438e8aee2718068200ec9a7e4ac",
+			"Foo#0#api-foo#_c731b357ea04c5d4f67e0187dadf881b"
+		],
+		"printRequestPropertyList": [
+			"Has_number"
+		]
+	},
+	"api-response": {
+		"query": {
+			"printrequests": [
+				{
+					"label": "Has number",
+					"key": "Has_number",
+					"typeid": "_num",
+					"mode": 1,
+					"format": ""
+				},
+				{
+					"label": "Main",
+					"key": "",
+					"typeid": "_wpg",
+					"mode": 2,
+					"format": ""
+				}
+			],
+			"results": {
+				"Foo": {
+					"printouts": {
+						"Has number": [
+							199999004
+						]
+					},
+					"fulltext": "Foo",
+					"fullurl": "http://localhost:8080/mw-25-01/index.php/Foo",
+					"namespace": 0,
+					"exists": ""
+				},
+				"Foo# 8bec1438e8aee2718068200ec9a7e4ac": {
+					"printouts": {
+						"Has number": [
+							34,
+							1234
+						]
+					},
+					"fulltext": "Foo# 8bec1438e8aee2718068200ec9a7e4ac",
+					"fullurl": "http://localhost:8080/mw-25-01/index.php/Foo#_8bec1438e8aee2718068200ec9a7e4ac",
+					"namespace": 0,
+					"exists": ""
+				},
+				"Foo# c731b357ea04c5d4f67e0187dadf881b": {
+					"printouts": {
+						"Has number": [
+							55
+						]
+					},
+					"fulltext": "Foo# c731b357ea04c5d4f67e0187dadf881b",
+					"fullurl": "http://localhost:8080/mw-25-01/index.php/Foo#_c731b357ea04c5d4f67e0187dadf881b",
+					"namespace": 0,
+					"exists": ""
+				}
+			},
+			"serializer": "SMW\\Serializers\\QueryResultSerializer",
+			"version": 0.8,
+			"meta": {
+				"hash": "95711a48d5a5fe33fccc22009bbb06d1",
+				"count": 3,
+				"offset": 0,
+				"source": ""
+			}
+		}
+	}
+}

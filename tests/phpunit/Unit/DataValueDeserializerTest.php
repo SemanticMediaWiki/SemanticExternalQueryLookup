@@ -41,6 +41,15 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testTryNewDiWikiPageForInvalidSeralization() {
+
+		$instance = new DataValueDeserializer( 'foo' );
+
+		$this->assertFalse(
+			$instance->newDiWikiPage( array( 'Foo' ) )
+		);
+	}
+
 	public function testNewTimeValueForOutOfRangeTimestamp() {
 
 		$instance = new DataValueDeserializer( 'foo' );

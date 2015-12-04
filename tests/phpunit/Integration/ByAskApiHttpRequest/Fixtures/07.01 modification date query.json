@@ -9,8 +9,8 @@
 			"Example01/\u00f8\u00e6\u00e5\u00f8\u00e6\u00e5abcabc#0#api-foo#",
 			"Example02#0#api-foo#",
 			"Example03#0#api-foo#"
-		]
-
+		],
+		"printRequestPropertyList":[]
 	},
 	"api-response": {
 		"query-continue-offset": 5,

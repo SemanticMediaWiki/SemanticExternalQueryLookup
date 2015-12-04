@@ -6,8 +6,8 @@
 		"subjectList":[
 			"Example/Qty/01#0#api-foo#",
 			"Example/Qty/02#0#api-foo#_0c6245f557bf42d6399366e6322e985d"
-		]
-
+		],
+		"printRequestPropertyList":[]
 	},
 	"api-response": {
 		"query": {

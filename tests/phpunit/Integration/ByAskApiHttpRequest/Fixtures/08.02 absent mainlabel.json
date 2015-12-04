@@ -1,0 +1,56 @@
+{
+	"query": "[[Has%20number::%2B]]|source=api-foo|?Has%20number|mainlabel=-",
+	"query-source": "api-foo",
+	"expected":{
+		"hasFurtherResults": false,
+		"subjectList":[],
+		"printRequestPropertyList": [
+			"Has_number"
+		]
+	},
+	"api-response": {
+		"query": {
+			"printrequests": [
+				{
+					"label": "Has number",
+					"key": "Has_number",
+					"typeid": "_num",
+					"mode": 1,
+					"format": ""
+				}
+			],
+			"results": {
+				"Foo": {
+					"printouts": {
+						"Has number": [
+							199999004
+						]
+					}
+				},
+				"Foo# 8bec1438e8aee2718068200ec9a7e4ac": {
+					"printouts": {
+						"Has number": [
+							34,
+							1234
+						]
+					}
+				},
+				"Foo# c731b357ea04c5d4f67e0187dadf881b": {
+					"printouts": {
+						"Has number": [
+							55
+						]
+					}
+				}
+			},
+			"serializer": "SMW\\Serializers\\QueryResultSerializer",
+			"version": 0.8,
+			"meta": {
+				"hash": "d3adb140c7cfb22c7b02ec1e06f259ba",
+				"count": 3,
+				"offset": 0,
+				"source": ""
+			}
+		}
+	}
+}

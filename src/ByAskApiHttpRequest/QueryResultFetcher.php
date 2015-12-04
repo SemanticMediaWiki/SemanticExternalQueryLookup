@@ -160,7 +160,7 @@ class QueryResultFetcher {
 		$httpRequest = $this->httpRequestFactory->newCachedCurlRequest();
 
 		$httpRequest->setOption( ONOI_HTTP_REQUEST_RESPONSECACHE_TTL, $this->httpResponseCacheLifetime );
-		$httpRequest->setOption( ONOI_HTTP_REQUEST_RESPONSECACHE_PREFIX, $this->httpResponseCachePrefix . ':' );
+		$httpRequest->setOption( ONOI_HTTP_REQUEST_RESPONSECACHE_PREFIX, $this->httpResponseCachePrefix . ':seql:' );
 
 		$httpRequest->setOption( CURLOPT_FOLLOWLOCATION, true );
 

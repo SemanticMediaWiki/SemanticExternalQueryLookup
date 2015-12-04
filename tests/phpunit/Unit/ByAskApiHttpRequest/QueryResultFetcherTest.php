@@ -224,7 +224,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->httpRequest->expects( $this->at( 1 ) )
 			->method( 'setOption' )
-			->with( $this->anything(), $this->equalTo( 'Foo:' ) );
+			->with( $this->anything(), $this->equalTo( 'Foo:seql:' ) );
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
