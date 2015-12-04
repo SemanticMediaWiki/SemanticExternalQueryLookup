@@ -161,18 +161,18 @@ class JsonResponseParser {
 			}
 
 			foreach ( $item['results'] as $k => $value ) {
-				$this->addResultsToPrintoutList( $value );
+				$this->addResultsToPrintoutList( $k, $value );
 			}
 		}
 	}
 
-	private function addResultsToPrintoutList( $value ) {
+	private function addResultsToPrintoutList( $k, $value ) {
 
 		// Most likely caused by `mainlabel=-` therefore mark it as special and
 		// restore row integrity
 		if ( !isset( $value['namespace'] ) || !isset( $value['fulltext'] ) ) {
 			 $value['namespace'] = 0;
-			 $value['fulltext'] = 'NO_SUBJECT';
+			 $value['fulltext'] = $k;
 		}
 
 		$subject = $this->dataValueDeserializer->newDiWikiPage( $value );
