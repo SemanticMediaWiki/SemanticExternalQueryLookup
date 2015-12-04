@@ -36,8 +36,8 @@ The recommended way to install Semantic External Query Lookup is by using [Compo
 
 ## Usage
 
-A normal `#ask` query only requires to add a `source` parameter (assuming that a query source has
-been registered and was enabled) to retrieve query results from a selected external endpoint.
+The `#ask`/`#show` query only requires to add a `source` parameter (assuming that a query source has
+been registered and enabled) to retrieve query results from a selected external endpoint. `Special:Ask` will provide a selection box to list enabled query sources.
 
 ```
 {{#ask: [[Modification date::+]]
@@ -47,8 +47,6 @@ been registered and was enabled) to retrieve query results from a selected exter
 }}
 ```
 
-`Special:Ask` will provide a selection box to select query sources if those have been appropriately enabled.
-
 ### Features and limitations
 
 - Images (`File` namespace) are only displayed as normal wiki links (as file information/location are not
@@ -57,18 +55,18 @@ been registered and was enabled) to retrieve query results from a selected exter
 
 ## Configuration
 
-### Query endpoint
+### Query sources
 
 For a `#ask` query to retrieve results from a remote location, an external query source is required to be registered
-with a unique key and assigned to a lookup processor:
+with a unique key and assigned a lookup processor as in:
 
 ```
 $GLOBALS['smwgQuerySources'] = array(
     'mw-foo' => 'SMWExternalAskQueryLookup',
 );
 ```
-The key used to identify an endpoint is expected to correspond to an interwiki prefix. Details of that prefix can be
-either inserted directly into into MediaWiki's interwiki table or if it is more convenient the setting
+The key used to identify an endpoint is expected to correspond to an [interwiki prefix][iwp]. Details of that prefix can be
+either inserted directly into MediaWiki's interwiki table or if it is more convenient the setting
 `$GLOBALS['seqlgExternalRepositoryEndpoints']` can be used in form of:
 
 ```
@@ -114,5 +112,4 @@ but can also be executed using `composer phpunit` from the extension base direct
 [travis]: https://travis-ci.org/SemanticMediaWiki/SemanticExternalQueryLookup
 [gpl-licence]: https://www.gnu.org/copyleft/gpl.html
 [composer]: https://getcomposer.org/
-[opg]: http://ogp.me/
-[tw]: https://dev.twitter.com/cards/types/summary
+[iwp]: https://www.mediawiki.org/wiki/Manual:Interwiki
