@@ -55,7 +55,7 @@ class DataValueDeserializer {
 
 		if ( $property->findPropertyTypeId() === '_wpg' || isset( $value['fulltext'] ) ) {
 			$dv = $this->newDataValueFromDataItem( $property, $this->newDiWikiPage( $value ) );
-		} elseif ( $property->findPropertyTypeId() === '_rec' ) {
+		} elseif ( strpos( $property->findPropertyTypeId(), '_rec' ) !== false ) {
 			$dv = $this->newDataValueFromDataItem( $property, $this->newDiContainerOnRecordType( $value, $propertyList ) );
 			$dv->setFieldProperties( $propertyList );
 		} elseif ( $property->findPropertyTypeId() === '_dat' ) {

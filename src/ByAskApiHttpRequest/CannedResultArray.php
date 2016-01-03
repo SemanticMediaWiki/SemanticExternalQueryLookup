@@ -144,12 +144,12 @@ class CannedResultArray extends ResultArray {
 		// therefore don't try to recreate a DataValue and use the DV created
 		// from the raw API response
 		if ( $this->mPrintRequest->getMode() === PrintRequest::PRINT_PROP &&
-		     $property->findPropertyTypeId() === '_qty' ) {
+		    $property->findPropertyTypeId() === '_qty' ) {
 			return $content;
 		}
 
 		if ( $this->mPrintRequest->getMode() === PrintRequest::PRINT_PROP &&
-		     $property->findPropertyTypeId() === '_rec' ) {
+		    strpos( $property->findPropertyTypeId(), '_rec' ) !== false ) {
 
 			if ( $this->mPrintRequest->getParameter( 'index' ) === false ) {
 				return $content;

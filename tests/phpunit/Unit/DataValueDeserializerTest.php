@@ -76,4 +76,28 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testNewRecordValue() {
+
+		$instance = new DataValueDeserializer( 'foo' );
+
+		$property = new DIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_rec' );
+
+		$item = array(
+			'namespace' => NS_MAIN,
+			'fulltext'  => 'abc def'
+		);
+
+		$record[] = array(
+			'label'  => 'Foo',
+			'typeid' => '_wpg',
+			'item'   => array( $item )
+		);
+
+		$this->assertInstanceOf(
+			'\SMWRecordValue',
+			$instance->newDataValueFrom( $property, $record )
+		);
+	}
+
 }
