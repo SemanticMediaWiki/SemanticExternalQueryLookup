@@ -59,6 +59,56 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public function testDoParseForRedirect() {
+
+		$result = array(
+			'query' => array(
+				'printrequests' => array(
+					array( 'label' => 'Foo', 'mode' => 2, 'redi' => 'Bar' , 'typeid' => '_wpg' )
+				),
+			'results' => array()
+			)
+		);
+
+		$rawResponseResult = array(
+			'printrequests' => array(
+				array( 'label' => 'Foo', 'mode' => 2, 'redi' => 'Bar' , 'typeid' => '_wpg' )
+			),
+			'results' => array()
+		);
+
+		$property = new DIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_wpg' );
+		$property->setInterwiki( 'abc' );
+
+		$dataValueDeserializer = $this->getMockBuilder( '\SEQL\DataValueDeserializer' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueDeserializer->expects( $this->once() )
+			->method( 'getQuerySource' )
+			->will( $this->returnValue( 'abc' ) );
+
+		$instance = new JsonResponseParser( $dataValueDeserializer );
+
+		$instance->doParse( $result );
+
+		$this->assertEquals(
+			$rawResponseResult,
+			$instance->getRawResponseResult()
+		);
+
+		$this->assertEquals(
+			$property,
+			$instance->findPropertyFromInMemoryExternalRepositoryCache( new DIProperty( 'Bar' ) )
+		);
+
+		$this->assertEquals(
+			$property,
+			$instance->findPropertyFromInMemoryExternalRepositoryCache( new DIProperty( 'Foo' ) )
+		);
+	}
+
 	public function resultProvider() {
 
 		#0
@@ -116,9 +166,8 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 				'results' => array()
 			),
 			false,
-			null
+			new DIProperty( '_INST' )
 		);
-
 
 		return $provider;
 	}
