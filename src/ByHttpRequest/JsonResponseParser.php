@@ -20,14 +20,14 @@ class JsonResponseParser {
 	private $dataValueDeserializer;
 
 	/**
-	 * @var array
+	 * @var ResponsePropertyList
 	 */
-	private $subjectList = array();
+	private $responsePropertyList;
 
 	/**
 	 * @var array
 	 */
-	private $printRequestPropertyList = array();
+	private $subjectList = array();
 
 	/**
 	 * @var boolean
@@ -38,11 +38,6 @@ class JsonResponseParser {
 	 * @var array
 	 */
 	private $printouts = array();
-
-	/**
-	 * @var array
-	 */
-	private $internalLabelToKeyMap = array();
 
 	/**
 	 * @var string
@@ -56,6 +51,7 @@ class JsonResponseParser {
 	 */
 	public function __construct( DataValueDeserializer $dataValueDeserializer ) {
 		$this->dataValueDeserializer = $dataValueDeserializer;
+		$this->responsePropertyList = new ResponsePropertyList( $dataValueDeserializer->getQuerySource() );
 	}
 
 	/**
@@ -69,11 +65,11 @@ class JsonResponseParser {
 
 		$key = $property->getKey();
 
-		if ( isset( $this->internalLabelToKeyMap[$key] ) ) {
-			$key = $this->internalLabelToKeyMap[$key];
+		if ( $this->responsePropertyList->hasProperty( $key ) ) {
+			return $this->responsePropertyList->getProperty( $key );
 		}
 
-		return isset( $this->printRequestPropertyList[$key] ) ? $this->printRequestPropertyList[$key] : $property;
+		return $property;
 	}
 
 	/**
@@ -100,7 +96,7 @@ class JsonResponseParser {
 	 * @param []
 	 */
 	public function getPrintRequestPropertyList() {
-		return $this->printRequestPropertyList;
+		return $this->responsePropertyList->getPropertyList();
 	}
 
 	/**
@@ -131,12 +127,8 @@ class JsonResponseParser {
 	 */
 	public function getPropertyValuesFor( DIWikiPage $subject, DIProperty $property ) {
 
-		$key  = $property->getKey();
 		$hash = $subject->getHash();
-
-		if ( isset( $this->internalLabelToKeyMap[$key] ) ) {
-			$key = $this->internalLabelToKeyMap[$key];
-		}
+		$key = $this->responsePropertyList->findPropertyKey( $property->getKey() );
 
 		return isset( $this->printouts[$hash][$key] ) ? $this->printouts[$hash][$key] : array();
 	}
@@ -164,7 +156,7 @@ class JsonResponseParser {
 			}
 
 			foreach ( $item['printrequests'] as $k => $value ) {
-				$this->addPrintRequestToPropertyList( $value );
+				$this->responsePropertyList->addToPropertyList( $value );
 			}
 
 			foreach ( $item['results'] as $k => $value ) {
@@ -205,17 +197,12 @@ class JsonResponseParser {
 		$property = DIProperty::newFromUserLabel( $pk );
 		$pk = $property->getKey();
 
-		// Need to match the property to its possible internal
-		// representation (_INST etc.()
-		if ( isset( $this->internalLabelToKeyMap[$pk] ) ) {
-			$pk = $this->internalLabelToKeyMap[$pk];
-		}
-
-		if ( !isset( $this->printRequestPropertyList[$pk] ) ) {
+		if ( !$this->responsePropertyList->hasProperty( $pk ) ) {
 			return;
 		}
 
-		$property = $this->printRequestPropertyList[$pk];
+		$property = $this->responsePropertyList->getProperty( $pk );
+		$pk = $property->getKey();
 
 		foreach ( $pvalues as $pvalue ) {
 
@@ -230,28 +217,6 @@ class JsonResponseParser {
 				$this->printouts[$hash][$pk][$vhash] = $this->dataValueDeserializer->newDataValueFrom( $property, $pvalue );
 			}
 		}
-	}
-
-	private function addPrintRequestToPropertyList( $value ) {
-
-		if ( $value['label'] === '' ) {
-			return;
-		}
-
-		if ( $value['mode'] == 0 ) {
-			$property = new DIProperty( '_INST' );
-			$this->internalLabelToKeyMap[$value['label']] = $property->getKey();
-		} else {
-			$property = DIProperty::newFromUserLabel( $value['label'] );
-			$property->setPropertyTypeId( $value['typeid'] );
-		}
-
-		if ( isset( $value['redi'] ) ) {
-			$this->internalLabelToKeyMap[$value['redi']] = $property->getKey();
-		}
-
-		$property->setInterwiki( $this->dataValueDeserializer->getQuerySource() );
-		$this->printRequestPropertyList[$property->getKey()] = $property;
 	}
 
 }
