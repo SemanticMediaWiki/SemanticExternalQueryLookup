@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 use SMWDITime as DITime;
+use SMWDIBlob as DIBlob;
 
 /**
  * @license GNU GPL v2+
@@ -23,12 +24,18 @@ class DataValueDeserializer {
 	private $querySource;
 
 	/**
+	 * @var EmbeddedLinksReplacer
+	 */
+	private $embeddedLinksReplacer;
+
+	/**
 	 * @since 1.0
 	 *
 	 * @param string $querySource
 	 */
 	public function __construct( $querySource ) {
 		$this->querySource = $querySource;
+		$this->embeddedLinksReplacer = new EmbeddedLinksReplacer( $querySource );
 	}
 
 	/**
@@ -60,6 +67,8 @@ class DataValueDeserializer {
 			$dv->setFieldProperties( $propertyList );
 		} elseif ( $property->findPropertyTypeId() === '_dat' ) {
 			$dv = $this->newDataValueFromDataItem( $property, $this->newDiTime( $value ) );
+		} elseif ( strpos( $property->findPropertyTypeId(), '_txt' ) !== false ) {
+			$dv = $this->newDataValueFromDataItem( $property, $this->newDiBlob( $value ) );
 		} elseif ( $property->findPropertyTypeId() === '_qty' ) {
 			$dv = $this->newDataValueFromPropertyObject( $property, $value['value'] . ' ' . $value['unit']  );
 		}
@@ -112,6 +121,10 @@ class DataValueDeserializer {
 		}
 
 		return $dataItem;
+	}
+
+	private function newDiBlob( $value ) {
+		return new DIBlob( $this->embeddedLinksReplacer->replace( $value ) );
 	}
 
 	private function newDataValueFromPropertyObject( $property, $value ) {

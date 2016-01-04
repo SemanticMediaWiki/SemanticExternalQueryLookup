@@ -100,4 +100,24 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testTextValueWithEmbeddedLink() {
+
+		$instance = new DataValueDeserializer( 'abc' );
+
+		$property = new DIProperty( 'Bar' );
+		$property->setPropertyTypeId( '_txt' );
+
+		$dataValue = $instance->newDataValueFrom( $property, 'Foo [[42]] bar' );
+
+		$this->assertInstanceOf(
+			'\SMWStringValue',
+			$dataValue
+		);
+
+		$this->assertEquals(
+			'Foo [[abc:42|42]] bar',
+			$dataValue->getDataItem()->getString()
+		);
+	}
+
 }
