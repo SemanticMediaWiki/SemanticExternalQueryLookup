@@ -2,9 +2,9 @@
 
 namespace SEQL\ByHttpRequest;
 
-use SEQL\DataValueDeserializer;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use RuntimeException;
 
 /**
  * @license GNU GPL v2+
@@ -107,8 +107,7 @@ class ResponsePropertyList {
 			$property = new DIProperty( '_INST' );
 			$this->internalLabelToKeyMap[$value['label']] = $property->getKey();
 		} else {
-			$property = DIProperty::newFromUserLabel( $value['label'] );
-			$property->setPropertyTypeId( $value['typeid'] );
+			$property = $this->newProperty( $value );
 		}
 
 		if ( isset( $value['redi'] ) ) {
@@ -117,6 +116,24 @@ class ResponsePropertyList {
 
 		$property->setInterwiki( $this->querySource );
 		$this->propertyList[$property->getKey()] = $property;
+	}
+
+	private function newProperty( $value ) {
+
+		$property = DIProperty::newFromUserLabel( $value['label'] );
+
+		if ( $property->isUserDefined() ) {
+			return $property->setPropertyTypeId( $value['typeid'] );
+		}
+
+		if ( $property->findPropertyTypeID() === $value['typeid'] ) {
+			return $property;
+		}
+
+		// Something like |Has foo=Text where `Text` is mapped to a DataType
+		// cannot be redeclared when the type of `Has foo` (as `_wpg`) doesn't
+		// correspond to the predefined property type
+		throw new RuntimeException( 'Cannot redeclare type "' .  $value['typeid'] . '" for "' . $value['label'] . '" (as predefined property/type)' );
 	}
 
 }

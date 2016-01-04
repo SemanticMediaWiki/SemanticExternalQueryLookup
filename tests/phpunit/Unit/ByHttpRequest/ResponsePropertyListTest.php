@@ -26,7 +26,9 @@ class ResponsePropertyListTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetPropertyForCategory() {
 
-		$value = array( 'label' => 'Category', 'mode' => 0 );
+		$value = array(
+			'label' => 'Category', 'mode' => 0
+		);
 
 		$property = new DIProperty( '_INST' );
 		$property->setInterwiki( 'abc' );
@@ -47,7 +49,9 @@ class ResponsePropertyListTest extends \PHPUnit_Framework_TestCase {
 
 	public function testGetPropertyForRedirectedProperty() {
 
-		$value = array(  'label' => 'Foo', 'mode' => 2, 'redi' => 'was redirect from Bar' , 'typeid' => '_wpg' );
+		$value = array(
+			'label' => 'Foo', 'mode' => 2, 'redi' => 'was redirect from Bar' , 'typeid' => '_wpg'
+		);
 
 		$property = new DIProperty( 'Foo' );
 		$property->setInterwiki( 'abc' );
@@ -70,6 +74,18 @@ class ResponsePropertyListTest extends \PHPUnit_Framework_TestCase {
 			array( 'Foo' => $property ),
 			$instance->getPropertyList()
 		);
+	}
+
+	public function testTryToRedeclareTypeOfPredefinedPropertyThrowsException() {
+
+		$value = array(
+			'label' => 'Modification date', 'mode' => 2, 'typeid' => '_wpg'
+		);
+
+		$instance = new ResponsePropertyList( 'abc' );
+
+		$this->setExpectedException( 'RuntimeException' );
+		$instance->addToPropertyList( $value );
 	}
 
 }
