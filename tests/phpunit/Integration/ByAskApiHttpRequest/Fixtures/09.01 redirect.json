@@ -1,0 +1,55 @@
+{
+	"query": "[[Has%20url::~*ようこそ*]]|?Has%20url|limit=1",
+	"query-source": "api-foo",
+	"expected":{
+		"hasFurtherResults": false,
+		"subjectList":[
+			"Encoded URL/ようこそ#0#api-foo#"
+		],
+		"printRequestPropertyList": [
+			"Has_Url"
+		]
+	},
+	"api-response": {
+		"query": {
+			"printrequests": [
+				{
+					"label": "",
+					"key": "",
+					"redi": "",
+					"typeid": "_wpg",
+					"mode": 2
+				},
+				{
+					"label": "Has Url",
+					"key": "Has_Url",
+					"redi": "Has_url",
+					"typeid": "_uri",
+					"mode": 1,
+					"format": ""
+				}
+			],
+			"results": {
+				"Encoded URL/\u3088\u3046\u3053\u305d": {
+					"printouts": {
+						"Has Url": [
+							"http://localhost:8080/mw-25-01/index.php/Encoded%20URL/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D"
+						]
+					},
+					"fulltext": "Encoded URL/\u3088\u3046\u3053\u305d",
+					"fullurl": "http://localhost:8080/mw-25-01/index.php/Encoded_URL/%E3%82%88%E3%81%86%E3%81%93%E3%81%9D",
+					"namespace": 0,
+					"exists": ""
+				}
+			},
+			"serializer": "SMW\\Serializers\\QueryResultSerializer",
+			"version": 0.9,
+			"meta": {
+				"hash": "7e6571663d38a297ff2fe984c7953342",
+				"count": 1,
+				"offset": 0,
+				"source": ""
+			}
+		}
+	}
+}

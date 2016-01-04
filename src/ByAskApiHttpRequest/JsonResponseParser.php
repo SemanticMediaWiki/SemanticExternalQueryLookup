@@ -66,7 +66,14 @@ class JsonResponseParser {
 	 * @return DIProperty
 	 */
 	public function findPropertyFromInMemoryExternalRepositoryCache( DIProperty $property ) {
-		return isset( $this->printRequestPropertyList[$property->getKey()] ) ? $this->printRequestPropertyList[$property->getKey()] : $property;
+
+		$key = $property->getKey();
+
+		if ( isset( $this->internalLabelToKeyMap[$key] ) ) {
+			$key = $this->internalLabelToKeyMap[$key];
+		}
+
+		return isset( $this->printRequestPropertyList[$key] ) ? $this->printRequestPropertyList[$key] : $property;
 	}
 
 	/**
@@ -127,8 +134,8 @@ class JsonResponseParser {
 		$key  = $property->getKey();
 		$hash = $subject->getHash();
 
-		if ( isset( $this->internalLabelToKeyMap[$property->getKey()] ) ) {
-			$key = $this->internalLabelToKeyMap[$property->getKey()];
+		if ( isset( $this->internalLabelToKeyMap[$key] ) ) {
+			$key = $this->internalLabelToKeyMap[$key];
 		}
 
 		return isset( $this->printouts[$hash][$key] ) ? $this->printouts[$hash][$key] : array();
@@ -237,6 +244,10 @@ class JsonResponseParser {
 		} else {
 			$property = DIProperty::newFromUserLabel( $value['label'] );
 			$property->setPropertyTypeId( $value['typeid'] );
+		}
+
+		if ( isset( $value['redi'] ) ) {
+			$this->internalLabelToKeyMap[$value['redi']] = $property->getKey();
 		}
 
 		$property->setInterwiki( $this->dataValueDeserializer->getQuerySource() );
