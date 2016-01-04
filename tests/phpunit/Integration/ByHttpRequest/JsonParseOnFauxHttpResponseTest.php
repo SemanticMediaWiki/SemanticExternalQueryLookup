@@ -1,11 +1,11 @@
 <?php
 
-namespace SEQL\Tests\Integration\ByAskApiHttpRequest;
+namespace SEQL\Tests\Integration\ByHttpRequest;
 
 use SMW\Tests\Utils\UtilityFactory;
 use Onoi\HttpRequest\HttpRequestFactory;
-use SEQL\ByAskApiHttpRequest\QueryResultFetcher;
-use SEQL\ByAskApiHttpRequest\JsonResponseParser;
+use SEQL\ByHttpRequest\QueryResultFetcher;
+use SEQL\ByHttpRequest\JsonResponseParser;
 use SEQL\QueryResultFactory;
 use SEQL\DataValueDeserializer;
 use SEQL\HookRegistry;

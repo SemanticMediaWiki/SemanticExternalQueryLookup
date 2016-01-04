@@ -56,7 +56,7 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testNewByHttpLookupQueryResult() {
 
-		$jsonResponseParser = $this->getMockBuilder( '\SEQL\ByAskApiHttpRequest\JsonResponseParser' )
+		$jsonResponseParser = $this->getMockBuilder( '\SEQL\ByHttpRequest\JsonResponseParser' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -76,7 +76,7 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			'\SMWQueryResult',
-			$instance->newByAskApiHttpRequestQueryResult( $query, $jsonResponseParser )
+			$instance->newByHttpRequestQueryResult( $query, $jsonResponseParser )
 		);
 	}
 

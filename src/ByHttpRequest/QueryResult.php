@@ -1,6 +1,6 @@
 <?php
 
-namespace SEQL\ByAskApiHttpRequest;
+namespace SEQL\ByHttpRequest;
 
 use SMWInfolink as Infolink;
 use SMWQueryResult as RootQueryResult;

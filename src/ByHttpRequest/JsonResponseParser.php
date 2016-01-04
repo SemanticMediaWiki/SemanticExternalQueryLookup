@@ -1,6 +1,6 @@
 <?php
 
-namespace SEQL\ByAskApiHttpRequest;
+namespace SEQL\ByHttpRequest;
 
 use SEQL\DataValueDeserializer;
 use SMW\DIProperty;

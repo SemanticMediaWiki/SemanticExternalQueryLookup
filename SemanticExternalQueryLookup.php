@@ -39,8 +39,8 @@ call_user_func( function () {
 	);
 
 	// Alias to keep LocalSettings independent from the internal NS usage
-	class_alias( 'SEQL\ByAskApiHttpRequestQueryLookup', 'SMWExternalQueryLookup' ); // deprecated
-	class_alias( 'SEQL\ByAskApiHttpRequestQueryLookup', 'SMWExternalAskQueryLookup' );
+	class_alias( 'SEQL\ByHttpRequestQueryLookup', 'SMWExternalQueryLookup' ); // deprecated
+	class_alias( 'SEQL\ByHttpRequestQueryLookup', 'SMWExternalAskQueryLookup' );
 
 	// Register message files
 	$GLOBALS['wgMessagesDirs']['semantic-external-query-lookup'] = __DIR__ . '/i18n';
