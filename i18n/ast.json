@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Xuacu"
+		]
+	},
+	"seql-desc": "Permite integrar resultancies de consultes remotes de [https://semantic-mediawiki.org MediaWiki semántica] a una wiki local",
+	"seql-interwiki-prefix-is-missing": "A la fonte escoyida «$1» falta-y un prefixu interwiki que case.",
+	"seql-debug-query-not-supported": "Nun s'almite amosar resultancies d'una consulta de depuración cuando s'usa una fonte de consulta esterna."
+}
