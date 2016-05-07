@@ -121,6 +121,11 @@ class QueryResultFetcher {
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
 		}
 
+		// Add the source from where the result was retrieved
+		if ( isset( $result['query']['meta']['source'] ) ) {
+			$result['query']['meta']['source'] = $query->getQuerySource();
+		}
+
 		$this->jsonResponseParser->doParse( $result  );
 
 		$queryResult = $this->queryResultFactory->newByHttpRequestQueryResult(

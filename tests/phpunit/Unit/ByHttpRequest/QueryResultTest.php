@@ -91,7 +91,7 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jsonResponseParser->expects( $this->once() )
+		$jsonResponseParser->expects( $this->exactly( 2 ) )
 			->method( 'getRawResponseResult' )
 			->will( $this->returnValue( $expected ) );
 
@@ -104,6 +104,11 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(
 			$expected,
 			$instance->toArray()
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->serializeToArray()
 		);
 	}
 

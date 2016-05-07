@@ -42,12 +42,25 @@ class QueryResult extends RootQueryResult {
 	}
 
 	/**
+	 * @see QueryResult::toArray
+	 *
 	 * @since 1.0
 	 *
 	 * @return array
 	 */
 	public function toArray() {
 		return $this->jsonResponseParser->getRawResponseResult();
+	}
+
+	/**
+	 * @see QueryResult::serializeToArray
+	 *
+	 * @since 1.0
+	 *
+	 * @return array
+	 */
+	public function serializeToArray() {
+		return $this->toArray();
 	}
 
 	/**
