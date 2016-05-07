@@ -5,6 +5,7 @@ namespace SEQL\ByHttpRequest;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Localizer;
 use SMW\Query\PrintRequest;
 use SMWDataValue as DataValue;
 use SMWResultArray as ResultArray;
@@ -183,6 +184,21 @@ class CannedResultArray extends ResultArray {
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataItemValue( $content, $diProperty );
+
+		// Allow the DV formatter to access a specific language code
+		$dataValue->setOption(
+			'content.language',
+			Localizer::getInstance()->getPreferredContentLanguage( $this->mResult )->getCode()
+		);
+
+		$dataValue->setOption(
+			'user.language',
+			Localizer::getInstance()->getUserLanguage()->getCode()
+		);
+
+		$dataValue->setContextPage(
+			$this->mResult
+		);
 
 		if ( $this->mPrintRequest->getOutputFormat() ) {
 			$dataValue->setOutputFormat( $this->mPrintRequest->getOutputFormat() );

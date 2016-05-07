@@ -26,7 +26,7 @@ cd mw
 if [ -f composer.json ]
 then
   composer self-update
-  composer install --prefer-source
+  composer install
 fi
 
 if [ "$DB" == "postgres" ]

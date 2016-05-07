@@ -253,6 +253,37 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testOptions() {
+
+		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+
+		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$printRequest->expects( $this->any() )
+			->method( 'getMode' )
+			->will( $this->returnValue( \SMW\Query\PrintRequest::PRINT_THIS ) );
+
+		$instance = new CannedResultArray(
+			$subject,
+			$printRequest,
+			$this->jsonResponseParser
+		);
+
+		$dataValue = $instance->getNextDataValue();
+
+		$this->assertInternalType(
+			'string',
+			$dataValue->getOptionValueFor( 'user.language' )
+		);
+
+		$this->assertInternalType(
+			'string',
+			$dataValue->getOptionValueFor( 'content.language' )
+		);
+	}
+
 	private function assertDataItem( $dataItem, $instance ) {
 
 		$this->assertEquals(
