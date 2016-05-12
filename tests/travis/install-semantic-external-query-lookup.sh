@@ -22,7 +22,7 @@ function installToMediaWikiRoot {
 		composer require 'mediawiki/semantic-external-query-lookup='$SEQL --update-with-dependencies
 	else
 		composer init --stability dev
-		composer require mediawiki/semantic-external-query-lookup "dev-master" --prefer-source --dev --update-with-dependencies
+		composer require mediawiki/semantic-external-query-lookup "dev-master" --dev --update-with-dependencies
 
 		cd extensions
 		cd SemanticExternalQueryLookup
