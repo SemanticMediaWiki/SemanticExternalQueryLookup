@@ -110,7 +110,7 @@ class QueryResultFetcher {
 
 		$this->doResetPrintRequestsToQuerySource( $query );
 
-		$result = $this->doMakeHttpRequestFor( $query );
+		list( $result, $isFromCache ) = $this->doMakeHttpRequestFor( $query );
 
 		if ( $result === array() || $result === false || $result === null ) {
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
@@ -126,12 +126,14 @@ class QueryResultFetcher {
 			$result['query']['meta']['source'] = $query->getQuerySource();
 		}
 
-		$this->jsonResponseParser->doParse( $result  );
+		$this->jsonResponseParser->doParse( $result );
 
 		$queryResult = $this->queryResultFactory->newByHttpRequestQueryResult(
 			$query,
 			$this->jsonResponseParser
 		);
+
+		$queryResult->setFromCache( $isFromCache );
 
 		$queryResult->setRemoteTargetUrl(
 			str_replace( '$1', '',  $this->repositoryTargetUrl )
@@ -182,7 +184,7 @@ class QueryResultFetcher {
 
 		$response = $httpRequest->execute();
 
-		return json_decode( $response, true );
+		return array( json_decode( $response, true ), $httpRequest->isFromCache() );
 	}
 
 }

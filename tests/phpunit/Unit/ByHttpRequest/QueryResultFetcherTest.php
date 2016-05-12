@@ -29,7 +29,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$this->httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\CachedCurlRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
