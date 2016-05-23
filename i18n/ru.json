@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Alexandr Efremov"
+		]
+	},
+	"seql-desc": "Позволяет интегрировать результаты запросов с удаленной [https://semantic-mediawiki.org Semantic MediaWiki] в локальную вики",
+	"seql-interwiki-prefix-is-missing": "Для выбранного источника «$1» отсутствует соответствующий интервики-префикс.",
+	"seql-debug-query-not-supported": "Отображение результатов для запроса отладки не поддерживается, когда используется внешний источник запросов."
+}
