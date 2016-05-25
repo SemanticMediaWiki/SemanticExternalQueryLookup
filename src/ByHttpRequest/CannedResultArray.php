@@ -183,17 +183,9 @@ class CannedResultArray extends ResultArray {
 			$content = $content->getDataItem();
 		}
 
-		$dataValue = DataValueFactory::getInstance()->newDataItemValue( $content, $diProperty );
-
-		// Allow the DV formatter to access a specific language code
-		$dataValue->setOption(
-			'content.language',
-			Localizer::getInstance()->getPreferredContentLanguage( $this->mResult )->getCode()
-		);
-
-		$dataValue->setOption(
-			'user.language',
-			Localizer::getInstance()->getUserLanguage()->getCode()
+		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+			$content,
+			$diProperty
 		);
 
 		$dataValue->setContextPage(
