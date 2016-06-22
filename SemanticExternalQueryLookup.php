@@ -20,52 +20,46 @@ if ( defined( 'SEQL_VERSION' ) ) {
 	return 1;
 }
 
-define( 'SEQL_VERSION', '1.0.0-alpha' );
+SemanticExternalQueryLookup::initExtension();
+
+$GLOBALS['wgExtensionFunctions'][] = function() {
+	SemanticExternalQueryLookup::onExtensionFunction();
+};
 
 /**
  * @codeCoverageIgnore
  */
-call_user_func( function () {
-
-	// Register extension info
-	$GLOBALS['wgExtensionCredits']['semantic'][] = array(
-		'path'           => __FILE__,
-		'name'           => 'Semantic External Query Lookup',
-		'author'         => array( 'James Hong Kong' ),
-		'url'            => 'https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/',
-		'descriptionmsg' => 'seql-desc',
-		'version'        => SEQL_VERSION,
-		'license-name'   => 'GPL-2.0+',
-	);
-
-	// Alias to keep LocalSettings independent from the internal NS usage
-	class_alias( 'SEQL\ByHttpRequestQueryLookup', 'SMWExternalQueryLookup' ); // deprecated
-	class_alias( 'SEQL\ByHttpRequestQueryLookup', 'SMWExternalAskQueryLookup' );
-
-	// Register message files
-	$GLOBALS['wgMessagesDirs']['semantic-external-query-lookup'] = __DIR__ . '/i18n';
+class SemanticExternalQueryLookup {
 
 	/**
-	 * Specifies how long a response is cached before a new request is routed
-	 * to the endpoint. This avoids that repeated requests with the same signature
-	 * are made to an endpoint.
-	 *
-	 * This is important if the endpoint has an API access request limitation.
+	 * @since 1.0
 	 */
-	$GLOBALS['seqlgHttpResponseCacheLifetime'] = 60 * 5; // in seconds
+	public static function initExtension() {
+
+		// Load DefaultSettings
+		require_once __DIR__ . '/DefaultSettings.php';
+
+		define( 'SEQL_VERSION', '1.0.0-alpha' );
+
+		// Register extension info
+		$GLOBALS['wgExtensionCredits']['semantic'][] = array(
+			'path'           => __DIR__,
+			'name'           => 'Semantic External Query Lookup',
+			'author'         => array( 'James Hong Kong' ),
+			'url'            => 'https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/',
+			'descriptionmsg' => 'seql-desc',
+			'version'        => SEQL_VERSION,
+			'license-name'   => 'GPL-2.0+',
+		);
+
+		// Register message files
+		$GLOBALS['wgMessagesDirs']['SemanticExternalQueryLookup'] = __DIR__ . '/i18n';
+	}
 
 	/**
-	 * Type of the cache to be used, using CACHE_NONE will disable the caching
-	 * and reroutes every request to the endpoint.
-	 *
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgMainCacheType
+	 * @since 1.0
 	 */
-	$GLOBALS['seqlgHttpResponseCacheType'] = CACHE_ANYTHING;
-
-	$GLOBALS['seqlgExternalRepositoryEndpoints'] = array();
-
-	// Finalize extension setup
-	$GLOBALS['wgExtensionFunctions'][] = function() {
+	public static function onExtensionFunction() {
 
 		$options = array(
 			'externalRepositoryEndpoints' => $GLOBALS['seqlgExternalRepositoryEndpoints']
@@ -76,6 +70,15 @@ call_user_func( function () {
 		);
 
 		$hookRegistry->register();
-	};
+	}
 
-} );
+	/**
+	 * @since 1.0
+	 *
+	 * @return string|null
+	 */
+	public static function getVersion() {
+		return SEQL_VERSION;
+	}
+
+}
