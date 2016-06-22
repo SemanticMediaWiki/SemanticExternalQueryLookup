@@ -36,57 +36,25 @@ The recommended way to install Semantic External Query Lookup is by using [Compo
 
 ## Usage
 
-The `#ask`/`#show` query only requires to add a `source` parameter (assuming that a query source has
-been registered and enabled) to retrieve query results from a selected external endpoint. `Special:Ask` will provide a selection box to list enabled query sources.
+![image](https://cloud.githubusercontent.com/assets/1245473/16213390/37da5728-374f-11e6-900c-267279e4a2b7.png)
 
 ```
-{{#ask: [[Modification date::+]]
+{{#ask:[[Modification date::+]][[~CR*]]
+ |?#-
  |?Modification date
- |limit=5
- |source=mw-foo
+ |format=broadtable
+ |source=mw-core
+ |link=all
+ |headers=show
 }}
 ```
 
-### Features and limitations
+The `#ask`/`#show` query only requires to add a `source` parameter (assuming that
+a query source has been registered and enabled) to retrieve query results from a
+selected external endpoint. `Special:Ask` will provide a selection box to list
+enabled query sources.
 
-- Images (`File` namespace) are only displayed as normal wiki links (as file information/location are not
-  available outside of the original wiki)
-- Historic dates are only displayed correctly for when the endpoint Ask API supports version `0.7` or later
-
-## Configuration
-
-### Query sources
-
-For a `#ask` query to retrieve results from a remote location, an external query source is required to be registered
-with a unique key and assigned a lookup processor as in:
-
-```
-$GLOBALS['smwgQuerySources'] = array(
-    'mw-foo' => 'SMWExternalAskQueryLookup',
-);
-```
-The key used to identify an endpoint is expected to correspond to an [interwiki prefix][iwp]. Details of that prefix can be
-either inserted directly into MediaWiki's interwiki table or if it is more convenient the setting
-`$GLOBALS['seqlgExternalRepositoryEndpoints']` can be used in form of:
-
-```
-$GLOBALS['seqlgExternalRepositoryEndpoints'] = array(
-    'mw-foo' => array(
-        'http://example.org:8080/mw-foo/index.php/$1', // corresponds to iw_url
-        'http://example.org:8080/mw-foo/api.php',      // corresponds to iw_api
-        true                                           // corresponds to iw_local
-    )
-);
-````
-### Cache
-
-To help limit the amount of request made to an endpoint, SEQL provides:
-
-- `$GLOBALS['seqlgHttpResponseCacheType']` to specify a cache type to filter repeated requests
- of the same signature (== same query to the same API endpoint), using `CACHE_NONE` will disable
-the cache entirely and reroute each request to the selected endpoint
-- `$GLOBALS['seqlgHttpResponseCacheLifetime']` specifies the duration of how long a response is
-  kept before a new "live" request is made to the endpoint (default is set to 5 min)
+Information about required settings can be found [here](docs/00-configurations.md).
 
 ## Contribution and support
 
