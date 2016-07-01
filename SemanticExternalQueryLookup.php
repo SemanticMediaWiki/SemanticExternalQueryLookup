@@ -43,7 +43,7 @@ class SemanticExternalQueryLookup {
 
 		// Register extension info
 		$GLOBALS['wgExtensionCredits']['semantic'][] = array(
-			'path'           => __DIR__,
+			'path'           => __FILE__,
 			'name'           => 'Semantic External Query Lookup',
 			'author'         => array( 'James Hong Kong' ),
 			'url'            => 'https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/',
