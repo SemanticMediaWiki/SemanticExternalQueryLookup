@@ -117,7 +117,10 @@ class QueryResultFetcher {
 		}
 
 		if ( isset( $result['error'] ) ) {
-			$query->addErrors( isset( $result['error']['info'] ) ? array( $result['error']['info'] ) : $result['error']['query'] );
+			$query->addErrors(
+				isset( $result['error']['info'] ) ? array( implode( ', ', $result['error'] ) ) : $result['error']['query']
+			);
+
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
 		}
 
