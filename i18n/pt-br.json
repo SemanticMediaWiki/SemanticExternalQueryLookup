@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"!Silent"
+		]
+	},
+	"seql-desc": "Permite integrar os resultados de consulta de um [https://semantic-mediawiki.org Semantic MediaWiki] remoto a uma wiki local",
+	"seql-interwiki-prefix-is-missing": "Está faltando na fonte \"$1\" selecionada um prefixo interwiki coincidente.",
+	"seql-debug-query-not-supported": "A exibição de resultados para uma consulta de depuração não é suportada ao usar uma fonte de consulta externa."
+}
