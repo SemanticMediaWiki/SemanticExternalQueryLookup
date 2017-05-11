@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Obsuser"
+		]
+	},
+	"seql-desc": "Омогућава интегрисање резултата упита даљинским [https://semantic-mediawiki.org Semantic MediaWiki]-јем на локални вики",
+	"seql-interwiki-prefix-is-missing": "Одабрани извор „$1” нема припадајући интервики префикс.",
+	"seql-debug-query-not-supported": "Приказ резултата за упит за дебаговање није подржан при употреби извора спољног упита."
+}
