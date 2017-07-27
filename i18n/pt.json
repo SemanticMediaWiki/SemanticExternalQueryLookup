@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hamilton Abreu"
+		]
+	},
+	"seql-desc": "Permite integrar numa wiki local resultados de consultas num [https://semantic-mediawiki.org MediaWiki Semântico] remoto",
+	"seql-interwiki-prefix-is-missing": "A fonte \"$1\" selecionada não tem um prefixo interwikis correspondente.",
+	"seql-debug-query-not-supported": "A apresentação dos resultados de uma consulta de despiste de erros não é suportada quando é usada uma fonte externa de consultas."
+}
