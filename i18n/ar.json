@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"ديفيد"
+		]
+	},
+	"seql-desc": "يسمح بدمج نتائج الاستعلام من [https://semantic-mediawiki.org ميدياويكي دلالي] بعيد في ويكي محلي",
+	"seql-interwiki-prefix-is-missing": "المصدر المحدد \"$1\" يفتقد مطابقة بادئة إنترويكي.",
+	"seql-debug-query-not-supported": "عرض النتائج لتصحيح الاستعلام غير مدعوم عند استخدام مصدر الاستعلام الخارجي."
+}
