@@ -5,7 +5,6 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticExternalQueryLookup/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticExternalQueryLookup/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-external-query-lookup/version.png)](https://packagist.org/packages/mediawiki/semantic-external-query-lookup)
 [![Packagist download count](https://poser.pugx.org/mediawiki/semantic-external-query-lookup/d/total.png)](https://packagist.org/packages/mediawiki/semantic-external-query-lookup)
-[![Dependency Status](https://www.versioneye.com/php/mediawiki:semantic-external-query-lookup/badge.png)](https://www.versioneye.com/php/mediawiki:semantic-external-query-lookup)
 
 Semantic External Query Lookup (a.k.a. SEQL) is a [Semantic Mediawiki][smw] extension to seamlessly integrate
 query results from an external query source to a local repository or wiki.
@@ -63,7 +62,7 @@ have a look at the contribution guideline.
 
 * [File an issue](https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/issues)
 * [Submit a pull request](https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/pulls)
-* Ask a question on [the mailing list](https://semantic-mediawiki.org/wiki/Mailing_list)
+* Ask a question on [the mailing list](https://www.semantic-mediawiki.org/wiki/Mailing_list)
 * Ask a question on the #semantic-mediawiki IRC channel on Freenode.
 
 ## Tests
