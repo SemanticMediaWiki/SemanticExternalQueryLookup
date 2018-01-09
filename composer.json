@@ -8,8 +8,8 @@
 		"wiki",
 		"mediawiki"
 	],
-	"homepage": "https://semantic-mediawiki.org/wiki/Extension:SemanticExternalQueryLookup",
-	"license": "GPL-2.0+",
+	"homepage": "https://www.semantic-mediawiki.org/wiki/Extension:SemanticExternalQueryLookup",
+	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
 			"name": "mwjames",
@@ -20,8 +20,8 @@
 		"email": "semediawiki-user@lists.sourceforge.net",
 		"issues": "https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/issues",
 		"irc": "irc://irc.freenode.net/semantic-mediawiki",
-		"forum": "https://semantic-mediawiki.org/wiki/semantic-mediawiki.org_talk:Community_portal",
-		"wiki": "https://semantic-mediawiki.org/wiki/",
+		"forum": "https://www.semantic-mediawiki.org/wiki/semantic-mediawiki.org_talk:Community_portal",
+		"wiki": "https://www.semantic-mediawiki.org/wiki/",
 		"source": "https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup"
 	},
 	"require": {
