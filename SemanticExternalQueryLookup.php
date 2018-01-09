@@ -8,11 +8,11 @@ use SEQL\HookRegistry;
  * @defgroup SEQL Semantic External Query Lookup
  */
 if ( !defined( 'MEDIAWIKI' ) ) {
-	die( 'This file is part of the SemanticExternalQueryLookup extension, it is not a valid entry point.' );
+	die( 'This file is part of the Semantic External Query Lookup extension, it is not a valid entry point.' );
 }
 
 if ( version_compare( $GLOBALS[ 'wgVersion' ], '1.23', 'lt' ) ) {
-	die( '<b>Error:</b> This version of <a href="https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/">SemanticExternalQueryLookup</a> is only compatible with MediaWiki 1.23 or above. You need to upgrade MediaWiki first.' );
+	die( '<b>Error:</b> This version of <a href="https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/">Semantic External Query Lookup</a> is only compatible with MediaWiki 1.23 or above. You need to upgrade MediaWiki first.' );
 }
 
 if ( defined( 'SEQL_VERSION' ) ) {
@@ -49,7 +49,7 @@ class SemanticExternalQueryLookup {
 			'url'            => 'https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/',
 			'descriptionmsg' => 'seql-desc',
 			'version'        => SEQL_VERSION,
-			'license-name'   => 'GPL-2.0+',
+			'license-name'   => 'GPL-2.0-or-later',
 		);
 
 		// Register message files
