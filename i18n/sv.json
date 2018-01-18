@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Skalman"
+		]
+	},
+	"seql-interwiki-prefix-is-missing": "Den valda källan \"$1\" saknar ett matchande interwiki-prefix."
+}

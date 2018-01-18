@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"seql-desc": "Permitte integrar resultatos de consulta ab un [https://semantic-mediawiki.org Semantic MediaWiki] remote in un wiki local",
+	"seql-interwiki-prefix-is-missing": "Al fonte seligite \"$1\" manca un prefixo interwiki correspondente.",
+	"seql-debug-query-not-supported": "Non es possibile monstrar resultatos pro un consulta de debugging si es usate un fonte de consultas externe."
+}
