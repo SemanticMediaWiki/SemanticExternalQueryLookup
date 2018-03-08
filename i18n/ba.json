@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Lizalizaufa"
+		]
+	},
+	"seql-interwiki-prefix-is-missing": "Һйлап алынған \"$1\" сығанағына яраҡлы интервики-префикс юҡ",
+	"seql-debug-query-not-supported": "Һорауҙар өсөн тышҡы сығанаҡты асҡан хәлдә яраҡлаштырыу һөҙөмтәләре күренмәй"
+}
