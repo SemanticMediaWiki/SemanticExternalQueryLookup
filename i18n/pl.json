@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Chrumps"
+		]
+	},
+	"seql-debug-query-not-supported": "Wyświetlanie wyników dla zapytania debugowania nie jest obsługiwane w przypadku korzystania z zewnętrznego źródła zapytania."
+}
