@@ -4,5 +4,6 @@
 			"Chrumps"
 		]
 	},
+	"seql-interwiki-prefix-is-missing": "W wybranym źródle „$1” brakuje pasującego prefiksu interwiki.",
 	"seql-debug-query-not-supported": "Wyświetlanie wyników dla zapytania debugowania nie jest obsługiwane w przypadku korzystania z zewnętrznego źródła zapytania."
 }
