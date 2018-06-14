@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ykhwong"
+		]
+	},
+	"seql-desc": "원격 [https://semantic-mediawiki.org 시맨틱 미디어위키]의 쿼리 결과를 로컬 위키와 연동할 수 있게 합니다",
+	"seql-interwiki-prefix-is-missing": "선택된 \"$1\" 원본에 일치하는 인터위키 접두어가 없습니다.",
+	"seql-debug-query-not-supported": "외부 쿼리 원본을 사용할 때 디버그 쿼리의 결과 표시는 지원되지 않습니다."
+}
