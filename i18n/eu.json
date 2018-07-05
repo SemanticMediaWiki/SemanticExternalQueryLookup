@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Amaia"
+		]
+	},
+	"seql-desc": "Galderen erantzunak urruneko [https://semantic-mediawiki.org Semantic MediaWiki] batetik wiki lokal batera integratzea ahalbidetzen du.",
+	"seql-interwiki-prefix-is-missing": "Aukeratutako \"$1\" iturriari bat datorren interwiki aurrizkia falta zaio."
+}
