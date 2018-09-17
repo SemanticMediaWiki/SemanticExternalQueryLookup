@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Joetaras"
+		]
+	},
+	"seql-desc": "Permette de 'ndegrà le resultate de 'na 'nderrogazione da 'na [https://semantic-mediawiki.org MediaUicchi Semandeche] ca ste lundane jndr'à una locale.",
+	"seql-interwiki-prefix-is-missing": "'A sorgende scacchiate \"$1\" no se iacchie cu nisciune prefisse inderuicchi.",
+	"seql-debug-query-not-supported": "'A visualizzazzione de le resultate pe 'na 'nderrogazione de debug non g'è supportate quanne ste ause 'na sorgende de 'nderrogaziune de fore."
+}
