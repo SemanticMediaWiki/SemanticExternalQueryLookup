@@ -4,7 +4,7 @@
 			"Elisardojm"
 		]
 	},
-	"seql-desc": "Permite integrar resultados de buscas remotas de [https://semantic-mediawiki.org MediaWiki semántica] a unha wiki local",
+	"seql-desc": "Permite integrar resultados de procuras remotas de [https://semantic-mediawiki.org MediaWiki semántica] a unha wiki local",
 	"seql-interwiki-prefix-is-missing": "Á fonte seleccionada \"$1\" fáltalle un prefixo interwiki coincidente.",
 	"seql-debug-query-not-supported": "Non se admite a visualización de resultados dunha consulta de depuración cando se usa unha fonte de consulta externa."
 }

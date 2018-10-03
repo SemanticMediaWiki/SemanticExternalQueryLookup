@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Red Winged Duck"
+		]
+	},
+	"seql-desc": "Дазваляе інтэграваць вынікі запыту з аддаленай [https://semantic-mediawiki.org Semantic MediaWiki] ў лякальную вікі"
+}
