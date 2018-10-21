@@ -52,19 +52,25 @@ class ByHttpRequestQueryLookup extends SQLStore {
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
 		}
 
-		return $this->fetchQueryResultFor( $query, $interwiki );
+		$credentials = false;
+		if ( isset( $GLOBALS['seqlgExternalRepositoryCredentials'][ $interwiki->getWikiID() ] ) ) {
+			$credentials = $GLOBALS['seqlgExternalRepositoryCredentials'][ $interwiki->getWikiID() ];
+		}
+
+		return $this->fetchQueryResultFor( $query, $interwiki, $credentials );
 	}
 
 	protected function tryToMatchInterwikiFor( Query $query ) {
 		return Interwiki::fetch( $query->getQuerySource() );
 	}
 
-	protected function fetchQueryResultFor( Query $query, $interwiki ) {
+	protected function fetchQueryResultFor( Query $query, $interwiki, $credentials = false ) {
 
 		$queryResultFetcher = new QueryResultFetcher(
 			new HttpRequestFactory( $this->getCacheFactory()->newMediaWikiCompositeCache( $GLOBALS['seqlgHttpResponseCacheType'] ) ),
 			$this->queryResultFactory,
-			new JsonResponseParser( new DataValueDeserializer( $query->getQuerySource() ) )
+			new JsonResponseParser( new DataValueDeserializer( $query->getQuerySource() ) ),
+			$credentials
 		);
 
 		$queryResultFetcher->setHttpRequestEndpoint( $interwiki->getApi() );
