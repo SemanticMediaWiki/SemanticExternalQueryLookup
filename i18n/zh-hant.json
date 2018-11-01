@@ -2,10 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Assoc",
-			"Deathkon"
+			"Deathkon",
+			"Kly"
 		]
 	},
 	"seql-desc": "允許將來自遠程[https://semantic-mediawiki.org Semantic MediaWiki]的查詢結果一體化到一個本地wiki",
-	"seql-interwiki-prefix-is-missing": "選擇的“$1”來源遺失匹配的跨wiki首碼。",
+	"seql-interwiki-prefix-is-missing": "所選的「$1」來源遺失匹配的跨 wiki 字首。",
 	"seql-debug-query-not-supported": "當使用外部査詢來源時，不支持用于調試査詢的結果顯示。"
 }
