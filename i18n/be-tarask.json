@@ -1,8 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Red Winged Duck"
+			"Red Winged Duck",
+			"Nerogaf"
 		]
 	},
-	"seql-desc": "Дазваляе інтэграваць вынікі запыту з аддаленай [https://semantic-mediawiki.org Semantic MediaWiki] ў лякальную вікі"
+	"seql-desc": "Дазваляе інтэграваць вынікі запыту з аддаленай [https://semantic-mediawiki.org Semantic MediaWiki] ў лякальную вікі",
+	"seql-interwiki-prefix-is-missing": "Для абранай крыніцы «$1» адсутнічае адпаведны інтэрвікі-прэфікс.",
+	"seql-debug-query-not-supported": "Адлюстраваньне вынікаў для запыту адладкі ня падтрымліваецца пры карыстаньні вонкавай крыніцы запытаў."
 }
