@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jon Harald Søby"
+		]
+	},
+	"seql-desc": "Gjør det mulig å integrere spørringsresultater fra en ekstern [https://semantic-mediawiki.org Semantic MediaWiki] til en lokal wiki",
+	"seql-interwiki-prefix-is-missing": "Den valgte kilden «$1» mangler et matchende interwikiprefiks.",
+	"seql-debug-query-not-supported": "Visningen av resultatene for en feilsøksspørring støttes ikke når man bruker en ekstern spørringskilde."
+}
