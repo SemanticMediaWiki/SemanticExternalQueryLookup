@@ -5,6 +5,6 @@
 		]
 	},
 	"seql-desc": "Sorgu sonuçlarını uzaktan [https://semantic-mediawiki.org Semantic MediaWiki]'den yerel wikiye entegre etmenize izin verir",
-	"seql-interwiki-prefix-is-missing": "Seçilen \"$1\" kaynağında eşleşen bir ortak wiki öneki yok.",
+	"seql-interwiki-prefix-is-missing": "Seçilen \"$1\" kaynağında eşleşen bir vikiarası öneki yok.",
 	"seql-debug-query-not-supported": "Harici bir sorgu kaynağı kullanılırken hata ayıklama sorgusu için sonuçların gösterilmesi desteklenmez."
 }
