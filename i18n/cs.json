@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jaroslav Cerny"
+		]
+	},
+	"seql-desc": "Umožňuje integrovat výsledky dotazu ze vzdálené [https://semantic-mediawiki.org Sémantické MediaWiki] do místní wiki",
+	"seql-interwiki-prefix-is-missing": "Vybraný zdroj \"$1\" nemá odpovídající předponu interwiki.",
+	"seql-debug-query-not-supported": "Zobrazení výsledků ladicího dotazu není podporováno, když je používán externí zdroj dotazu."
+}
