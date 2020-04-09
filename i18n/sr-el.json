@@ -1,5 +1,7 @@
 {
-	"@metadata": [],
+	"@metadata": {
+		"authors": []
+	},
 	"seql-desc": "Omogućava integrisanje rezultata upita daljinskim [https://semantic-mediawiki.org Semantic MediaWiki]-jem na lokalni viki",
 	"seql-interwiki-prefix-is-missing": "Odabrani izvor „$1” nema pripadajući interviki prefiks.",
 	"seql-debug-query-not-supported": "Prikaz rezultata za upit za debagovanje nije podržan pri upotrebi izvora spoljnog upita."

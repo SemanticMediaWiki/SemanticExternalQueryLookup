@@ -2,10 +2,10 @@
 	"@metadata": {
 		"authors": [
 			"Gomoko",
-			"Urhixidur",
-			"Wladek92",
 			"Thibaut120094",
-			"Verdy p"
+			"Urhixidur",
+			"Verdy p",
+			"Wladek92"
 		]
 	},
 	"seql-desc": "Permet d’intégrer les résultats de recherche d’un serveur [https://semantic-mediawiki.org MediaWiki Sémantique] distant vers un wiki local",
