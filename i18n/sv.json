@@ -1,8 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Sabelöga",
 			"Skalman"
 		]
 	},
-	"seql-interwiki-prefix-is-missing": "Den valda källan \"$1\" saknar ett matchande interwiki-prefix."
+	"seql-desc": "Gör det möjlig att integrera sökfrågeresultat från en extern [https://semantic-mediawiki.org Semantic MediaWiki] till en lokal wiki",
+	"seql-interwiki-prefix-is-missing": "Den valda källan \"$1\" saknar ett matchande interwiki-prefix.",
+	"seql-debug-query-not-supported": "Visningen av resultaten för en felsöksrapport stöds inte när man använder en extern sökfrågekälla."
 }
