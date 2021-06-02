@@ -39,3 +39,16 @@ $GLOBALS['seqlgHttpResponseCacheType'] = CACHE_ANYTHING;
  *  into MediaWiki's interwiki table or through this setting.
  */
 $GLOBALS['seqlgExternalRepositoryEndpoints'] = array();
+
+/**
+ *  An array that defines credentials to access remote wikis in case they're read-protected
+ *  Array keys should be named after interwiki prefixes from "seqlgExternalRepositoryEndpoints"
+ *  and contain an array with "username" and "password" keys
+ */
+$GLOBALS['seqlgExternalRepositoryCredentials'] = array();
+
+/**
+ *  An array defines list of namespaces allowed to execute queries against remote sources.
+ *  Keep empty to allow every namespace.
+ */
+$GLOBALS['seqlgExternalQueryEnabledNamespaces'] = array();

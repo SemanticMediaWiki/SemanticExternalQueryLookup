@@ -67,6 +67,36 @@ class HookRegistry {
 		$this->handlers['InterwikiLoadPrefix'] = function( $prefix, &$interwiki ) use( $dynamicInterwikiPrefixLoader ) {
 			return $dynamicInterwikiPrefixLoader->tryToLoadIwMapForExternalRepository( $prefix, $interwiki );
 		};
+
+		/**
+		 * Prevents ask parser function with "source" parameter defined from
+		 * being executed outside of allowed namespaces. This supports transclusion too.
+		 *
+		 * @param \Parser $parser
+		 * @param \PPFrame $frame
+		 * @param $args
+		 * @param $override
+		 */
+		$this->handlers['smwAskParserFunction'] = $this->handlers['smwShowParserFunction'] = function( $parser, $frame, $args, &$override ) {
+			if( $frame ) {
+				$params = [];
+				foreach ($args as $key => $value) {
+					if ( $key == 0 || ( $value !== '' && $value{0} === '?' ) ) {
+						continue;
+					}
+					if ( strpos( $value, '=' ) === false ) {
+						continue;
+					}
+					$pair = explode('=', $value);
+					$params[$pair[0]] = $pair[1];
+				}
+
+				if( array_key_exists('source', $params) && !in_array( $frame->getTitle()->getNamespace(), $GLOBALS['seqlgExternalQueryEnabledNamespaces'] ) ) {
+					$override = 'Warning: source parameter is not allowed in the namespace!';
+				}
+			}
+		};
+
 	}
 
 }
