@@ -23,7 +23,7 @@ use SMW\DIProperty;
  */
 class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
 
-	protected function setUp() {
+	protected function setUp(): void {
 
 		$externalRepositoryEndpoints = array(
 			'api-foo' => array(

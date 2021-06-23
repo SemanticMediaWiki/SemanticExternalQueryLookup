@@ -5,8 +5,8 @@ namespace SEQL\ByHttpRequest;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Localizer;
 use SMW\Query\PrintRequest;
+use SMWDataItem;
 use SMWDataValue as DataValue;
 use SMWResultArray as ResultArray;
 
@@ -127,7 +127,7 @@ class CannedResultArray extends ResultArray {
 	 *
 	 * @since 1.6
 	 *
-	 * @return SMWDataValue|false
+	 * @return DataValue|false
 	 */
 	public function getNextDataValue() {
 

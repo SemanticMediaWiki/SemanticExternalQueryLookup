@@ -17,7 +17,7 @@ class EmbeddedLinksReplacerTest extends \PHPUnit_Framework_TestCase {
 
 	private $querySource;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->querySource = 'abc';
 	}
 

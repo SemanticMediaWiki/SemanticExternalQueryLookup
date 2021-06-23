@@ -2,14 +2,15 @@
 
 namespace SEQL;
 
+use MediaWiki\MediaWikiServices;
 use Onoi\HttpRequest\HttpRequestFactory;
 use SEQL\ByHttpRequest\JsonResponseParser;
 use SEQL\ByHttpRequest\QueryResultFetcher;
+use SMW\CacheFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\ApplicationFactory;
 use SMWQuery as Query;
 use SMWQueryResult as QueryResult;
-use Interwiki;
 
 /**
  * @license GNU GPL v2+
@@ -61,7 +62,9 @@ class ByHttpRequestQueryLookup extends SQLStore {
 	}
 
 	protected function tryToMatchInterwikiFor( Query $query ) {
-		return Interwiki::fetch( $query->getQuerySource() );
+		return MediaWikiServices::getInstance()
+			->getInterwikiLookup()
+			->fetch( $query->getQuerySource() );
 	}
 
 	protected function fetchQueryResultFor( Query $query, $interwiki, $credentials = false ) {
