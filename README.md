@@ -14,8 +14,8 @@ The following [video](https://youtu.be/sOCh9M2sSvU) demonstrates the features of
 ## Requirements
 
 - PHP 5.3.2 or later
-- MediaWiki 1.23 or later
-- [Semantic MediaWiki][smw] __2.4__ or later
+- MediaWiki 1.28 or later
+- [Semantic MediaWiki][smw] __3.0__ or later
 
 ## Installation
 
@@ -30,7 +30,8 @@ The recommended way to install Semantic External Query Lookup is by using [Compo
 ```
 1. From your MediaWiki installation directory, execute
    `composer require mediawiki/semantic-external-query-lookup:~1.0`
-2. Navigate to _Special:Version_ on your wiki and verify that the package
+2. Add `wfLoadExtension('SemenaticExternalQueryLookup');` to the bottom of `LocalSettings.php`
+3. Navigate to _Special:Version_ on your wiki and verify that the package
    have been successfully installed.
 
 ## Usage
