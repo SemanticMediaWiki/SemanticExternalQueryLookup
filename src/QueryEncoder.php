@@ -60,7 +60,7 @@ class QueryEncoder {
 
 		foreach ( $query->getExtraPrintouts() as $printout ) {
 			$serialization = $printout->getSerialisation();
-			if ( $serialization !== '?#' ) {
+			if ( $serialization !== '?#' && $serialization !== '' ) {
 				// #show adds an extra = at the end which is interpret as
 				// requesting an empty result hence it is removed
 				$printouts[] = substr( $serialization, -1 ) === '=' ? substr( $serialization, 0, -1 ) : $serialization;

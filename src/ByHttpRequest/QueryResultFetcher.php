@@ -51,16 +51,27 @@ class QueryResultFetcher {
 	private $httpResponseCacheLifetime;
 
 	/**
+	 * @var array
+	 */
+	private $credentials;
+
+	/**
+	 * @var string
+	 */
+	private static $cookies;
+
+	/**
 	 * @since 1.0
 	 *
 	 * @param HttpRequestFactory $httpRequestFactory
 	 * @param QueryResultFactory $queryResultFactory
 	 * @param JsonResponseParser $jsonResponseParser
 	 */
-	public function __construct( HttpRequestFactory $httpRequestFactory, QueryResultFactory $queryResultFactory, JsonResponseParser $jsonResponseParser ) {
+	public function __construct( HttpRequestFactory $httpRequestFactory, QueryResultFactory $queryResultFactory, JsonResponseParser $jsonResponseParser, $credentials ) {
 		$this->httpRequestFactory = $httpRequestFactory;
 		$this->queryResultFactory = $queryResultFactory;
 		$this->jsonResponseParser = $jsonResponseParser;
+		$this->credentials = $credentials;
 	}
 
 	/**
@@ -100,6 +111,65 @@ class QueryResultFetcher {
 	}
 
 	/**
+	 * Authenticates query against remote wiki using 'login' api and stores
+	 * cookies to use on other requests
+	 *
+	 * @param array $credentials
+	 */
+	public function doAuthenticateRemoteWiki( $credentials ) {
+
+		$cookiefile = 'seql_'.time();
+
+		$httpRequest = $this->httpRequestFactory->newCurlRequest();
+
+		$httpRequest->setOption( CURLOPT_FOLLOWLOCATION, true );
+
+		$httpRequest->setOption( CURLOPT_RETURNTRANSFER, true );
+		$httpRequest->setOption( CURLOPT_FAILONERROR, true );
+		$httpRequest->setOption( CURLOPT_SSL_VERIFYPEER, false );
+		$httpRequest->setOption( CURLOPT_COOKIESESSION, true );
+		$httpRequest->setOption( CURLOPT_COOKIEJAR, $cookiefile );
+		$httpRequest->setOption( CURLOPT_COOKIEFILE, $cookiefile );
+
+		$httpRequest->setOption( CURLOPT_URL, $this->httpRequestEndpoint . '?action=query&format=json&meta=tokens&type=login' );
+
+		$response = $httpRequest->execute();
+		$result = json_decode( $response, true );
+
+		if( isset( $result['query']['tokens']['logintoken'] ) ) {
+
+			$token = $result['query']['tokens']['logintoken'];
+
+			$httpRequest->setOption( CURLOPT_FOLLOWLOCATION, true );
+			$httpRequest->setOption( CURLOPT_RETURNTRANSFER, true );
+			$httpRequest->setOption( CURLOPT_FAILONERROR, true );
+			$httpRequest->setOption( CURLOPT_SSL_VERIFYPEER, false );
+			$httpRequest->setOption( CURLOPT_POST, true );
+			$httpRequest->setOption( CURLOPT_URL, $this->httpRequestEndpoint );
+			$httpRequest->setOption( CURLOPT_COOKIEJAR, $cookiefile );
+			$httpRequest->setOption( CURLOPT_COOKIEFILE, $cookiefile );
+
+			$httpRequest->setOption( CURLOPT_POSTFIELDS, http_build_query( array(
+					'action' => 'login',
+					'format' => 'json',
+					'lgname' => $credentials['username'],
+					'lgpassword' => $credentials['password'],
+					'lgtoken' => $token
+				))
+			);
+
+			$response = $httpRequest->execute();
+			$result = json_decode( $response, true );
+
+			if ( isset( $result['login']['lguserid'] ) ) {
+				self::$cookies = $cookiefile;
+			}
+
+		}
+
+	}
+
+	/**
 	 * @since 1.0
 	 *
 	 * @param Query $query
@@ -109,6 +179,10 @@ class QueryResultFetcher {
 	public function fetchQueryResult( Query $query ) {
 
 		$this->doResetPrintRequestsToQuerySource( $query );
+
+		if( $this->credentials && !self::$cookies ) {
+			$this->doAuthenticateRemoteWiki( $this->credentials );
+		}
 
 		list( $result, $isFromCache ) = $this->doMakeHttpRequestFor( $query );
 
@@ -184,6 +258,11 @@ class QueryResultFetcher {
 			'Accept: application/json',
 			'Content-Type: application/json; charset=utf-8'
 		) );
+
+		if( self::$cookies ) {
+			$httpRequest->setOption( CURLOPT_COOKIEJAR, self::$cookies );
+			$httpRequest->setOption( CURLOPT_COOKIEFILE, self::$cookies );
+		}
 
 		$response = $httpRequest->execute();
 

@@ -275,12 +275,12 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInternalType(
 			'string',
-			$dataValue->getOptionValueFor( 'user.language' )
+			$dataValue->getOption( 'user.language' )
 		);
 
 		$this->assertInternalType(
 			'string',
-			$dataValue->getOptionValueFor( 'content.language' )
+			$dataValue->getOption( 'content.language' )
 		);
 	}
 
