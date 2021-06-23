@@ -20,7 +20,7 @@ class CannedResultArrayTest extends \PHPUnit_Framework_TestCase {
 
 	private $jsonResponseParser;
 
-	protected function setUp(): void {
+	protected function setUp() {
 
 		$this->jsonResponseParser = $this->getMockBuilder( '\SEQL\ByHttpRequest\JsonResponseParser' )
 			->disableOriginalConstructor()

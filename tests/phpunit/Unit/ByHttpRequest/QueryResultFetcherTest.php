@@ -23,7 +23,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 	private $httpRequestFactory;
 	private $jsonResponseParser;
 
-	protected function setUp(): void {
+	protected function setUp() {
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
