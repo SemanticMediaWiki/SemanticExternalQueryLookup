@@ -2,11 +2,7 @@
 	"name": "SemanticExternalQueryLookup",
 	"version": "1.0.0-alpha",
 	"author": [
-		"James Hong Kong",
-		"Simon Heimler (gesinn.it GmbH & Co. KG)",
-		"Alexander Gesinn (gesinn.it GmbH & Co. KG)",
-		"Sebastian Schmid (gesinn.it GmbH & Co. KG)",
-		"Rcdeboer Remco C. de Boer"
+		"James Hong Kong"
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:SemanticExternalQueryLookup",
 	"descriptionmsg": "seql-desc",
