@@ -1,0 +1,54 @@
+{
+	"name": "SemanticExternalQueryLookup",
+	"version": "1.0.0-alpha",
+	"author": [
+		"James Hong Kong"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:SemanticExternalQueryLookup",
+	"descriptionmsg": "seql-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "semantic",
+	"requires": {
+		"MediaWiki": ">= 1.28",
+		"extensions": {
+			"SemanticMediaWiki": ">= 3.0"
+		}
+	},
+	"MessagesDirs": {
+		"SemanticExternalQueryLookup": [
+			"i18n"
+		]
+	},
+	"AutoloadNamespaces": {
+		"SEQL\\": "src/"
+	},
+	"AutoloadClasses": {
+		"SemanticExternalQueryLookup": "SemanticExternalQueryLookup.php"
+	},
+	"callback": "SemanticExternalQueryLookup::onExtensionFunction",
+	"config_prefix": "seqlg",
+	"config": {
+		"HttpResponseCacheLifetime": {
+			"value": 300,
+			"description": "Specifies how long a response is cached before a new request is routed to the endpoint. This avoids that repeated requests with the same signature are made to an endpoint."
+		},
+		"HttpResponseCacheType": {
+			"value": -1,
+			"description": "Type of the cache to be used, using CACHE_NONE will disable the caching and reroutes every request to the endpoint."
+		},
+		"ExternalRepositoryEndpoints": {
+			"value": [],
+			"description": "An array that identifies valid endpoints with a key expecting yo corresponds to an interwiki prefix. Details of that prefix can be either inserted directly into MediaWiki's interwiki table or through this setting."
+		},
+		"ExternalRepositoryCredentials": {
+			"value": [],
+			"description": "An array that defines credentials to access remote wikis in case they're read-protected. Array keys should be named after interwiki prefixes from 'seqlgExternalRepositoryEndpoints' and contain an array with 'username' and 'password' keys"
+		},
+		"ExternalQueryEnabledNamespaces": {
+			"value": [],
+			"description": "An array defines list of namespaces allowed to execute queries against remote sources. Keep empty to allow every namespace."
+		}
+	},
+	"load_composer_autoloader": true,
+	"manifest_version": 2
+}
