@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Amire80"
+		]
+	},
+	"seql-desc": "מאפשרת לשלב תוצאות שאילתות מ[https://semantic-mediawiki.org מדיה־ויקי סמנטית] מרוחקת בוויקי מקומי",
+	"seql-interwiki-prefix-is-missing": "למקור \"$1\" שנבחר חסרה תחילית בינוויקי תואמת.",
+	"seql-debug-query-not-supported": "הצגת התוצאות עבור שאילתת ניפוי באגים אינה נתמכת בעת שימוש במקור שאילתה חיצוני."
+}
