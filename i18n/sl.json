@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"seql-desc": "Omogoča integracijo zadetkov poizvedbe iz oddaljenega [https://semantic-mediawiki.org Semantičnega MediaWikija] v lokalni viki",
+	"seql-interwiki-prefix-is-missing": "Izbranemu viru »$1« manjka ustrezajoča interviki prepona.",
+	"seql-debug-query-not-supported": "Prikaz zadetkov za poizvedbo za odpravljanje napak pri uporabi zunanjega vira podatkov ni podprt."
+}
