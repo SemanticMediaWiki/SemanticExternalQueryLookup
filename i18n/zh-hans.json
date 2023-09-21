@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"LittlePaw365",
 			"Liuxinyu970226"
 		]
 	},
-	"seql-desc": "允许将来自远程[https://semantic-mediawiki.org Semantic MediaWiki]的查询结果一体化到一个本地wiki",
+	"seql-desc": "允许集成来自远程[https://semantic-mediawiki.org 语义MediaWiki]的查询结果到本地wiki中",
 	"seql-interwiki-prefix-is-missing": "选择的“$1”来源丢失匹配的跨wiki前缀。",
-	"seql-debug-query-not-supported": "当使用外部查询来源时，不支持用于调试查询的结果显示。"
+	"seql-debug-query-not-supported": "使用外部查询来源时，不支持显示调试查询的结果。"
 }
