@@ -16,14 +16,14 @@ class DynamicInterwikiPrefixLoader {
 	/**
 	 * @var array
 	 */
-	private $enabledExternalRepositoryEndpoints = array();
+	private $enabledExternalRepositoryEndpoints = [];
 
 	/**
 	 * @since 1.0
 	 *
 	 * @param array $enabledExternalRepositoryEndpoints
 	 */
-	public function __construct( array $enabledExternalRepositoryEndpoints = array() ) {
+	public function __construct( array $enabledExternalRepositoryEndpoints = [] ) {
 		$this->enabledExternalRepositoryEndpoints = $enabledExternalRepositoryEndpoints;
 	}
 
@@ -31,8 +31,9 @@ class DynamicInterwikiPrefixLoader {
 	 * @since 1.0
 	 *
 	 * @param string $prefix
+	 * @return bool
 	 */
-	public function isEnabledPrefixForExternalRepository( $prefix ) {
+	public function isEnabledPrefixForExternalRepository( string $prefix ): bool {
 		return isset( $this->enabledExternalRepositoryEndpoints[$prefix] );
 	}
 
@@ -41,23 +42,24 @@ class DynamicInterwikiPrefixLoader {
 	 *
 	 * @param string $prefix
 	 * @param array &$interwiki
+	 * @return bool
 	 */
-	public function tryToLoadIwMapForExternalRepository( $prefix, &$interwiki ) {
+	public function tryToLoadIwMapForExternalRepository( string $prefix, array &$interwiki ): bool {
 
 		if ( !$this->isEnabledPrefixForExternalRepository( $prefix ) ) {
 			return true;
 		}
 
-		list( $iw_url, $iw_api, $iw_local ) = $this->enabledExternalRepositoryEndpoints[$prefix];
+		[ $iw_url, $iw_api, $iw_local ] = $this->enabledExternalRepositoryEndpoints[$prefix];
 
-		$interwiki = array(
+		$interwiki = [
 			'iw_prefix' => $prefix,
 			'iw_url'    => $iw_url,
 			'iw_api'    => $iw_api,
 			'iw_wikiid' => $prefix,
 			'iw_local'  => $iw_local,
 			'iw_trans'  => false,
-		);
+		];
 
 		return false;
 	}

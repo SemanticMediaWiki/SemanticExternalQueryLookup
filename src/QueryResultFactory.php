@@ -37,11 +37,11 @@ class QueryResultFactory {
 	 *
 	 * @return QueryResult
 	 */
-	public function newEmptyQueryResult( Query $query ) {
+	public function newEmptyQueryResult( Query $query ): QueryResult {
 		return new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,
-			array(),
+			[],
 			$this->store,
 			false
 		);
@@ -55,7 +55,7 @@ class QueryResultFactory {
 	 *
 	 * @return QueryResult
 	 */
-	public function newByHttpRequestQueryResult( Query $query, JsonResponseParser $jsonResponseParser ) {
+	public function newByHttpRequestQueryResult( Query $query, JsonResponseParser $jsonResponseParser ): QueryResult {
 
 		$queryResult = new ByHttpRequestQueryResult(
 			$query->getDescription()->getPrintrequests(),

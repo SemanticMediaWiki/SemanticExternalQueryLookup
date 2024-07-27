@@ -32,7 +32,7 @@ class EmbeddedLinksReplacerTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider textProvider
 	 */
-	public function testReplace( $text, $expected ) {
+	public function testReplace( string $text, string $expected ) {
 
 		$instance = new EmbeddedLinksReplacer( $this->querySource );
 
@@ -42,54 +42,32 @@ class EmbeddedLinksReplacerTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function textProvider() {
+	public function textProvider(): array {
 
 		#0
-		$provider[] = array(
-			'Foo bar',
-			'Foo bar'
-		);
+		$provider[] = [ 'Foo bar', 'Foo bar' ];
 
 		#1
-		$provider[] = array(
-			'Foo [42] bar',
-			'Foo [42] bar'
-		);
+		$provider[] = [ 'Foo [42] bar', 'Foo [42] bar' ];
 
 		#2
-		$provider[] = array(
-			'Foo [42 1001] bar',
-			'Foo [42 1001] bar'
-		);
+		$provider[] = [ 'Foo [42 1001] bar', 'Foo [42 1001] bar' ];
 
 		#3
-		$provider[] = array(
-			'Foo [[42]] bar',
-			'Foo [[abc:42|42]] bar'
-		);
+		$provider[] = [ 'Foo [[42]] bar', 'Foo [[abc:42|42]] bar' ];
 
 		#4
-		$provider[] = array(
-			'Foo [[42|1001]] bar',
-			'Foo [[abc:42|1001]] bar'
-		);
+		$provider[] = [ 'Foo [[42|1001]] bar', 'Foo [[abc:42|1001]] bar' ];
 
 		// We can't guess the type of a remote annotation therefore it is turned
 		// into an simple text value
 
 		#5
-		$provider[] = array(
-			'Foo [[Has number::42]] bar',
-			'Foo 42 bar'
-		);
+		$provider[] = [ 'Foo [[Has number::42]] bar', 'Foo 42 bar' ];
 
 		#6
-		$provider[] = array(
-			'Foo [[Has number::42|1001]] bar',
-			'Foo 1001 bar'
-		);
+		$provider[] = [ 'Foo [[Has number::42|1001]] bar', 'Foo 1001 bar' ];
 
 		return $provider;
 	}
-
 }

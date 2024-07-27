@@ -31,7 +31,7 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider resultProvider
 	 */
-	public function testDoParse( $result, $rawResponseResult, $hasFurtherResults, $property ) {
+	public function testDoParse( array $result, $rawResponseResult, $hasFurtherResults, ?string $property ) {
 
 		$dataValueDeserializer = $this->getMockBuilder( '\SEQL\DataValueDeserializer' )
 			->disableOriginalConstructor()
@@ -61,21 +61,17 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testDoParseForRedirect() {
 
-		$result = array(
-			'query' => array(
-				'printrequests' => array(
-					array( 'label' => 'Foo', 'mode' => 2, 'redi' => 'Bar' , 'typeid' => '_wpg' )
-				),
-			'results' => array()
-			)
-		);
+		$result = [
+			'query' => [
+				'printrequests' => [ [ 'label' => 'Foo', 'mode' => 2, 'redi' => 'Bar' , 'typeid' => '_wpg' ] ],
+				'results' => []
+			]
+		];
 
-		$rawResponseResult = array(
-			'printrequests' => array(
-				array( 'label' => 'Foo', 'mode' => 2, 'redi' => 'Bar' , 'typeid' => '_wpg' )
-			),
-			'results' => array()
-		);
+		$rawResponseResult = [
+			'printrequests' => [ [ 'label' => 'Foo', 'mode' => 2, 'redi' => 'Bar' , 'typeid' => '_wpg' ] ],
+			'results' => []
+		];
 
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
@@ -109,65 +105,40 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function resultProvider() {
+	public function resultProvider(): array {
 
 		#0
-		$provider[] = array(
-			array( 'query' => array() ),
-			array(),
-			false,
-			null
-		);
+		$provider[] = [ [ 'query' => [] ], [], false, null ];
 
 		#1
-		$provider[] = array(
-			array(
-				'query-continue-offset' => 3,
-				'query' => array()
-			),
-			array(),
-			true,
-			null
-		);
+		$provider[] = [ [ 'query-continue-offset' => 3, 'query' => [] ], [], true, null ];
 
 		#2
-		$provider[] = array(
-			array(
+		$provider[] = [
+			[
 				'query-continue-offset' => 3,
-				'query' => array(
-					'printrequests' => array(
-						array( 'label' => 'Category', 'mode' => 0 )
-					)
-				)
-			),
-			array(
-				'printrequests' => array(
-					array( 'label' => 'Category', 'mode' => 0 )
-				)
-			),
+				'query' => [ 'printrequests' => [ [ 'label' => 'Category', 'mode' => 0 ] ] ]
+			],
+			[ 'printrequests' => [ [ 'label' => 'Category', 'mode' => 0 ] ] ],
 			true,
 			new DIProperty( '_INST' )
-		);
+		];
 
 		#3
-		$provider[] = array(
-			array(
-				'query' => array(
-					'printrequests' => array(
-						array( 'label' => 'Category', 'mode' => 0 )
-					),
-				'results' => array()
-				),
-			),
-			array(
-				'printrequests' => array(
-					array( 'label' => 'Category', 'mode' => 0 )
-				),
-				'results' => array()
-			),
+		$provider[] = [
+			[
+				'query' => [
+					'printrequests' => [ [ 'label' => 'Category', 'mode' => 0 ] ],
+					'results' => []
+				],
+			],
+			[
+				'printrequests' => [ [ 'label' => 'Category', 'mode' => 0 ] ],
+				'results' => []
+			],
 			false,
 			new DIProperty( '_INST' )
-		);
+		];
 
 		return $provider;
 	}

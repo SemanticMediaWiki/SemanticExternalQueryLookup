@@ -17,9 +17,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$options = array(
-			'externalRepositoryEndpoints' => array(),
-		);
+		$options = [ 'externalRepositoryEndpoints' => [] ];
 
 		$this->assertInstanceOf(
 			'\SEQL\HookRegistry',
@@ -29,9 +27,7 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 	public function testRegister() {
 
-		$options = array(
-			'externalRepositoryEndpoints' => array(),
-		);
+		$options = [ 'externalRepositoryEndpoints' => [] ];
 
 		$instance = new HookRegistry(
 			$options
@@ -42,12 +38,12 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 		$this->doTestRegisteredInterwikiLoadPrefixHandler( $instance );
 	}
 
-	public function doTestRegisteredInterwikiLoadPrefixHandler( $instance ) {
+	public function doTestRegisteredInterwikiLoadPrefixHandler( HookRegistry $instance ) {
 
 		$handler = 'InterwikiLoadPrefix';
 
 		$prefix = '';
-		$interwiki = array();
+		$interwiki = [];
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
@@ -55,15 +51,14 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $prefix, &$interwiki )
+			[ $prefix, &$interwiki ]
 		);
 	}
 
-	private function assertThatHookIsExcutable( \Closure $handler, $arguments ) {
+	private function assertThatHookIsExcutable( \Closure $handler, array $arguments ) {
 		$this->assertInternalType(
 			'boolean',
 			call_user_func_array( $handler, $arguments )
 		);
 	}
-
 }

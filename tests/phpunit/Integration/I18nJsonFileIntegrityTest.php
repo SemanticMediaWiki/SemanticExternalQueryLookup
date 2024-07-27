@@ -18,7 +18,7 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider i18nFileProvider
 	 */
-	public function testI18NJsonDecodeEncode( $file ) {
+	public function testI18NJsonDecodeEncode( string $file ) {
 
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 
@@ -33,16 +33,16 @@ class I18nJsonFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function i18nFileProvider() {
+	public function i18nFileProvider(): array {
 
-		$provider = array();
+		$provider = [];
 		$location = $GLOBALS['wgMessagesDirs']['SemanticExternalQueryLookup'];
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( $location );
 		$bulkFileProvider->searchByFileExtension( 'json' );
 
 		foreach ( $bulkFileProvider->getFiles() as $file ) {
-			$provider[] = array( $file );
+			$provider[] = [ $file ];
 		}
 
 		return $provider;

@@ -16,7 +16,7 @@ class HookRegistry {
 	/**
 	 * @var array
 	 */
-	private $handlers = array();
+	private $handlers = [];
 
 	/**
 	 * @since 1.0
@@ -41,9 +41,9 @@ class HookRegistry {
 	 *
 	 * @param string $name
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isRegistered( $name ) {
+	public function isRegistered( string $name ): bool {
 		return Hooks::isRegistered( $name );
 	}
 
@@ -54,49 +54,52 @@ class HookRegistry {
 	 *
 	 * @return Callable|false
 	 */
-	public function getHandlerFor( $name ) {
-		return isset( $this->handlers[$name] ) ? $this->handlers[$name] : false;
+	public function getHandlerFor( string $name ) {
+		return isset( $this->handlers[$name] ) ?? false;
 	}
 
-	private function addCallbackHandlers( $options ) {
+	private function addCallbackHandlers( array $options ) {
 
 		$dynamicInterwikiPrefixLoader = new DynamicInterwikiPrefixLoader(
 			$options['externalRepositoryEndpoints']
 		);
 
-		$this->handlers['InterwikiLoadPrefix'] = function( $prefix, &$interwiki ) use( $dynamicInterwikiPrefixLoader ) {
-			return $dynamicInterwikiPrefixLoader->tryToLoadIwMapForExternalRepository( $prefix, $interwiki );
-		};
+		$this->handlers['InterwikiLoadPrefix'] =
+			static function( $prefix, &$interwiki ) use( $dynamicInterwikiPrefixLoader ) {
+				return $dynamicInterwikiPrefixLoader->tryToLoadIwMapForExternalRepository( $prefix, $interwiki );
+			};
 
 		/**
 		 * Prevents ask parser function with "source" parameter defined from
-		 * being executed outside of allowed namespaces. This supports transclusion too.
+		 * being executed outside allowed namespaces. This supports transclusion too.
 		 *
 		 * @param \Parser $parser
 		 * @param \PPFrame $frame
 		 * @param $args
 		 * @param $override
 		 */
-		$this->handlers['smwAskParserFunction'] = $this->handlers['smwShowParserFunction'] = function( $parser, $frame, $args, &$override ) {
+		$this->handlers['smwAskParserFunction'] = $this->handlers['smwShowParserFunction'] =
+		static function( $parser, $frame, $args, &$override ) {
 			if( $frame ) {
 				$params = [];
 				foreach ($args as $key => $value) {
-					if ( $key == 0 || ( $value !== '' && $value{0} === '?' ) ) {
+					if ( $key === 0 || ( $value !== '' && $value[0] === '?' ) ) {
 						continue;
 					}
-					if ( strpos( $value, '=' ) === false ) {
+					if ( !strpos( $value, '=' ) !== false ) {
 						continue;
 					}
-					$pair = explode('=', $value);
+					$pair = explode( '=', $value );
 					$params[$pair[0]] = $pair[1];
 				}
 
-				if( array_key_exists('source', $params) && !in_array( $frame->getTitle()->getNamespace(), $GLOBALS['seqlgExternalQueryEnabledNamespaces'] ) ) {
+				if(
+					array_key_exists( 'source', $params ) &&
+					!in_array( $frame->getTitle()->getNamespace(), $GLOBALS['seqlgExternalQueryEnabledNamespaces'] )
+				) {
 					$override = 'Warning: source parameter is not allowed in the namespace!';
 				}
 			}
 		};
-
 	}
-
 }

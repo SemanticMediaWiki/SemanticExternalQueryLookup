@@ -57,7 +57,7 @@ class CannedResultArray extends ResultArray {
 	 *
 	 * @return DIWikiPage
 	 */
-	public function getResultSubject() {
+	public function getResultSubject(): DIWikiPage {
 		return $this->mResult;
 	}
 
@@ -87,7 +87,7 @@ class CannedResultArray extends ResultArray {
 	 *
 	 * @return PrintRequest
 	 */
-	public function getPrintRequest() {
+	public function getPrintRequest(): PrintRequest {
 		return $this->mPrintRequest;
 	}
 
@@ -144,8 +144,11 @@ class CannedResultArray extends ResultArray {
 		// Units of measurement can not be assumed to be declared on a wiki
 		// therefore don't try to recreate a DataValue and use the DV created
 		// from the raw API response
-		if ( $this->mPrintRequest->getMode() === PrintRequest::PRINT_PROP &&
-		    $property->findPropertyTypeId() === '_qty' ) {
+		if (
+			$property &&
+			$this->mPrintRequest->getMode() === PrintRequest::PRINT_PROP &&
+		    $property->findPropertyTypeId() === '_qty'
+		) {
 			return $content;
 		}
 
@@ -173,7 +176,7 @@ class CannedResultArray extends ResultArray {
 				$diProperty = null;
 			}
 
-		} elseif ( $this->mPrintRequest->getMode() == PrintRequest::PRINT_PROP ) {
+		} elseif ( $this->mPrintRequest->getMode() === PrintRequest::PRINT_PROP ) {
 			$diProperty = $property;
 		} else {
 			$diProperty = null;
@@ -241,7 +244,7 @@ class CannedResultArray extends ResultArray {
 		reset( $this->mContent );
 	}
 
-	private function getMatchablePropertyFromPrintRequest() {
+	private function getMatchablePropertyFromPrintRequest(): ?DIProperty {
 
 		if ( $this->mPrintRequest->getMode() !== PrintRequest::PRINT_PROP ) {
 			return null;

@@ -33,7 +33,7 @@ class DataValueDeserializer {
 	 *
 	 * @param string $querySource
 	 */
-	public function __construct( $querySource ) {
+	public function __construct( string $querySource ) {
 		$this->querySource = $querySource;
 		$this->embeddedLinksReplacer = new EmbeddedLinksReplacer( $querySource );
 	}
@@ -43,7 +43,7 @@ class DataValueDeserializer {
 	 *
 	 * @return string
 	 */
-	public function getQuerySource() {
+	public function getQuerySource(): string {
 		return $this->querySource;
 	}
 
@@ -55,10 +55,10 @@ class DataValueDeserializer {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueFrom( DIProperty $property, $value ) {
+	public function newDataValueFrom( DIProperty $property, $value ): DataValue {
 
 		$dv = null;
-		$propertyList = array();
+		$propertyList = [];
 
 		if ( $property->findPropertyTypeId() === '_wpg' || isset( $value['fulltext'] ) ) {
 			$dv = $this->newDataValueFromDataItem( $property, $this->newDiWikiPage( $value ) );
@@ -89,7 +89,7 @@ class DataValueDeserializer {
 	 */
 	public function newDiWikiPage( array $value ) {
 
-		if ( !isset( $value['namespace'] ) || !isset( $value['fulltext'] ) ) {
+		if ( !isset( $value['namespace'], $value['fulltext'] ) ) {
 			return false;
 		}
 
@@ -104,7 +104,7 @@ class DataValueDeserializer {
 		return DIWikiPage::newFromTitle( $title );
 	}
 
-	private function newDiTime( $value ) {
+	private function newDiTime( array $value ): DITime {
 
 		if ( isset( $value['raw'] ) ) {
 			return DITime::doUnserialize( $value['raw'] );
@@ -123,11 +123,11 @@ class DataValueDeserializer {
 		return $dataItem;
 	}
 
-	private function newDiBlob( $value ) {
+	private function newDiBlob( string $value ): DIBlob {
 		return new DIBlob( $this->embeddedLinksReplacer->replace( $value ) );
 	}
 
-	private function newDataValueFromPropertyObject( $property, $value ) {
+	private function newDataValueFromPropertyObject( DIProperty $property, $value ) {
 
 		try{
 			$dv = DataValueFactory::newPropertyObjectValue( $property, $value );
@@ -138,7 +138,7 @@ class DataValueDeserializer {
 		return $dv;
 	}
 
-	private function newDataValueFromDataItem( $property, $dataItem = false ) {
+	private function newDataValueFromDataItem( DIProperty $property, $dataItem = false ) {
 
 		if ( $dataItem === false ) {
 			return false;
@@ -153,7 +153,7 @@ class DataValueDeserializer {
 		return $dv;
 	}
 
-	private function newDiContainerOnRecordType( array $value, &$propertyList ) {
+	private function newDiContainerOnRecordType( array $value, array &$propertyList ): DIContainer {
 
 		// Remote container to use an anonymous
 		$semanticData = ContainerSemanticData::makeAnonymousContainer();

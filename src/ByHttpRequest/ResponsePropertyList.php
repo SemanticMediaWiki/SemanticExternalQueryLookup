@@ -43,7 +43,7 @@ class ResponsePropertyList {
 	 *
 	 * @return DIProperty[]
 	 */
-	public function getPropertyList() {
+	public function getPropertyList(): array {
 		return $this->propertyList;
 	}
 
@@ -54,7 +54,7 @@ class ResponsePropertyList {
 	 *
 	 * @return string
 	 */
-	public function findPropertyKey( $key ) {
+	public function findPropertyKey( string $key ): string {
 
 		if ( isset( $this->internalLabelToKeyMap[$key] ) ) {
 			return $this->internalLabelToKeyMap[$key];
@@ -70,7 +70,7 @@ class ResponsePropertyList {
 	 *
 	 * @return boolean
 	 */
-	public function hasProperty( $key ) {
+	public function hasProperty( string $key ): bool {
 		return isset( $this->propertyList[$this->findPropertyKey( $key )] );
 	}
 
@@ -81,7 +81,7 @@ class ResponsePropertyList {
 	 *
 	 * @return DIProperty|null
 	 */
-	public function getProperty( $key ) {
+	public function getProperty( string $key ) {
 
 		$key = $this->findPropertyKey( $key );
 
@@ -103,7 +103,7 @@ class ResponsePropertyList {
 			return;
 		}
 
-		if ( $value['mode'] == 0 ) {
+		if ( $value['mode'] === 0 ) {
 			$property = new DIProperty( '_INST' );
 			$this->internalLabelToKeyMap[$value['label']] = $property->getKey();
 		} else {
@@ -118,7 +118,7 @@ class ResponsePropertyList {
 		$this->propertyList[$property->getKey()] = $property;
 	}
 
-	private function newProperty( $value ) {
+	private function newProperty( array $value ): DIProperty {
 
 		$property = DIProperty::newFromUserLabel( $value['label'] );
 
@@ -133,7 +133,10 @@ class ResponsePropertyList {
 		// Something like |Has foo=Text where `Text` is mapped to a DataType
 		// cannot be redeclared when the type of `Has foo` (as `_wpg`) doesn't
 		// correspond to the predefined property type
-		throw new RuntimeException( 'Cannot redeclare type "' .  $value['typeid'] . '" for "' . $value['label'] . '" (as predefined property/type)' );
+		throw new RuntimeException(
+			'Cannot redeclare type "' .  $value['typeid'] . '" for "' . $value['label']
+			. '" (as predefined property/type)'
+		);
 	}
 
 }

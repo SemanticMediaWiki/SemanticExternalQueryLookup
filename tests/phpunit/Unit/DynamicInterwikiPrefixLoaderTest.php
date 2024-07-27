@@ -17,7 +17,7 @@ class DynamicInterwikiPrefixLoaderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testCanConstruct() {
 
-		$interwikiPrefixMap = array();
+		$interwikiPrefixMap = [];
 
 		$this->assertInstanceOf(
 			'\SEQL\DynamicInterwikiPrefixLoader',
@@ -27,26 +27,26 @@ class DynamicInterwikiPrefixLoaderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testLoadIwMapForExternalRepositoryMatch() {
 
-		$interwikiPrefixMap = array(
-			'mw-foo' => array(
+		$interwikiPrefixMap = [
+			'mw-foo' => [
 				'http://example.org:8080/mw-foo/index.php/$1', // corresponds to iw_url
 				'http://example.org:8080/mw-foo/api.php',      // corresponds to iw_api
 				true                                           // corresponds to iw_local
-			)
-		);
+			]
+		];
 
 		$instance = new DynamicInterwikiPrefixLoader( $interwikiPrefixMap );
 
-		$expected = array(
+		$expected = [
 			'iw_prefix' => 'mw-foo',
 			'iw_url' => 'http://example.org:8080/mw-foo/index.php/$1',
 			'iw_api' => 'http://example.org:8080/mw-foo/api.php',
 			'iw_wikiid' => 'mw-foo',
 			'iw_local' => true,
 			'iw_trans' => false
-		);
+		];
 
-		$interwiki = array();
+		$interwiki = [];
 
 		$this->assertFalse(
 			$instance->tryToLoadIwMapForExternalRepository( 'mw-foo', $interwiki )
@@ -60,11 +60,11 @@ class DynamicInterwikiPrefixLoaderTest extends \PHPUnit_Framework_TestCase {
 
 	public function testTryLoadIwMapForNoExternalRepositoryMatch() {
 
-		$interwikiPrefixMap = array();
+		$interwikiPrefixMap = [];
 
 		$instance = new DynamicInterwikiPrefixLoader( $interwikiPrefixMap );
 
-		$interwiki = array();
+		$interwiki = [];
 
 		$this->assertTrue(
 			$instance->tryToLoadIwMapForExternalRepository( 'mw-foo', $interwiki )
@@ -74,5 +74,4 @@ class DynamicInterwikiPrefixLoaderTest extends \PHPUnit_Framework_TestCase {
 			$interwiki
 		);
 	}
-
 }

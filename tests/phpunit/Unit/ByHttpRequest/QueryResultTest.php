@@ -31,8 +31,8 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$printRequests = array();
-		$results = array();
+		$printRequests = [];
+		$results = [];
 
 		$this->assertInstanceOf(
 			'\SEQL\ByHttpRequest\QueryResult',
@@ -75,9 +75,7 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 
 	public function testToArray() {
 
-		$expected = array(
-			'Foo'
-		);
+		$expected = [ 'Foo' ];
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -95,8 +93,8 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getRawResponseResult' )
 			->will( $this->returnValue( $expected ) );
 
-		$printRequests = array();
-		$results = array();
+		$printRequests = [];
+		$results = [];
 
 		$instance = new QueryResult( $printRequests, $query, $results, $this->store, false );
 		$instance->setJsonResponseParser( $jsonResponseParser );
@@ -128,10 +126,10 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->will( $this->returnValue( [ $printRequest ] ) );
 
-		$printRequests = array();
-		$results = array();
+		$printRequests = [];
+		$results = [];
 
 		$instance = new QueryResult( $printRequests, $query, $results, $this->store, false );
 		$instance->setRemoteTargetUrl( 'http://example.org:8080' );
@@ -141,5 +139,4 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			$instance->getLink()
 		);
 	}
-
 }

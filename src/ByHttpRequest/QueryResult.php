@@ -28,7 +28,7 @@ class QueryResult extends RootQueryResult {
 	 *
 	 * @param string $remoteTargetUrl
 	 */
-	public function setRemoteTargetUrl( $remoteTargetUrl ) {
+	public function setRemoteTargetUrl( string $remoteTargetUrl ) {
 		$this->remoteTargetUrl = $remoteTargetUrl;
 	}
 
@@ -46,7 +46,7 @@ class QueryResult extends RootQueryResult {
 	 *
 	 * @since 1.0
 	 *
-	 * @return array
+	 * @return array|string
 	 */
 	public function toArray() {
 		return $this->jsonResponseParser->getRawResponseResult();
@@ -57,7 +57,7 @@ class QueryResult extends RootQueryResult {
 	 *
 	 * @since 1.0
 	 *
-	 * @return array
+	 * @return array|string
 	 */
 	public function serializeToArray() {
 		return $this->toArray();
@@ -90,7 +90,7 @@ class QueryResult extends RootQueryResult {
 	 *
 	 * @return SMWInfolink
 	 */
-	public function getLink() {
+	public function getLink(): SMWInfolink {
 		$params = array( trim( $this->getQuery()->getQueryString() ) );
 
 		foreach ( $this->getQuery()->getExtraPrintouts() as $printout ) {

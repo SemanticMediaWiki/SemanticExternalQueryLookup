@@ -30,10 +30,7 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new DataValueDeserializer( 'foo' );
 
-		$value = array(
-			'namespace' => NS_MAIN,
-			'fulltext'  => 'abc def'
-		);
+		$value = [ 'namespace' => NS_MAIN, 'fulltext'  => 'abc def' ];
 
 		$this->assertEquals(
 			new DIWikiPage( 'Foo:abc_def', NS_MAIN ),
@@ -83,16 +80,13 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_rec' );
 
-		$item = array(
-			'namespace' => NS_MAIN,
-			'fulltext'  => 'abc def'
-		);
+		$item = [ 'namespace' => NS_MAIN, 'fulltext'  => 'abc def' ];
 
-		$record[] = array(
+		$record[] = [
 			'label'  => 'Foo',
 			'typeid' => '_wpg',
-			'item'   => array( $item )
-		);
+			'item'   => [ $item ]
+		];
 
 		$this->assertInstanceOf(
 			'\SMWRecordValue',
@@ -119,5 +113,4 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 			$dataValue->getDataItem()->getString()
 		);
 	}
-
 }

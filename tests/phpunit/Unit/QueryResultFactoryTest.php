@@ -79,5 +79,4 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 			$instance->newByHttpRequestQueryResult( $query, $jsonResponseParser )
 		);
 	}
-
 }

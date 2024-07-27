@@ -176,7 +176,7 @@ class QueryResultFetcher {
 	 *
 	 * @return QueryResult
 	 */
-	public function fetchQueryResult( Query $query ) {
+	public function fetchQueryResult( Query $query ): QueryResult {
 
 		$this->doResetPrintRequestsToQuerySource( $query );
 

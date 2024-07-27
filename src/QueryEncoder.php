@@ -19,7 +19,7 @@ class QueryEncoder {
 	 *
 	 * @return string
 	 */
-	public static function rawUrlEncode( Query $query ) {
+	public static function rawUrlEncode( Query $query ): string {
 		return rawurlencode( self::encode( $query ) );
 	}
 
@@ -30,33 +30,31 @@ class QueryEncoder {
 	 *
 	 * @return string
 	 */
-	public static function encode( Query $query ) {
-		$serialized = array();
+	public static function encode( Query $query ): string {
+		$serialized = [];
 
 		$serialized['conditions'] = $query->getQueryString();
 
-		$serialized['parameters'] = array(
+		$serialized['parameters'] = [
 			'limit=' . $query->getLimit(),
 			'offset=' . $query->getOffset(),
 			'mainlabel=' . $query->getMainlabel(),
 		//	'source=' . $query->getQuerySource()
-		);
+		];
 
-		list( $serialized['sort'], $serialized['order'] ) = self::doSerializeSortKeys( $query );
+		[ $serialized['sort'], $serialized['order'] ] = self::doSerializeSortKeys( $query );
 		$serialized['printouts'] = self::doSerializePrintouts( $query );
 
-		$encoded = $serialized['conditions'] . '|' .
-			( $serialized['printouts'] !== array() ? implode( '|', $serialized['printouts'] ) . '|' : '' ) .
+		return $serialized['conditions'] . '|' .
+			( count( $serialized['printouts'] ) > 0 ? implode( '|', $serialized['printouts'] ) . '|' : '' ) .
 			implode( '|', $serialized['parameters'] ) .
-			( $serialized['sort'] !==  array() ? '|sort=' . implode( ',', $serialized['sort'] ) : '' ) .
-			( $serialized['order'] !== array() ? '|order=' . implode( ',', $serialized['order'] ) : '' );
-
-		return $encoded;
+			( count( $serialized['sort'] ) > 0 ? '|sort=' . implode( ',', $serialized['sort'] ) : '' ) .
+			( count( $serialized['order'] ) > 0 ? '|order=' . implode( ',', $serialized['order'] ) : '' );
 	}
 
-	private static function doSerializePrintouts( $query ) {
+	private static function doSerializePrintouts( Query $query ): array {
 
-		$printouts = array();
+		$printouts = [];
 
 		foreach ( $query->getExtraPrintouts() as $printout ) {
 			$serialization = $printout->getSerialisation();
@@ -70,10 +68,10 @@ class QueryEncoder {
 		return $printouts;
 	}
 
-	private static function doSerializeSortKeys( $query ) {
+	private static function doSerializeSortKeys( Query $query ): array {
 
-		$sort = array();
-		$order = array();
+		$sort = [];
+		$order = [];
 
 		foreach ( $query->getSortKeys() as $key => $value ) {
 
@@ -85,7 +83,7 @@ class QueryEncoder {
 			$order[] = strtolower( $value );
 		}
 
-		return array( $sort, $order );
+		return [ $sort, $order ];
 	}
 
 }

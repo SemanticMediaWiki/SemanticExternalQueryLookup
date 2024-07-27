@@ -37,26 +37,23 @@ class ByHttpRequestQueryLookup extends SQLStore {
 	 *
 	 * @return QueryResult
 	 */
-	public function getQueryResult( Query $query ) {
+	public function getQueryResult( Query $query ): QueryResult {
 
 		$this->queryResultFactory = new QueryResultFactory( $this );
 
 		if ( $query->querymode === Query::MODE_DEBUG ) {
-			$query->addErrors( array( wfMessage( 'seql-debug-query-not-supported' )->text() ) );
+			$query->addErrors( [ wfMessage( 'seql-debug-query-not-supported' )->text() ] );
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
 		}
 
 		$interwiki = $this->tryToMatchInterwikiFor( $query );
 
 		if ( $interwiki === false || $interwiki === null ) {
-			$query->addErrors( array( wfMessage( 'seql-interwiki-prefix-is-missing', $query->getQuerySource() )->text() ) );
+			$query->addErrors( [ wfMessage( 'seql-interwiki-prefix-is-missing', $query->getQuerySource() )->text() ] );
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
 		}
 
-		$credentials = false;
-		if ( isset( $GLOBALS['seqlgExternalRepositoryCredentials'][ $interwiki->getWikiID() ] ) ) {
-			$credentials = $GLOBALS['seqlgExternalRepositoryCredentials'][ $interwiki->getWikiID() ];
-		}
+		$credentials = $GLOBALS['seqlgExternalRepositoryCredentials'][ $interwiki->getWikiID() ] ?? false;
 
 		return $this->fetchQueryResultFor( $query, $interwiki, $credentials );
 	}
@@ -67,7 +64,7 @@ class ByHttpRequestQueryLookup extends SQLStore {
 			->fetch( $query->getQuerySource() );
 	}
 
-	protected function fetchQueryResultFor( Query $query, $interwiki, $credentials = false ) {
+	protected function fetchQueryResultFor( Query $query, Interwiki $interwiki, $credentials = false ): QueryResult {
 
 		$queryResultFetcher = new QueryResultFetcher(
 			new HttpRequestFactory( $this->getCacheFactory()->newMediaWikiCompositeCache( $GLOBALS['seqlgHttpResponseCacheType'] ) ),
@@ -85,7 +82,7 @@ class ByHttpRequestQueryLookup extends SQLStore {
 		return $queryResultFetcher->fetchQueryResult( $query );
 	}
 
-	private function getCacheFactory() {
+	private function getCacheFactory(): CacheFactory {
 
 		if ( $this->cacheFactory === null ) {
 			$this->cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();

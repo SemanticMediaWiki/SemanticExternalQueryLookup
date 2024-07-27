@@ -205,7 +205,8 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
 			$queryResultFactory,
-			$this->jsonResponseParser
+			$this->jsonResponseParser,
+			[]
 		);
 
 		$instance->setHttpResponseCacheLifetime( 42 );
@@ -271,7 +272,8 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
 			$queryResultFactory,
-			$this->jsonResponseParser
+			$this->jsonResponseParser,
+			[]
 		);
 
 		$instance->setHttpRequestEndpoint( 'http://example.org/api.php' );
@@ -330,7 +332,8 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
 			$queryResultFactory,
-			$this->jsonResponseParser
+			$this->jsonResponseParser,
+			[]
 		);
 
 		$instance->setHttpRequestEndpoint( 'http://example.org/api.php' );
@@ -350,5 +353,4 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 			$instance->fetchQueryResult( $query )
 		);
 	}
-
 }

@@ -24,7 +24,7 @@ class EmbeddedLinksReplacer {
 	 *
 	 * @param string $querySource
 	 */
-	public function __construct( $querySource ) {
+	public function __construct( string $querySource ) {
 		$this->querySource = $querySource;
 	}
 
@@ -35,21 +35,19 @@ class EmbeddedLinksReplacer {
 	 *
 	 * @return string
 	 */
-	public function replace( $value ) {
+	public function replace( string $value ): string {
 
 		// Strip any [[ :: ]] from a value to avoid "foreign" annotation parsing
 		// for annotation embedded within a value
-		$value = InTextAnnotationParser::removeAnnotation(
-			$value
-		);
+		$value = InTextAnnotationParser::removeAnnotation( $value );
 
 		return $this->replaceEmbeddedLinksWith( $this->querySource, $value );
 	}
 
-	private function replaceEmbeddedLinksWith( $source, $value ) {
+	private function replaceEmbeddedLinksWith( string $source, string $value ): string {
 		$value = preg_replace_callback(
 			'/\[\[(.*)\]\]/xu',
-			function( array $matches ) use( $source ) {
+			static function( array $matches ) use( $source ): string {
 				$caption = false;
 				$value = '';
 

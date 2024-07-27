@@ -25,17 +25,15 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
 
 	protected function setUp() {
 
-		$externalRepositoryEndpoints = array(
-			'api-foo' => array(
+		$externalRepositoryEndpoints = [
+			'api-foo' => [
 				'http://example.org/index.php/$1',
 				'http://example.org/api.php/',
 				true
-			)
-		);
+			]
+		];
 
-		$hookRegistry = new HookRegistry( array(
-			'externalRepositoryEndpoints' => $externalRepositoryEndpoints
-		) );
+		$hookRegistry = new HookRegistry( [ 'externalRepositoryEndpoints' => $externalRepositoryEndpoints ] );
 
 		$hookRegistry->register();
 	}
@@ -43,7 +41,7 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider jsonFileProvider
 	 */
-	public function testQueryResultFetcherFromCannedJsonResponse( $file ) {
+	public function testQueryResultFetcherFromCannedJsonResponse( string $file ) {
 
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 		$content = $jsonFileReader->read();
@@ -70,7 +68,7 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	private function assertSubjectList( $expectedSubjectList, $subjectList ) {
+	private function assertSubjectList( array $expectedSubjectList, array $subjectList ) {
 
 		foreach ( $subjectList as $subject ) {
 			foreach ( $expectedSubjectList as $key => $sub ) {
@@ -88,7 +86,7 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	private function assertPrintRequestPropertyList( $expectedPropertyList, $printRequestPropertyList ) {
+	private function assertPrintRequestPropertyList( array $expectedPropertyList, array $printRequestPropertyList ) {
 
 		foreach ( $printRequestPropertyList as $property ) {
 			foreach ( $expectedPropertyList as $key => $prop ) {
@@ -106,16 +104,16 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function jsonFileProvider() {
+	public function jsonFileProvider(): array {
 
-		$provider = array();
+		$provider = [];
 		$location = __DIR__ . '/Fixtures';
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( $location );
 		$bulkFileProvider->searchByFileExtension( 'json' );
 
 		foreach ( $bulkFileProvider->getFiles() as $file ) {
-			$provider[] = array( $file );
+			$provider[] = [ $file ];
 		}
 
 		return $provider;

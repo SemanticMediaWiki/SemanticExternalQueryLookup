@@ -122,5 +122,4 @@ class ByHttpRequestQueryLookupTest extends \PHPUnit_Framework_TestCase {
 			$instance->getQueryResult( $query )
 		);
 	}
-
 }

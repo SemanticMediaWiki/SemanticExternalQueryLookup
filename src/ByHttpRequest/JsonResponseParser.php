@@ -61,7 +61,7 @@ class JsonResponseParser {
 	 *
 	 * @return DIProperty
 	 */
-	public function findPropertyFromInMemoryExternalRepositoryCache( DIProperty $property ) {
+	public function findPropertyFromInMemoryExternalRepositoryCache( DIProperty $property ): DIProperty {
 
 		$key = $property->getKey();
 
@@ -75,27 +75,27 @@ class JsonResponseParser {
 	/**
 	 * @since 1.0
 	 *
-	 * @param DIWikiPage[]
+	 * @return DIWikiPage[]
 	 */
-	public function getResultSubjectList() {
+	public function getResultSubjectList(): array {
 		return $this->subjectList;
 	}
 
 	/**
 	 * @since 1.0
 	 *
-	 * @param []
+	 * @return array
 	 */
-	public function getPrintouts() {
+	public function getPrintouts(): array {
 		return $this->printouts;
 	}
 
 	/**
 	 * @since 1.0
 	 *
-	 * @param []
+	 * @return array
 	 */
-	public function getPrintRequestPropertyList() {
+	public function getPrintRequestPropertyList(): array {
 		return $this->responsePropertyList->getPropertyList();
 	}
 
@@ -104,14 +104,14 @@ class JsonResponseParser {
 	 *
 	 * @return boolean
 	 */
-	public function hasFurtherResults() {
+	public function hasFurtherResults(): bool {
 		return $this->furtherResults;
 	}
 
 	/**
 	 * @since 1.0
 	 *
-	 * @return array
+	 * @return array|string
 	 */
 	public function getRawResponseResult() {
 		return $this->rawResponseResult;
@@ -125,12 +125,12 @@ class JsonResponseParser {
 	 *
 	 * @return array
 	 */
-	public function getPropertyValuesFor( DIWikiPage $subject, DIProperty $property ) {
+	public function getPropertyValuesFor( DIWikiPage $subject, DIProperty $property ): array {
 
 		$hash = $subject->getHash();
 		$key = $this->responsePropertyList->findPropertyKey( $property->getKey() );
 
-		return isset( $this->printouts[$hash][$key] ) ? $this->printouts[$hash][$key] : array();
+		return $this->printouts[$hash][$key] ?? [];
 	}
 
 	/**
@@ -151,11 +151,11 @@ class JsonResponseParser {
 				continue;
 			}
 
-			if ( !isset( $item['printrequests'] ) || !isset( $item['results'] ) ) {
+			if ( !isset( $item['printrequests'], $item['results'] ) ) {
 				continue;
 			}
 
-			foreach ( $item['printrequests'] as $k => $value ) {
+			foreach ( $item['printrequests'] as $value ) {
 				$this->responsePropertyList->addToPropertyList( $value );
 			}
 
@@ -169,7 +169,7 @@ class JsonResponseParser {
 
 		// Most likely caused by `mainlabel=-` therefore mark it as special and
 		// restore row integrity
-		if ( !isset( $value['namespace'] ) || !isset( $value['fulltext'] ) ) {
+		if ( !isset( $value['namespace'], $value['fulltext'] ) ) {
 			 $value['namespace'] = 0;
 			 $value['fulltext'] = $k;
 		}
@@ -207,7 +207,7 @@ class JsonResponseParser {
 		foreach ( $pvalues as $pvalue ) {
 
 			if ( !isset( $this->printouts[$hash][$pk] ) ) {
-				$this->printouts[$hash][$pk] = array();
+				$this->printouts[$hash][$pk] = [];
 			}
 
 			// Unique row value display

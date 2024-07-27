@@ -22,9 +22,7 @@ class SemanticExternalQueryLookup {
 		class_alias( 'SEQL\ByHttpRequestQueryLookup', 'SMWExternalQueryLookup' ); // deprecated
 		class_alias( 'SEQL\ByHttpRequestQueryLookup', 'SMWExternalAskQueryLookup' );
 
-		$options = array(
-			'externalRepositoryEndpoints' => $GLOBALS['seqlgExternalRepositoryEndpoints']
-		);
+		$options = [ 'externalRepositoryEndpoints' => $GLOBALS['seqlgExternalRepositoryEndpoints'] ];
 
 		$hookRegistry = new HookRegistry(
 			$options
@@ -38,7 +36,7 @@ class SemanticExternalQueryLookup {
 	 *
 	 * @return string|null
 	 */
-	public static function getVersion() {
+	public static function getVersion(): string {
 		return SEQL_VERSION;
 	}
 
