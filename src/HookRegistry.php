@@ -3,6 +3,7 @@
 namespace SEQL;
 
 use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\Store;
 
 /**
