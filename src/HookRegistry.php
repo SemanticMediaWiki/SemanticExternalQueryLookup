@@ -32,7 +32,8 @@ class HookRegistry {
 	 * @since  1.0
 	 */
 	public function register() {
-		if ( version_compare( $GLOBALS[ 'wgVersion' ], '1.35', 'lt' ) ) {
+		global $wgVersion;
+		if ( version_compare( $wgVersion, '1.35', 'lt' ) ) {
 			foreach ( $this->handlers as $name => $callback ) {
 				Hooks::register( $name, $callback );
 			}
