@@ -31,8 +31,15 @@ class HookRegistry {
 	 * @since  1.0
 	 */
 	public function register() {
-		foreach ( $this->handlers as $name => $callback ) {
-			Hooks::register( $name, $callback );
+		if ( version_compare( $GLOBALS[ 'wgVersion' ], '1.35', 'lt' ) ) {
+			foreach ( $this->handlers as $name => $callback ) {
+				Hooks::register( $name, $callback );
+			}
+		} else {
+			$container = MediaWikiServices::getInstance()->getHookContainer();
+			foreach ( $this->handlers as $name => $callback ) {
+				$container->register( $name, $callback );
+			}
 		}
 	}
 
