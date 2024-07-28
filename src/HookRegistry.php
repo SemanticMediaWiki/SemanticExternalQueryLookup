@@ -74,7 +74,7 @@ class HookRegistry {
 		);
 
 		$this->handlers['InterwikiLoadPrefix'] =
-			static function( $prefix, &$interwiki ) use( $dynamicInterwikiPrefixLoader ) {
+			static function ( string $prefix, array &$interwiki ) use( $dynamicInterwikiPrefixLoader ): bool {
 				return $dynamicInterwikiPrefixLoader->tryToLoadIwMapForExternalRepository( $prefix, $interwiki );
 			};
 
@@ -84,15 +84,15 @@ class HookRegistry {
 		 *
 		 * @param \Parser $parser
 		 * @param \PPFrame $frame
-		 * @param $args
-		 * @param $override
+		 * @param array $args
+		 * @param ?string $override
 		 */
 		$this->handlers['smwAskParserFunction'] = $this->handlers['smwShowParserFunction'] =
-		static function( $parser, $frame, $args, &$override ) {
+		static function ( Parser $parser, PPFrame $frame, array $args, ?string &$override ) {
 			if( $frame ) {
 				$params = [];
 				foreach ($args as $key => $value) {
-					if ( $key === 0 || ( $value !== '' && $value[0] === '?' ) ) {
+					if ( $key === 0 || mb_substr( $value, 0, 1 ) === '?' ) {
 						continue;
 					}
 					if ( !strpos( $value, '=' ) !== false ) {

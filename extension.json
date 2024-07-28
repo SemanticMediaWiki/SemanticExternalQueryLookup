@@ -25,7 +25,9 @@
 	"AutoloadClasses": {
 		"SemanticExternalQueryLookup": "SemanticExternalQueryLookup.php"
 	},
-	"callback": "SemanticExternalQueryLookup::onExtensionFunction",
+	"ExtensionFunctions": [
+		"SemanticExternalQueryLookup::onExtensionFunction"
+	],
 	"config_prefix": "seqlg",
 	"config": {
 		"HttpResponseCacheLifetime": {
