@@ -2,49 +2,45 @@
 
 namespace SEQL\Tests\Integration\ByHttpRequest;
 
-use SMW\Tests\Utils\UtilityFactory;
-use Onoi\HttpRequest\HttpRequestFactory;
-use SEQL\ByHttpRequest\QueryResultFetcher;
 use SEQL\ByHttpRequest\JsonResponseParser;
-use SEQL\QueryResultFactory;
 use SEQL\DataValueDeserializer;
 use SEQL\HookRegistry;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group semantic-external-query-lookup
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
  */
-class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
+class JsonParseOnFauxHttpResponseTest extends \PHPUnit\Framework\TestCase {
 
-	protected function setUp() {
-
-		$externalRepositoryEndpoints = array(
-			'api-foo' => array(
+	protected function setUp(): void {
+		$externalRepositoryEndpoints = [
+			'api-foo' => [
 				'http://example.org/index.php/$1',
 				'http://example.org/api.php/',
 				true
-			)
-		);
+			]
+		];
 
-		$hookRegistry = new HookRegistry( array(
+		$hookRegistry = new HookRegistry( [
 			'externalRepositoryEndpoints' => $externalRepositoryEndpoints
-		) );
+		] );
 
 		$hookRegistry->register();
 	}
 
 	/**
+	 * @covers I18nJsonFileIntegrity
 	 * @dataProvider jsonFileProvider
 	 */
 	public function testQueryResultFetcherFromCannedJsonResponse( $file ) {
-
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 		$content = $jsonFileReader->read();
 
@@ -71,7 +67,6 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertSubjectList( $expectedSubjectList, $subjectList ) {
-
 		foreach ( $subjectList as $subject ) {
 			foreach ( $expectedSubjectList as $key => $sub ) {
 				$sub = DIWikiPage::doUnserialize( str_replace( " ", "_", $sub ) );
@@ -89,7 +84,6 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function assertPrintRequestPropertyList( $expectedPropertyList, $printRequestPropertyList ) {
-
 		foreach ( $printRequestPropertyList as $property ) {
 			foreach ( $expectedPropertyList as $key => $prop ) {
 				$prop = new DIProperty( str_replace( " ", "_", $prop ) );
@@ -107,15 +101,14 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function jsonFileProvider() {
-
-		$provider = array();
+		$provider = [];
 		$location = __DIR__ . '/Fixtures';
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( $location );
 		$bulkFileProvider->searchByFileExtension( 'json' );
 
 		foreach ( $bulkFileProvider->getFiles() as $file ) {
-			$provider[] = array( $file );
+			$provider[] = [ $file ];
 		}
 
 		return $provider;

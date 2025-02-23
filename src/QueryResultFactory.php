@@ -4,21 +4,18 @@ namespace SEQL;
 
 use SEQL\ByHttpRequest\JsonResponseParser;
 use SEQL\ByHttpRequest\QueryResult as ByHttpRequestQueryResult;
+use SMW\Query\QueryResult;
 use SMW\Store;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
  */
 class QueryResultFactory {
 
-	/**
-	 * @var
-	 */
 	private $store;
 
 	/**
@@ -41,7 +38,7 @@ class QueryResultFactory {
 		return new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,
-			array(),
+			[],
 			$this->store,
 			false
 		);
@@ -56,7 +53,6 @@ class QueryResultFactory {
 	 * @return QueryResult
 	 */
 	public function newByHttpRequestQueryResult( Query $query, JsonResponseParser $jsonResponseParser ) {
-
 		$queryResult = new ByHttpRequestQueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,

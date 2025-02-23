@@ -8,21 +8,20 @@ use SEQL\EmbeddedLinksReplacer;
  * @covers \SEQL\EmbeddedLinksReplacer
  * @group semantic-external-query-lookup
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
  */
-class EmbeddedLinksReplacerTest extends \PHPUnit_Framework_TestCase {
+class EmbeddedLinksReplacerTest extends \PHPUnit\Framework\TestCase {
 
 	private $querySource;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->querySource = 'abc';
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SEQL\EmbeddedLinksReplacer',
 			new EmbeddedLinksReplacer( $this->querySource )
@@ -33,7 +32,6 @@ class EmbeddedLinksReplacerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textProvider
 	 */
 	public function testReplace( $text, $expected ) {
-
 		$instance = new EmbeddedLinksReplacer( $this->querySource );
 
 		$this->assertEquals(
@@ -43,51 +41,50 @@ class EmbeddedLinksReplacerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-
-		#0
-		$provider[] = array(
+		# 0
+		$provider[] = [
 			'Foo bar',
 			'Foo bar'
-		);
+		];
 
-		#1
-		$provider[] = array(
+		# 1
+		$provider[] = [
 			'Foo [42] bar',
 			'Foo [42] bar'
-		);
+		];
 
-		#2
-		$provider[] = array(
+		# 2
+		$provider[] = [
 			'Foo [42 1001] bar',
 			'Foo [42 1001] bar'
-		);
+		];
 
-		#3
-		$provider[] = array(
+		# 3
+		$provider[] = [
 			'Foo [[42]] bar',
 			'Foo [[abc:42|42]] bar'
-		);
+		];
 
-		#4
-		$provider[] = array(
+		# 4
+		$provider[] = [
 			'Foo [[42|1001]] bar',
 			'Foo [[abc:42|1001]] bar'
-		);
+		];
 
 		// We can't guess the type of a remote annotation therefore it is turned
 		// into an simple text value
 
 		#5
-		$provider[] = array(
+		$provider[] = [
 			'Foo [[Has number::42]] bar',
 			'Foo 42 bar'
-		);
+		];
 
-		#6
-		$provider[] = array(
+		# 6
+		$provider[] = [
 			'Foo [[Has number::42|1001]] bar',
 			'Foo 1001 bar'
-		);
+		];
 
 		return $provider;
 	}

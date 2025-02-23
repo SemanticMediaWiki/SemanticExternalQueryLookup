@@ -6,12 +6,12 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
+use SMW\Query\Result\ResultArray;
 use SMWDataItem;
 use SMWDataValue as DataValue;
-use SMWResultArray as ResultArray;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
@@ -73,7 +73,7 @@ class CannedResultArray extends ResultArray {
 			return $this->mContent;
 		}
 
-		$content = array();
+		$content = [];
 
 		foreach ( $this->mContent as $value ) {
 			$content[] = $value instanceof DataValue ? $value->getDataItem() : $value;
@@ -99,7 +99,6 @@ class CannedResultArray extends ResultArray {
 	 * @return SMWDataItem|false
 	 */
 	public function getNextDataItem() {
-
 		$this->loadContent();
 		$result = current( $this->mContent );
 		next( $this->mContent );
@@ -115,7 +114,6 @@ class CannedResultArray extends ResultArray {
 	 * @return SMWDataItem|false
 	 */
 	public function reset() {
-
 		$this->loadContent();
 		$result = reset( $this->mContent );
 
@@ -130,7 +128,6 @@ class CannedResultArray extends ResultArray {
 	 * @return DataValue|false
 	 */
 	public function getNextDataValue() {
-
 		$this->loadContent();
 		$content = current( $this->mContent );
 		next( $this->mContent );
@@ -145,12 +142,12 @@ class CannedResultArray extends ResultArray {
 		// therefore don't try to recreate a DataValue and use the DV created
 		// from the raw API response
 		if ( $this->mPrintRequest->getMode() === PrintRequest::PRINT_PROP &&
-		    $property->findPropertyTypeId() === '_qty' ) {
+			$property->findPropertyTypeId() === '_qty' ) {
 			return $content;
 		}
 
 		if ( $this->mPrintRequest->getMode() === PrintRequest::PRINT_PROP &&
-		    strpos( $property->findPropertyTypeId(), '_rec' ) !== false ) {
+			strpos( $property->findPropertyTypeId(), '_rec' ) !== false ) {
 
 			if ( $this->mPrintRequest->getParameter( 'index' ) === false ) {
 				return $content;
@@ -167,7 +164,7 @@ class CannedResultArray extends ResultArray {
 			$content = $dataItems[$pos];
 
 			if ( array_key_exists( $pos, $diProperties ) &&
-				!is_null( $diProperties[$pos] ) ) {
+				$diProperties[$pos] !== null ) {
 				$diProperty = $diProperties[$pos];
 			} else {
 				$diProperty = null;
@@ -208,21 +205,20 @@ class CannedResultArray extends ResultArray {
 			return;
 		}
 
-		$this->mContent = array();
+		$this->mContent = [];
 
 		switch ( $this->mPrintRequest->getMode() ) {
 			case PrintRequest::PRINT_THIS:
-				$this->mContent = array( $this->mResult );
-			break;
+				$this->mContent = [ $this->mResult ];
+				break;
 			case PrintRequest::PRINT_CCAT:
 			case PrintRequest::PRINT_CATS:
-
 				$this->mContent = $this->jsonResponseParser->getPropertyValuesFor(
 					$this->mResult,
 					new DIProperty( '_INST' )
 				);
 
-			break;
+				break;
 			case PrintRequest::PRINT_PROP:
 				$propertyValue = $this->mPrintRequest->getData();
 
@@ -233,16 +229,15 @@ class CannedResultArray extends ResultArray {
 					);
 				}
 
-			break;
+				break;
 			default:
-				$this->mContent = array(); // Unknown print request.
+				$this->mContent = []; // Unknown print request.
 		}
 
 		reset( $this->mContent );
 	}
 
 	private function getMatchablePropertyFromPrintRequest() {
-
 		if ( $this->mPrintRequest->getMode() !== PrintRequest::PRINT_PROP ) {
 			return null;
 		}

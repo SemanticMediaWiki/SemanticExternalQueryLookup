@@ -9,30 +9,28 @@ use SMW\DIWikiPage;
  * @covers \SEQL\ByHttpRequest\QueryResult
  * @group semantic-external-query-lookup
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
  */
-class QueryResultTest extends \PHPUnit_Framework_TestCase {
+class QueryResultTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
-	protected function setUp() {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
 
 	public function testCanConstruct() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$printRequests = array();
-		$results = array();
+		$printRequests = [];
+		$results = [];
 
 		$this->assertInstanceOf(
 			'\SEQL\ByHttpRequest\QueryResult',
@@ -41,7 +39,6 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetNext() {
-
 		$jsonResponseParser = $this->getMockBuilder( '\SEQL\ByHttpRequest\JsonResponseParser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -54,13 +51,13 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$printRequests = array(
+		$printRequests = [
 			$printRequest
-		);
+		];
 
-		$results = array(
+		$results = [
 			new DIWikiPage( 'Foo', NS_MAIN )
-		);
+		];
 
 		$instance = new QueryResult( $printRequests, $query, $results, $this->store, false );
 		$instance->setJsonResponseParser( $jsonResponseParser );
@@ -74,10 +71,9 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToArray() {
-
-		$expected = array(
+		$expected = [
 			'Foo'
-		);
+		];
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -93,10 +89,10 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 
 		$jsonResponseParser->expects( $this->exactly( 2 ) )
 			->method( 'getRawResponseResult' )
-			->will( $this->returnValue( $expected ) );
+			->willReturn( $expected );
 
-		$printRequests = array();
-		$results = array();
+		$printRequests = [];
+		$results = [];
 
 		$instance = new QueryResult( $printRequests, $query, $results, $this->store, false );
 		$instance->setJsonResponseParser( $jsonResponseParser );
@@ -113,14 +109,13 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLink() {
-
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$printRequest->expects( $this->once() )
 			->method( 'getSerialisation' )
-			->will( $this->returnValue( '?ABC' ) );
+			->willReturn( '?ABC' );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -128,10 +123,10 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->willReturn( [ $printRequest ] );
 
-		$printRequests = array();
-		$results = array();
+		$printRequests = [];
+		$results = [];
 
 		$instance = new QueryResult( $printRequests, $query, $results, $this->store, false );
 		$instance->setRemoteTargetUrl( 'http://example.org:8080' );

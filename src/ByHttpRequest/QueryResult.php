@@ -2,11 +2,11 @@
 
 namespace SEQL\ByHttpRequest;
 
+use SMW\Query\QueryResult as RootQueryResult;
 use SMWInfolink as Infolink;
-use SMWQueryResult as RootQueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
@@ -76,7 +76,7 @@ class QueryResult extends RootQueryResult {
 			return false;
 		}
 
-		$row = array();
+		$row = [];
 
 		foreach ( $this->mPrintRequests as $p ) {
 			$row[] = new CannedResultArray( $page, $p, $this->jsonResponseParser );
@@ -91,7 +91,7 @@ class QueryResult extends RootQueryResult {
 	 * @return SMWInfolink
 	 */
 	public function getLink() {
-		$params = array( trim( $this->getQuery()->getQueryString() ) );
+		$params = [ trim( $this->getQuery()->getQueryString() ?? '' ) ];
 
 		foreach ( $this->getQuery()->getExtraPrintouts() as $printout ) {
 			$serialization = $printout->getSerialisation();

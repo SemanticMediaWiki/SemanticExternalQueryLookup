@@ -7,7 +7,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
@@ -27,22 +27,22 @@ class JsonResponseParser {
 	/**
 	 * @var array
 	 */
-	private $subjectList = array();
+	private $subjectList = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $furtherResults = false;
 
 	/**
 	 * @var array
 	 */
-	private $printouts = array();
+	private $printouts = [];
 
 	/**
 	 * @var string
 	 */
-	private $rawResponseResult = array();
+	private $rawResponseResult = [];
 
 	/**
 	 * @since 1.0
@@ -62,7 +62,6 @@ class JsonResponseParser {
 	 * @return DIProperty
 	 */
 	public function findPropertyFromInMemoryExternalRepositoryCache( DIProperty $property ) {
-
 		$key = $property->getKey();
 
 		if ( $this->responsePropertyList->hasProperty( $key ) ) {
@@ -74,8 +73,6 @@ class JsonResponseParser {
 
 	/**
 	 * @since 1.0
-	 *
-	 * @param DIWikiPage[]
 	 */
 	public function getResultSubjectList() {
 		return $this->subjectList;
@@ -83,8 +80,6 @@ class JsonResponseParser {
 
 	/**
 	 * @since 1.0
-	 *
-	 * @param []
 	 */
 	public function getPrintouts() {
 		return $this->printouts;
@@ -92,8 +87,6 @@ class JsonResponseParser {
 
 	/**
 	 * @since 1.0
-	 *
-	 * @param []
 	 */
 	public function getPrintRequestPropertyList() {
 		return $this->responsePropertyList->getPropertyList();
@@ -102,7 +95,7 @@ class JsonResponseParser {
 	/**
 	 * @since 1.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFurtherResults() {
 		return $this->furtherResults;
@@ -126,11 +119,10 @@ class JsonResponseParser {
 	 * @return array
 	 */
 	public function getPropertyValuesFor( DIWikiPage $subject, DIProperty $property ) {
-
 		$hash = $subject->getHash();
 		$key = $this->responsePropertyList->findPropertyKey( $property->getKey() );
 
-		return isset( $this->printouts[$hash][$key] ) ? $this->printouts[$hash][$key] : array();
+		return isset( $this->printouts[$hash][$key] ) ? $this->printouts[$hash][$key] : [];
 	}
 
 	/**
@@ -139,9 +131,8 @@ class JsonResponseParser {
 	 * @param array $result
 	 */
 	public function doParse( array $result ) {
-
 		if ( isset( $result['query'] ) ) {
-			$this->rawResponseResult = $result['query'] ;
+			$this->rawResponseResult = $result['query'];
 		}
 
 		foreach ( $result as $key => $item ) {
@@ -166,7 +157,6 @@ class JsonResponseParser {
 	}
 
 	private function addResultsToPrintoutList( $k, $value ) {
-
 		// Most likely caused by `mainlabel=-` therefore mark it as special and
 		// restore row integrity
 		if ( !isset( $value['namespace'] ) || !isset( $value['fulltext'] ) ) {
@@ -193,7 +183,6 @@ class JsonResponseParser {
 	}
 
 	private function addPropertyValues( $hash, $pk, $pvalues ) {
-
 		$property = DIProperty::newFromUserLabel( $pk );
 		$pk = $property->getKey();
 
@@ -207,7 +196,7 @@ class JsonResponseParser {
 		foreach ( $pvalues as $pvalue ) {
 
 			if ( !isset( $this->printouts[$hash][$pk] ) ) {
-				$this->printouts[$hash][$pk] = array();
+				$this->printouts[$hash][$pk] = [];
 			}
 
 			// Unique row value display

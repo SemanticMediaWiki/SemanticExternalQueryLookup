@@ -2,12 +2,11 @@
 
 namespace SEQL\ByHttpRequest;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use RuntimeException;
+use SMW\DIProperty;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
@@ -22,12 +21,12 @@ class ResponsePropertyList {
 	/**
 	 * @var array
 	 */
-	private $propertyList = array();
+	private $propertyList = [];
 
 	/**
 	 * @var array
 	 */
-	private $internalLabelToKeyMap = array();
+	private $internalLabelToKeyMap = [];
 
 	/**
 	 * @since 1.0
@@ -35,7 +34,7 @@ class ResponsePropertyList {
 	 * @param string $querySource
 	 */
 	public function __construct( $querySource ) {
-		$this->querySource = $querySource;
+		$this->querySource = $querySource ?? '';
 	}
 
 	/**
@@ -55,7 +54,6 @@ class ResponsePropertyList {
 	 * @return string
 	 */
 	public function findPropertyKey( $key ) {
-
 		if ( isset( $this->internalLabelToKeyMap[$key] ) ) {
 			return $this->internalLabelToKeyMap[$key];
 		}
@@ -68,7 +66,7 @@ class ResponsePropertyList {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasProperty( $key ) {
 		return isset( $this->propertyList[$this->findPropertyKey( $key )] );
@@ -82,7 +80,6 @@ class ResponsePropertyList {
 	 * @return DIProperty|null
 	 */
 	public function getProperty( $key ) {
-
 		$key = $this->findPropertyKey( $key );
 
 		if ( isset( $this->propertyList[$key] ) ) {
@@ -98,7 +95,6 @@ class ResponsePropertyList {
 	 * @param array $value
 	 */
 	public function addToPropertyList( array $value ) {
-
 		if ( $value['label'] === '' ) {
 			return;
 		}
@@ -119,7 +115,6 @@ class ResponsePropertyList {
 	}
 
 	private function newProperty( $value ) {
-
 		$property = DIProperty::newFromUserLabel( $value['label'] );
 
 		if ( $property->isUserDefined() ) {
@@ -133,7 +128,7 @@ class ResponsePropertyList {
 		// Something like |Has foo=Text where `Text` is mapped to a DataType
 		// cannot be redeclared when the type of `Has foo` (as `_wpg`) doesn't
 		// correspond to the predefined property type
-		throw new RuntimeException( 'Cannot redeclare type "' .  $value['typeid'] . '" for "' . $value['label'] . '" (as predefined property/type)' );
+		throw new RuntimeException( 'Cannot redeclare type "' . $value['typeid'] . '" for "' . $value['label'] . '" (as predefined property/type)' );
 	}
 
 }
