@@ -17,14 +17,13 @@ class SemanticExternalQueryLookup {
 	 * @since 1.0
 	 */
 	public static function onExtensionFunction() {
-
 		define( 'SEQL_VERSION', '1.0.0-alpha' );
 		class_alias( 'SEQL\ByHttpRequestQueryLookup', 'SMWExternalQueryLookup' ); // deprecated
 		class_alias( 'SEQL\ByHttpRequestQueryLookup', 'SMWExternalAskQueryLookup' );
 
-		$options = array(
+		$options = [
 			'externalRepositoryEndpoints' => $GLOBALS['seqlgExternalRepositoryEndpoints']
-		);
+		];
 
 		$hookRegistry = new HookRegistry(
 			$options

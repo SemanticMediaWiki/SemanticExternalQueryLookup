@@ -8,15 +8,14 @@ use SMWQuery as Query;
  * @covers \SEQL\ByHttpRequestQueryLookup
  * @group semantic-external-query-lookup
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
  */
-class ByHttpRequestQueryLookupTest extends \PHPUnit_Framework_TestCase {
+class ByHttpRequestQueryLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = $this->getMockBuilder( '\SEQL\ByHttpRequestQueryLookup' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -28,7 +27,6 @@ class ByHttpRequestQueryLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResult() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -39,21 +37,20 @@ class ByHttpRequestQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = $this->getMockBuilder( '\SEQL\ByHttpRequestQueryLookup' )
 			->disableOriginalConstructor()
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 	}
 
 	public function testGetEmptyQueryResult_MODE_DEBUG() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -64,26 +61,25 @@ class ByHttpRequestQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$query->expects( $this->once() )
 			->method( 'addErrors' );
 
 		$instance = $this->getMockBuilder( '\SEQL\ByHttpRequestQueryLookup' )
 			->disableOriginalConstructor()
-			->setMethods( null )
+			->onlyMethods( [] )
 			->getMock();
 
 		$query->querymode = Query::MODE_DEBUG;
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 	}
 
 	public function testGetQueryResultForSimulatedInterwikiMatch() {
-
 		$interwiki = $this->getMockBuilder( '\Interwiki' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -98,27 +94,27 @@ class ByHttpRequestQueryLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array() ) );
+			->willReturn( [] );
 
 		$query->expects( $this->once() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( array() ) );
+			->willReturn( [] );
 
 		$instance = $this->getMockBuilder( '\SEQL\ByHttpRequestQueryLookup' )
 			->disableOriginalConstructor()
-			->setMethods( array( 'tryToMatchInterwikiFor' ) )
+			->onlyMethods( [ 'tryToMatchInterwikiFor' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
 			->method( 'tryToMatchInterwikiFor' )
-			->will( $this->returnValue( $interwiki ) );
+			->willReturn( $interwiki );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 	}

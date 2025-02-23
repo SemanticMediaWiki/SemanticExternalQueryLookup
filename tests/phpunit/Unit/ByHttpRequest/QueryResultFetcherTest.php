@@ -4,27 +4,25 @@ namespace SEQL\ByHttpRequest\Tests;
 
 use SEQL\ByHttpRequest\QueryResultFetcher;
 use SEQL\QueryResultFactory;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
 
 /**
  * @covers \SEQL\ByHttpRequest\QueryResultFetcher
  * @group semantic-external-query-lookup
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
  */
-class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
+class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $httpRequest;
 	private $httpRequestFactory;
 	private $jsonResponseParser;
 
-	protected function setUp() {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -39,7 +37,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->httpRequestFactory->expects( $this->any() )
 			->method( 'newCachedCurlRequest' )
-			->will( $this->returnValue( $this->httpRequest ) );
+			->willReturn( $this->httpRequest );
 
 		$this->jsonResponseParser = $this->getMockBuilder( '\SEQL\ByHttpRequest\JsonResponseParser' )
 			->disableOriginalConstructor()
@@ -47,19 +45,17 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$queryResultFactory = $this->getMockBuilder( '\SEQL\QueryResultFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
 			'\SEQL\ByHttpRequest\QueryResultFetcher',
-			new QueryResultFetcher( $this->httpRequestFactory, $queryResultFactory, $this->jsonResponseParser )
+			new QueryResultFetcher( $this->httpRequestFactory, $queryResultFactory, $this->jsonResponseParser, [] )
 		);
 	}
 
 	public function testFetchEmptyQueryResult() {
-
 		$queryResultFactory = new QueryResultFactory( $this->store );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
@@ -68,7 +64,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$printRequest->expects( $this->any() )
 			->method( 'getSerialisation' )
-			->will( $this->returnValue( '?ABC' ) );
+			->willReturn( '?ABC' );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -76,7 +72,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getPrintrequests' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->willReturn( [ $printRequest ] );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -84,39 +80,39 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( array() ) );
+			->willReturn( [] );
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->willReturn( [ $printRequest ] );
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
 			$queryResultFactory,
-			$this->jsonResponseParser
+			$this->jsonResponseParser,
+			[]
 		);
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->fetchQueryResult( $query )
 		);
 	}
 
 	public function testResetOfPrintRequest() {
-
 		$queryResultFactory = new QueryResultFactory( $this->store );
 
-		$dataValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$dataValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$dataValue->expects( $this->once() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( new DIProperty( 'Foo' ) ) );
+			->willReturn( new DIProperty( 'Foo' ) );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -124,11 +120,11 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$printRequest->expects( $this->any() )
 			->method( 'getSerialisation' )
-			->will( $this->returnValue( '?ABC' ) );
+			->willReturn( '?ABC' );
 
 		$printRequest->expects( $this->atLeastOnce() )
 			->method( 'getData' )
-			->will( $this->returnValue( $dataValue ) );
+			->willReturn( $dataValue );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -136,7 +132,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getPrintrequests' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->willReturn( [ $printRequest ] );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -144,30 +140,30 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( array() ) );
+			->willReturn( [] );
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->willReturn( [ $printRequest ] );
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
 			$queryResultFactory,
-			$this->jsonResponseParser
+			$this->jsonResponseParser,
+			[]
 		);
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->fetchQueryResult( $query )
 		);
 	}
 
 	public function testFetchQueryResultWithResponseCache() {
-
 		$queryResultFactory = new QueryResultFactory( $this->store );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
@@ -176,7 +172,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$printRequest->expects( $this->any() )
 			->method( 'getSerialisation' )
-			->will( $this->returnValue( '?ABC' ) );
+			->willReturn( '?ABC' );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -184,7 +180,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getPrintrequests' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->willReturn( [ $printRequest ] );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -192,20 +188,21 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( array() ) );
+			->willReturn( [] );
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->willReturn( [ $printRequest ] );
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
 			$queryResultFactory,
-			$this->jsonResponseParser
+			$this->jsonResponseParser,
+			[]
 		);
 
 		$instance->setHttpResponseCacheLifetime( 42 );
@@ -220,20 +217,19 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->httpRequest->expects( $this->at( 0 ) )
 			->method( 'setOption' )
-			->with( $this->anything(), $this->equalTo( 42 ) );
+			->with( $this->anything(), 42 );
 
 		$this->httpRequest->expects( $this->at( 1 ) )
 			->method( 'setOption' )
-			->with( $this->anything(), $this->equalTo( 'Foo:seql:' ) );
+			->with( $this->anything(), 'Foo:seql:' );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->fetchQueryResult( $query )
 		);
 	}
 
 	public function testHttpRequestToReturnWithError() {
-
 		$queryResultFactory = new QueryResultFactory( $this->store );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
@@ -242,7 +238,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$printRequest->expects( $this->any() )
 			->method( 'getSerialisation' )
-			->will( $this->returnValue( '?ABC' ) );
+			->willReturn( '?ABC' );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -250,7 +246,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getPrintrequests' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->willReturn( [ $printRequest ] );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -258,20 +254,21 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( array() ) );
+			->willReturn( [] );
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->willReturn( [ $printRequest ] );
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
 			$queryResultFactory,
-			$this->jsonResponseParser
+			$this->jsonResponseParser,
+			[]
 		);
 
 		$instance->setHttpRequestEndpoint( 'http://example.org/api.php' );
@@ -279,16 +276,15 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->httpRequest->expects( $this->any() )
 			->method( 'execute' )
-			->will( $this->returnValue( json_encode( array( 'error' => array( 'info' => 'error' ) ) ) ) );
+			->willReturn( json_encode( [ 'error' => [ 'info' => 'error' ] ] ) );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->fetchQueryResult( $query )
 		);
 	}
 
 	public function testHttpRequestToReturnWithValidJson() {
-
 		$queryResultFactory = new QueryResultFactory( $this->store );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
@@ -297,7 +293,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$printRequest->expects( $this->any() )
 			->method( 'getSerialisation' )
-			->will( $this->returnValue( '?ABC' ) );
+			->willReturn( '?ABC' );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -305,7 +301,7 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getPrintrequests' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->willReturn( [ $printRequest ] );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -313,40 +309,41 @@ class QueryResultFetcherTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( array() ) );
+			->willReturn( [] );
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( array( $printRequest ) ) );
+			->willReturn( [ $printRequest ] );
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$this->jsonResponseParser->expects( $this->any() )
 			->method( 'getResultSubjectList' )
-			->will( $this->returnValue( array() ) );
+			->willReturn( [] );
 
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
 			$queryResultFactory,
-			$this->jsonResponseParser
+			$this->jsonResponseParser,
+			[]
 		);
 
 		$instance->setHttpRequestEndpoint( 'http://example.org/api.php' );
 		$instance->setRepositoryTargetUrl( 'http://example.org/$1' );
 
-		$expected = array(
+		$expected = [
 			'query-continue-offset' => 3,
-			'query' => array()
-		);
+			'query' => []
+		];
 
 		$this->httpRequest->expects( $this->once() )
 			->method( 'execute' )
-			->will( $this->returnValue( json_encode( $expected ) ) );
+			->willReturn( json_encode( $expected ) );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->fetchQueryResult( $query )
 		);
 	}

@@ -8,7 +8,7 @@ use SEQL\QueryResultFactory;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
@@ -46,7 +46,7 @@ class QueryResultFetcher {
 	private $httpResponseCachePrefix;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $httpResponseCacheLifetime;
 
@@ -104,7 +104,7 @@ class QueryResultFetcher {
 	/**
 	 * @since 1.0
 	 *
-	 * @param integer $httpResponseCacheLifetime
+	 * @param int $httpResponseCacheLifetime
 	 */
 	public function setHttpResponseCacheLifetime( $httpResponseCacheLifetime ) {
 		$this->httpResponseCacheLifetime = $httpResponseCacheLifetime;
@@ -117,8 +117,7 @@ class QueryResultFetcher {
 	 * @param array $credentials
 	 */
 	public function doAuthenticateRemoteWiki( $credentials ) {
-
-		$cookiefile = 'seql_'.time();
+		$cookiefile = 'seql_' . time();
 
 		$httpRequest = $this->httpRequestFactory->newCurlRequest();
 
@@ -136,7 +135,7 @@ class QueryResultFetcher {
 		$response = $httpRequest->execute();
 		$result = json_decode( $response, true );
 
-		if( isset( $result['query']['tokens']['logintoken'] ) ) {
+		if ( isset( $result['query']['tokens']['logintoken'] ) ) {
 
 			$token = $result['query']['tokens']['logintoken'];
 
@@ -149,13 +148,13 @@ class QueryResultFetcher {
 			$httpRequest->setOption( CURLOPT_COOKIEJAR, $cookiefile );
 			$httpRequest->setOption( CURLOPT_COOKIEFILE, $cookiefile );
 
-			$httpRequest->setOption( CURLOPT_POSTFIELDS, http_build_query( array(
+			$httpRequest->setOption( CURLOPT_POSTFIELDS, http_build_query( [
 					'action' => 'login',
 					'format' => 'json',
 					'lgname' => $credentials['username'],
 					'lgpassword' => $credentials['password'],
 					'lgtoken' => $token
-				))
+				] )
 			);
 
 			$response = $httpRequest->execute();
@@ -166,7 +165,6 @@ class QueryResultFetcher {
 			}
 
 		}
-
 	}
 
 	/**
@@ -177,22 +175,21 @@ class QueryResultFetcher {
 	 * @return QueryResult
 	 */
 	public function fetchQueryResult( Query $query ) {
-
 		$this->doResetPrintRequestsToQuerySource( $query );
 
-		if( $this->credentials && !self::$cookies ) {
+		if ( $this->credentials && !self::$cookies ) {
 			$this->doAuthenticateRemoteWiki( $this->credentials );
 		}
 
-		list( $result, $isFromCache ) = $this->doMakeHttpRequestFor( $query );
+		[ $result, $isFromCache ] = $this->doMakeHttpRequestFor( $query );
 
-		if ( $result === array() || $result === false || $result === null ) {
+		if ( $result === [] || $result === false || $result === null ) {
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
 		}
 
 		if ( isset( $result['error'] ) ) {
 			$query->addErrors(
-				isset( $result['error']['info'] ) ? array( implode( ', ', $result['error'] ) ) : $result['error']['query']
+				isset( $result['error']['info'] ) ? [ implode( ', ', $result['error'] ) ] : $result['error']['query']
 			);
 
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
@@ -213,14 +210,13 @@ class QueryResultFetcher {
 		$queryResult->setFromCache( $isFromCache );
 
 		$queryResult->setRemoteTargetUrl(
-			str_replace( '$1', '',  $this->repositoryTargetUrl )
+			str_replace( '$1', '', $this->repositoryTargetUrl )
 		);
 
 		return $queryResult;
 	}
 
 	private function doResetPrintRequestsToQuerySource( $query ) {
-
 		$querySource = $query->getQuerySource();
 
 		foreach ( $query->getExtraPrintouts() as $printRequest ) {
@@ -230,7 +226,7 @@ class QueryResultFetcher {
 			}
 
 			$property = $printRequest->getData()->getDataItem();
-			$property->setInterwiki( $querySource );
+			$property->setInterwiki( $querySource ?? '' );
 
 			$printRequest->getData()->setDataItem( $property );
 
@@ -240,7 +236,6 @@ class QueryResultFetcher {
 	}
 
 	private function doMakeHttpRequestFor( $query ) {
-
 		$httpRequest = $this->httpRequestFactory->newCachedCurlRequest();
 
 		$httpRequest->setOption( ONOI_HTTP_REQUEST_RESPONSECACHE_TTL, $this->httpResponseCacheLifetime );
@@ -254,19 +249,19 @@ class QueryResultFetcher {
 
 		$httpRequest->setOption( CURLOPT_URL, $this->httpRequestEndpoint . '?action=ask&format=json&query=' . QueryEncoder::rawUrlEncode( $query ) );
 
-		$httpRequest->setOption( CURLOPT_HTTPHEADER, array(
+		$httpRequest->setOption( CURLOPT_HTTPHEADER, [
 			'Accept: application/json',
 			'Content-Type: application/json; charset=utf-8'
-		) );
+		] );
 
-		if( self::$cookies ) {
+		if ( self::$cookies ) {
 			$httpRequest->setOption( CURLOPT_COOKIEJAR, self::$cookies );
 			$httpRequest->setOption( CURLOPT_COOKIEFILE, self::$cookies );
 		}
 
 		$response = $httpRequest->execute();
 
-		return array( json_decode( $response, true ), $httpRequest->isFromCache() );
+		return [ json_decode( $response ?? '', true ), $httpRequest->isFromCache() ];
 	}
 
 }

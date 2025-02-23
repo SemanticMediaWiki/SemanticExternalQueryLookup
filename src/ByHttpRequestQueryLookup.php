@@ -7,13 +7,13 @@ use Onoi\HttpRequest\HttpRequestFactory;
 use SEQL\ByHttpRequest\JsonResponseParser;
 use SEQL\ByHttpRequest\QueryResultFetcher;
 use SMW\CacheFactory;
+use SMW\Query\QueryResult;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
-use SMW\ApplicationFactory;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
@@ -38,18 +38,17 @@ class ByHttpRequestQueryLookup extends SQLStore {
 	 * @return QueryResult
 	 */
 	public function getQueryResult( Query $query ) {
-
 		$this->queryResultFactory = new QueryResultFactory( $this );
 
 		if ( $query->querymode === Query::MODE_DEBUG ) {
-			$query->addErrors( array( wfMessage( 'seql-debug-query-not-supported' )->text() ) );
+			$query->addErrors( [ wfMessage( 'seql-debug-query-not-supported' )->text() ] );
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
 		}
 
 		$interwiki = $this->tryToMatchInterwikiFor( $query );
 
 		if ( $interwiki === false || $interwiki === null ) {
-			$query->addErrors( array( wfMessage( 'seql-interwiki-prefix-is-missing', $query->getQuerySource() )->text() ) );
+			$query->addErrors( [ wfMessage( 'seql-interwiki-prefix-is-missing', $query->getQuerySource() )->text() ] );
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
 		}
 
@@ -68,7 +67,6 @@ class ByHttpRequestQueryLookup extends SQLStore {
 	}
 
 	protected function fetchQueryResultFor( Query $query, $interwiki, $credentials = false ) {
-
 		$queryResultFetcher = new QueryResultFetcher(
 			new HttpRequestFactory( $this->getCacheFactory()->newMediaWikiCompositeCache( $GLOBALS['seqlgHttpResponseCacheType'] ) ),
 			$this->queryResultFactory,
@@ -86,7 +84,6 @@ class ByHttpRequestQueryLookup extends SQLStore {
 	}
 
 	private function getCacheFactory() {
-
 		if ( $this->cacheFactory === null ) {
 			$this->cacheFactory = ApplicationFactory::getInstance()->newCacheFactory();
 		}

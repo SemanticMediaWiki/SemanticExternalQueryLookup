@@ -5,7 +5,7 @@ namespace SEQL;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
@@ -31,32 +31,31 @@ class QueryEncoder {
 	 * @return string
 	 */
 	public static function encode( Query $query ) {
-		$serialized = array();
+		$serialized = [];
 
 		$serialized['conditions'] = $query->getQueryString();
 
-		$serialized['parameters'] = array(
+		$serialized['parameters'] = [
 			'limit=' . $query->getLimit(),
 			'offset=' . $query->getOffset(),
 			'mainlabel=' . $query->getMainlabel(),
-		//	'source=' . $query->getQuerySource()
-		);
+		// 'source=' . $query->getQuerySource()
+		];
 
-		list( $serialized['sort'], $serialized['order'] ) = self::doSerializeSortKeys( $query );
+		[ $serialized['sort'], $serialized['order'] ] = self::doSerializeSortKeys( $query );
 		$serialized['printouts'] = self::doSerializePrintouts( $query );
 
 		$encoded = $serialized['conditions'] . '|' .
-			( $serialized['printouts'] !== array() ? implode( '|', $serialized['printouts'] ) . '|' : '' ) .
+			( $serialized['printouts'] !== [] ? implode( '|', $serialized['printouts'] ) . '|' : '' ) .
 			implode( '|', $serialized['parameters'] ) .
-			( $serialized['sort'] !==  array() ? '|sort=' . implode( ',', $serialized['sort'] ) : '' ) .
-			( $serialized['order'] !== array() ? '|order=' . implode( ',', $serialized['order'] ) : '' );
+			( $serialized['sort'] !== [] ? '|sort=' . implode( ',', $serialized['sort'] ) : '' ) .
+			( $serialized['order'] !== [] ? '|order=' . implode( ',', $serialized['order'] ) : '' );
 
 		return $encoded;
 	}
 
 	private static function doSerializePrintouts( $query ) {
-
-		$printouts = array();
+		$printouts = [];
 
 		foreach ( $query->getExtraPrintouts() as $printout ) {
 			$serialization = $printout->getSerialisation();
@@ -71,9 +70,8 @@ class QueryEncoder {
 	}
 
 	private static function doSerializeSortKeys( $query ) {
-
-		$sort = array();
-		$order = array();
+		$sort = [];
+		$order = [];
 
 		foreach ( $query->getSortKeys() as $key => $value ) {
 
@@ -85,7 +83,7 @@ class QueryEncoder {
 			$order[] = strtolower( $value );
 		}
 
-		return array( $sort, $order );
+		return [ $sort, $order ];
 	}
 
 }

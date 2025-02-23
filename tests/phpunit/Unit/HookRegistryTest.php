@@ -8,18 +8,17 @@ use SEQL\HookRegistry;
  * @covers \SEQL\HookRegistry
  * @group semantic-external-query-lookup
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
  */
-class HookRegistryTest extends \PHPUnit_Framework_TestCase {
+class HookRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
-		$options = array(
-			'externalRepositoryEndpoints' => array(),
-		);
+		$options = [
+			'externalRepositoryEndpoints' => [],
+		];
 
 		$this->assertInstanceOf(
 			'\SEQL\HookRegistry',
@@ -28,10 +27,9 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegister() {
-
-		$options = array(
-			'externalRepositoryEndpoints' => array(),
-		);
+		$options = [
+			'externalRepositoryEndpoints' => [],
+		];
 
 		$instance = new HookRegistry(
 			$options
@@ -43,11 +41,10 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function doTestRegisteredInterwikiLoadPrefixHandler( $instance ) {
-
 		$handler = 'InterwikiLoadPrefix';
 
 		$prefix = '';
-		$interwiki = array();
+		$interwiki = [];
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
@@ -55,13 +52,12 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			array( $prefix, &$interwiki )
+			[ $prefix, &$interwiki ]
 		);
 	}
 
 	private function assertThatHookIsExcutable( \Closure $handler, $arguments ) {
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
 			call_user_func_array( $handler, $arguments )
 		);
 	}

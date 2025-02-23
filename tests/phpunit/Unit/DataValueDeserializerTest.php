@@ -3,23 +3,22 @@
 namespace SEQL\Tests;
 
 use SEQL\DataValueDeserializer;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMWDITime as DITime;
 
 /**
  * @covers \SEQL\DataValueDeserializer
  * @group semantic-external-query-lookup
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
  */
-class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
+class DataValueDeserializerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SEQL\DataValueDeserializer',
 			new DataValueDeserializer( 'foo' )
@@ -27,13 +26,12 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewDiWikiPage() {
-
 		$instance = new DataValueDeserializer( 'foo' );
 
-		$value = array(
+		$value = [
 			'namespace' => NS_MAIN,
 			'fulltext'  => 'abc def'
-		);
+		];
 
 		$this->assertEquals(
 			new DIWikiPage( 'Foo:abc_def', NS_MAIN ),
@@ -42,16 +40,14 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryNewDiWikiPageForInvalidSeralization() {
-
 		$instance = new DataValueDeserializer( 'foo' );
 
 		$this->assertFalse(
-			$instance->newDiWikiPage( array( 'Foo' ) )
+			$instance->newDiWikiPage( [ 'Foo' ] )
 		);
 	}
 
 	public function testNewTimeValueForOutOfRangeTimestamp() {
-
 		$instance = new DataValueDeserializer( 'foo' );
 
 		$property = new DIProperty( 'Bar' );
@@ -64,7 +60,6 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewTimeValueForRawTimeFromat() {
-
 		$instance = new DataValueDeserializer( 'foo' );
 
 		$property = new DIProperty( 'Bar' );
@@ -72,27 +67,26 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			DITime::doUnserialize( '2/-200' ),
-			$instance->newDataValueFrom( $property, array( 'raw' => '2/-200' ) )->getDataItem()
+			$instance->newDataValueFrom( $property, [ 'raw' => '2/-200' ] )->getDataItem()
 		);
 	}
 
 	public function testNewRecordValue() {
-
 		$instance = new DataValueDeserializer( 'foo' );
 
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_rec' );
 
-		$item = array(
+		$item = [
 			'namespace' => NS_MAIN,
 			'fulltext'  => 'abc def'
-		);
+		];
 
-		$record[] = array(
+		$record[] = [
 			'label'  => 'Foo',
 			'typeid' => '_wpg',
-			'item'   => array( $item )
-		);
+			'item'   => [ $item ]
+		];
 
 		$this->assertInstanceOf(
 			'\SMWRecordValue',
@@ -101,7 +95,6 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTextValueWithEmbeddedLink() {
-
 		$instance = new DataValueDeserializer( 'abc' );
 
 		$property = new DIProperty( 'Bar' );
@@ -110,7 +103,7 @@ class DataValueDeserializerTest extends \PHPUnit_Framework_TestCase {
 		$dataValue = $instance->newDataValueFrom( $property, 'Foo [[42]] bar' );
 
 		$this->assertInstanceOf(
-			'\SMWStringValue',
+			'\SMW\DataValues\StringValue',
 			$dataValue
 		);
 

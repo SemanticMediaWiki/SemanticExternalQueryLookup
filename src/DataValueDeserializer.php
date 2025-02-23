@@ -2,16 +2,16 @@
 
 namespace SEQL;
 
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWContainerSemanticData as ContainerSemanticData;
+use SMWDIBlob as DIBlob;
 use SMWDIContainer as DIContainer;
 use SMWDITime as DITime;
-use SMWDIBlob as DIBlob;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
@@ -56,9 +56,8 @@ class DataValueDeserializer {
 	 * @return DataValue
 	 */
 	public function newDataValueFrom( DIProperty $property, $value ) {
-
 		$dv = null;
-		$propertyList = array();
+		$propertyList = [];
 
 		if ( $property->findPropertyTypeId() === '_wpg' || isset( $value['fulltext'] ) ) {
 			$dv = $this->newDataValueFromDataItem( $property, $this->newDiWikiPage( $value ) );
@@ -70,7 +69,7 @@ class DataValueDeserializer {
 		} elseif ( strpos( $property->findPropertyTypeId(), '_txt' ) !== false ) {
 			$dv = $this->newDataValueFromDataItem( $property, $this->newDiBlob( $value ) );
 		} elseif ( $property->findPropertyTypeId() === '_qty' ) {
-			$dv = $this->newDataValueFromPropertyObject( $property, $value['value'] . ' ' . $value['unit']  );
+			$dv = $this->newDataValueFromPropertyObject( $property, $value['value'] . ' ' . $value['unit'] );
 		}
 
 		if ( $dv === null ) {
@@ -88,7 +87,6 @@ class DataValueDeserializer {
 	 * @return DIWikiPage|false
 	 */
 	public function newDiWikiPage( array $value ) {
-
 		if ( !isset( $value['namespace'] ) || !isset( $value['fulltext'] ) ) {
 			return false;
 		}
@@ -96,16 +94,15 @@ class DataValueDeserializer {
 		$ns = (int)$value['namespace'] === NS_CATEGORY ? NS_CATEGORY : NS_MAIN;
 
 		if ( $ns === NS_CATEGORY ) {
-			$value['fulltext'] = substr( $value['fulltext'], ($pos = strpos( $value['fulltext'], ':') ) !== false ? $pos + 1 : 0 );
+			$value['fulltext'] = substr( $value['fulltext'], ( $pos = strpos( $value['fulltext'], ':' ) ) !== false ? $pos + 1 : 0 );
 		}
 
-		$title = \Title::newFromText( $this->querySource . ':' . str_replace(" ", "_", $value['fulltext'] ), $ns );
+		$title = \Title::newFromText( $this->querySource . ':' . str_replace( " ", "_", $value['fulltext'] ), $ns );
 
 		return DIWikiPage::newFromTitle( $title );
 	}
 
 	private function newDiTime( $value ) {
-
 		if ( isset( $value['raw'] ) ) {
 			return DITime::doUnserialize( $value['raw'] );
 		}
@@ -114,7 +111,7 @@ class DataValueDeserializer {
 		// Avoid something like "Part of the date is out of bounds" where the API
 		// doesn't sent a raw format
 		// return 9999 BC to indicate that we hit a bounds with the timespamp
-		try{
+		try {
 			$dataItem = DITime::newFromTimestamp( $value );
 		} catch ( \Exception $e ) {
 			$dataItem = DITime::doUnserialize( '2/-9999' );
@@ -128,8 +125,7 @@ class DataValueDeserializer {
 	}
 
 	private function newDataValueFromPropertyObject( $property, $value ) {
-
-		try{
+		try {
 			$dv = DataValueFactory::newPropertyObjectValue( $property, $value );
 		} catch ( \Exception $e ) {
 			$dv = false;
@@ -139,12 +135,11 @@ class DataValueDeserializer {
 	}
 
 	private function newDataValueFromDataItem( $property, $dataItem = false ) {
-
 		if ( $dataItem === false ) {
 			return false;
 		}
 
-		try{
+		try {
 			$dv = DataValueFactory::newDataItemValue( $dataItem, $property );
 		} catch ( \Exception $e ) {
 			$dv = false;
@@ -154,7 +149,6 @@ class DataValueDeserializer {
 	}
 
 	private function newDiContainerOnRecordType( array $value, &$propertyList ) {
-
 		// Remote container to use an anonymous
 		$semanticData = ContainerSemanticData::makeAnonymousContainer();
 

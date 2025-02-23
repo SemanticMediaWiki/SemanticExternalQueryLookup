@@ -9,15 +9,14 @@ use SMW\DIProperty;
  * @covers \SEQL\ByHttpRequest\JsonResponseParser
  * @group semantic-external-query-lookup
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
  */
-class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
+class JsonResponseParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$dataValueDeserializer = $this->getMockBuilder( '\SEQL\DataValueDeserializer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,7 +31,6 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider resultProvider
 	 */
 	public function testDoParse( $result, $rawResponseResult, $hasFurtherResults, $property ) {
-
 		$dataValueDeserializer = $this->getMockBuilder( '\SEQL\DataValueDeserializer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -60,22 +58,21 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoParseForRedirect() {
+		$result = [
+			'query' => [
+				'printrequests' => [
+					[ 'label' => 'Foo', 'mode' => 2, 'redi' => 'Bar', 'typeid' => '_wpg' ]
+				],
+			'results' => []
+			]
+		];
 
-		$result = array(
-			'query' => array(
-				'printrequests' => array(
-					array( 'label' => 'Foo', 'mode' => 2, 'redi' => 'Bar' , 'typeid' => '_wpg' )
-				),
-			'results' => array()
-			)
-		);
-
-		$rawResponseResult = array(
-			'printrequests' => array(
-				array( 'label' => 'Foo', 'mode' => 2, 'redi' => 'Bar' , 'typeid' => '_wpg' )
-			),
-			'results' => array()
-		);
+		$rawResponseResult = [
+			'printrequests' => [
+				[ 'label' => 'Foo', 'mode' => 2, 'redi' => 'Bar', 'typeid' => '_wpg' ]
+			],
+			'results' => []
+		];
 
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
@@ -87,7 +84,7 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValueDeserializer->expects( $this->once() )
 			->method( 'getQuerySource' )
-			->will( $this->returnValue( 'abc' ) );
+			->willReturn( 'abc' );
 
 		$instance = new JsonResponseParser( $dataValueDeserializer );
 
@@ -110,64 +107,63 @@ class JsonResponseParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function resultProvider() {
-
-		#0
-		$provider[] = array(
-			array( 'query' => array() ),
-			array(),
+		# 0
+		$provider[] = [
+			[ 'query' => [] ],
+			[],
 			false,
 			null
-		);
+		];
 
-		#1
-		$provider[] = array(
-			array(
+		# 1
+		$provider[] = [
+			[
 				'query-continue-offset' => 3,
-				'query' => array()
-			),
-			array(),
+				'query' => []
+			],
+			[],
 			true,
 			null
-		);
+		];
 
-		#2
-		$provider[] = array(
-			array(
+		# 2
+		$provider[] = [
+			[
 				'query-continue-offset' => 3,
-				'query' => array(
-					'printrequests' => array(
-						array( 'label' => 'Category', 'mode' => 0 )
-					)
-				)
-			),
-			array(
-				'printrequests' => array(
-					array( 'label' => 'Category', 'mode' => 0 )
-				)
-			),
+				'query' => [
+					'printrequests' => [
+						[ 'label' => 'Category', 'mode' => 0 ]
+					]
+				]
+			],
+			[
+				'printrequests' => [
+					[ 'label' => 'Category', 'mode' => 0 ]
+				]
+			],
 			true,
 			new DIProperty( '_INST' )
-		);
+		];
 
-		#3
-		$provider[] = array(
-			array(
-				'query' => array(
-					'printrequests' => array(
-						array( 'label' => 'Category', 'mode' => 0 )
-					),
-				'results' => array()
-				),
-			),
-			array(
-				'printrequests' => array(
-					array( 'label' => 'Category', 'mode' => 0 )
-				),
-				'results' => array()
-			),
+		# 3
+		$provider[] = [
+			[
+				'query' => [
+					'printrequests' => [
+						[ 'label' => 'Category', 'mode' => 0 ]
+					],
+				'results' => []
+				],
+			],
+			[
+				'printrequests' => [
+					[ 'label' => 'Category', 'mode' => 0 ]
+				],
+				'results' => []
+			],
 			false,
 			new DIProperty( '_INST' )
-		);
+		];
 
 		return $provider;
 	}

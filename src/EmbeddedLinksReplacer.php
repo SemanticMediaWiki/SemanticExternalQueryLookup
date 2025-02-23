@@ -2,12 +2,12 @@
 
 namespace SEQL;
 
-use SMW\InTextAnnotationParser;
+use SMW\Parser\InTextAnnotationParser;
 
 /**
  * Find and replace [[]] with an appropriate remote source link.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
@@ -36,7 +36,6 @@ class EmbeddedLinksReplacer {
 	 * @return string
 	 */
 	public function replace( $value ) {
-
 		// Strip any [[ :: ]] from a value to avoid "foreign" annotation parsing
 		// for annotation embedded within a value
 		$value = InTextAnnotationParser::removeAnnotation(
@@ -49,7 +48,7 @@ class EmbeddedLinksReplacer {
 	private function replaceEmbeddedLinksWith( $source, $value ) {
 		$value = preg_replace_callback(
 			'/\[\[(.*)\]\]/xu',
-			function( array $matches ) use( $source ) {
+			static function ( array $matches ) use( $source ) {
 				$caption = false;
 				$value = '';
 
@@ -63,7 +62,7 @@ class EmbeddedLinksReplacer {
 					$caption = $value;
 				}
 
-				return '[[' . $source . ':' . $value . '|'  . $caption . ']]';
+				return '[[' . $source . ':' . $value . '|' . $caption . ']]';
 			},
 			$value
 		);

@@ -8,24 +8,22 @@ use SEQL\QueryResultFactory;
  * @covers \SEQL\QueryResultFactory
  * @group semantic-external-query-lookup
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author mwjames
  */
-class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
+class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
-	protected function setUp() {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SEQL\QueryResultFactory',
 			new QueryResultFactory( $this->store )
@@ -33,7 +31,6 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewEmptyQueryResult() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -44,18 +41,17 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new QueryResultFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->newEmptyQueryResult( $query )
 		);
 	}
 
 	public function testNewByHttpLookupQueryResult() {
-
 		$jsonResponseParser = $this->getMockBuilder( '\SEQL\ByHttpRequest\JsonResponseParser' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -70,12 +66,12 @@ class QueryResultFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new QueryResultFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->newByHttpRequestQueryResult( $query, $jsonResponseParser )
 		);
 	}
