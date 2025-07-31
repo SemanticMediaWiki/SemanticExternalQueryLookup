@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Умар"
+		]
+	},
+	"seql-desc": "Таро ло генарчу [https://semantic-mediawiki.org Semantic MediaWiki]-ца локалан вики чу дехарийн жамӀашна интеграци йан",
+	"seql-interwiki-prefix-is-missing": "Хаьржина хьостан «$1» йац нийса интервики дешхьалхе.",
+	"seql-debug-query-not-supported": "Арахьара дехаран хьост лелош нисдаран дехарийн жамӀаш гайтар ловш дац."
+}
