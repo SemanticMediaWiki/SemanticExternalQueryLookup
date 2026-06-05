@@ -22,11 +22,8 @@
 	"AutoloadNamespaces": {
 		"SEQL\\": "src/"
 	},
-	"AutoloadClasses": {
-		"SemanticExternalQueryLookup": "SemanticExternalQueryLookup.php"
-	},
 	"ExtensionFunctions": [
-		"SemanticExternalQueryLookup::onExtensionFunction"
+		"SEQL\\Setup::onExtensionFunction"
 	],
 	"config_prefix": "seqlg",
 	"config": {
@@ -51,6 +48,5 @@
 			"description": "An array defines list of namespaces allowed to execute queries against remote sources. Keep empty to allow every namespace."
 		}
 	},
-	"load_composer_autoloader": true,
 	"manifest_version": 2
 }
