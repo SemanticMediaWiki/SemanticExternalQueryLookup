@@ -51,7 +51,7 @@ class DataValueDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DataValueDeserializer( 'foo' );
 
 		$property = new DIProperty( 'Bar' );
-		$property->setPropertyTypeId( '_dat' );
+		$property->setPropertyValueType( '_dat' );
 
 		$this->assertNotEquals(
 			DITime::doUnserialize( '2/-200' ),
@@ -63,7 +63,7 @@ class DataValueDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DataValueDeserializer( 'foo' );
 
 		$property = new DIProperty( 'Bar' );
-		$property->setPropertyTypeId( '_dat' );
+		$property->setPropertyValueType( '_dat' );
 
 		$this->assertEquals(
 			DITime::doUnserialize( '2/-200' ),
@@ -75,7 +75,7 @@ class DataValueDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DataValueDeserializer( 'foo' );
 
 		$property = new DIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_rec' );
+		$property->setPropertyValueType( '_rec' );
 
 		$item = [
 			'namespace' => NS_MAIN,
@@ -98,7 +98,7 @@ class DataValueDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DataValueDeserializer( 'abc' );
 
 		$property = new DIProperty( 'Bar' );
-		$property->setPropertyTypeId( '_txt' );
+		$property->setPropertyValueType( '_txt' );
 
 		$dataValue = $instance->newDataValueFrom( $property, 'Foo [[42]] bar' );
 
