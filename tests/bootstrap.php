@@ -12,11 +12,13 @@ if ( !is_readable( $autoloaderClassPath = __DIR__ . '/../../SemanticMediaWiki/te
 	die( 'The SemanticMediaWiki test autoloader is not available' );
 }
 
-if ( !class_exists( 'SemanticExternalQueryLookup' ) || ( $version = SemanticExternalQueryLookup::getVersion() ) === null ) {
-	die( "\nSemantic External Query Lookup is not available, please check your Composer or LocalSettings.\n" );
+if ( !is_readable( $extensionJson = __DIR__ . '/../extension.json' ) ) {
+	die( 'The SemanticExternalQueryLookup extension.json is not readable' );
 }
 
-print sprintf( "\n%-20s%s\n", "Semantic External Query Lookup: ", SEQL_VERSION );
+$extensionInfo = json_decode( file_get_contents( $extensionJson ), true );
+
+print sprintf( "\n%-20s%s\n", "Semantic External Query Lookup: ", $extensionInfo['version'] ?? 'UNKNOWN' );
 
 $autoLoader = require $autoloaderClassPath;
 $autoLoader->addPsr4( 'SEQL\\Tests\\', __DIR__ . '/phpunit/Unit' );
