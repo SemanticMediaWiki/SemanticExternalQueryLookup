@@ -48,7 +48,7 @@ class QueryResult extends RootQueryResult {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return $this->jsonResponseParser->getRawResponseResult();
 	}
 
@@ -59,7 +59,7 @@ class QueryResult extends RootQueryResult {
 	 *
 	 * @return array
 	 */
-	public function serializeToArray() {
+	public function serializeToArray(): array {
 		return $this->toArray();
 	}
 
@@ -68,7 +68,7 @@ class QueryResult extends RootQueryResult {
 	 *
 	 * @return CannedResultArray[]|false
 	 */
-	public function getNext() {
+	public function getNext(): false|array {
 		$page = current( $this->mResults );
 		next( $this->mResults );
 
