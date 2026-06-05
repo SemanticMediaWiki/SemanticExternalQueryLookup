@@ -37,7 +37,7 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers I18nJsonFileIntegrity
+	 * @covers \SEQL\ByHttpRequest\JsonResponseParser
 	 * @dataProvider jsonFileProvider
 	 */
 	public function testQueryResultFetcherFromCannedJsonResponse( $file ) {

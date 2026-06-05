@@ -16,7 +16,7 @@ use SMW\Tests\Utils\UtilityFactory;
 class I18nJsonFileIntegrityTest extends \PHPUnit\Framework\TestCase {
 
 	/**
-	 * @covers I18nJsonFileIntegrity
+	 * @coversNothing
 	 * @dataProvider i18nFileProvider
 	 */
 	public function testI18NJsonDecodeEncode( $file ) {
