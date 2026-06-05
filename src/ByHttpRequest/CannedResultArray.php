@@ -57,7 +57,7 @@ class CannedResultArray extends ResultArray {
 	 *
 	 * @return DIWikiPage
 	 */
-	public function getResultSubject() {
+	public function getResultSubject(): DIWikiPage {
 		return $this->mResult;
 	}
 
