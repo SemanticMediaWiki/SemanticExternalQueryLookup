@@ -66,7 +66,7 @@ class CannedResultArray extends ResultArray {
 	 *
 	 * @return SMWDataItem[]|false
 	 */
-	public function getContent() {
+	public function getContent(): array|false {
 		$this->loadContent();
 
 		if ( !$this->mContent ) {
@@ -87,7 +87,7 @@ class CannedResultArray extends ResultArray {
 	 *
 	 * @return PrintRequest
 	 */
-	public function getPrintRequest() {
+	public function getPrintRequest(): PrintRequest {
 		return $this->mPrintRequest;
 	}
 
@@ -113,7 +113,7 @@ class CannedResultArray extends ResultArray {
 	 *
 	 * @return SMWDataItem|false
 	 */
-	public function reset() {
+	public function reset(): mixed {
 		$this->loadContent();
 		$result = reset( $this->mContent );
 
