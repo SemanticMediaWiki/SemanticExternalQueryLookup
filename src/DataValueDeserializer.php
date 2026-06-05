@@ -2,6 +2,7 @@
 
 namespace SEQL;
 
+use MediaWiki\Title\Title;
 use SMW\DataItems\Blob;
 use SMW\DataItems\Container;
 use SMW\DataItems\Property;
@@ -97,7 +98,7 @@ class DataValueDeserializer {
 			$value['fulltext'] = substr( $value['fulltext'], ( $pos = strpos( $value['fulltext'], ':' ) ) !== false ? $pos + 1 : 0 );
 		}
 
-		$title = \Title::newFromText( $this->querySource . ':' . str_replace( " ", "_", $value['fulltext'] ), $ns );
+		$title = Title::newFromText( $this->querySource . ':' . str_replace( " ", "_", $value['fulltext'] ), $ns );
 
 		return WikiPage::newFromTitle( $title );
 	}
