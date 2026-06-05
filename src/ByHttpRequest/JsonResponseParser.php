@@ -3,8 +3,8 @@
 namespace SEQL\ByHttpRequest;
 
 use SEQL\DataValueDeserializer;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -57,11 +57,11 @@ class JsonResponseParser {
 	/**
 	 * @since 1.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
-	public function findPropertyFromInMemoryExternalRepositoryCache( DIProperty $property ) {
+	public function findPropertyFromInMemoryExternalRepositoryCache( Property $property ) {
 		$key = $property->getKey();
 
 		if ( $this->responsePropertyList->hasProperty( $key ) ) {
@@ -113,12 +113,12 @@ class JsonResponseParser {
 	/**
 	 * @since 1.0
 	 *
-	 * @param DIWikiPage $subject
-	 * @param DIProperty $property
+	 * @param WikiPage $subject
+	 * @param Property $property
 	 *
 	 * @return array
 	 */
-	public function getPropertyValuesFor( DIWikiPage $subject, DIProperty $property ) {
+	public function getPropertyValuesFor( WikiPage $subject, Property $property ) {
 		$hash = $subject->getHash();
 		$key = $this->responsePropertyList->findPropertyKey( $property->getKey() );
 
@@ -183,7 +183,7 @@ class JsonResponseParser {
 	}
 
 	private function addPropertyValues( $hash, $pk, $pvalues ) {
-		$property = DIProperty::newFromUserLabel( $pk );
+		$property = Property::newFromUserLabel( $pk );
 		$pk = $property->getKey();
 
 		if ( !$this->responsePropertyList->hasProperty( $pk ) ) {

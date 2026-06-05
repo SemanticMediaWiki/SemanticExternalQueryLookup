@@ -4,7 +4,7 @@ namespace SEQL\ByHttpRequest\Tests;
 
 use SEQL\ByHttpRequest\QueryResultFetcher;
 use SEQL\QueryResultFactory;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 
 /**
  * @covers \SEQL\ByHttpRequest\QueryResultFetcher
@@ -74,7 +74,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPrintrequests' )
 			->willReturn( [ $printRequest ] );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -112,7 +112,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getDataItem' )
-			->willReturn( new DIProperty( 'Foo' ) );
+			->willReturn( new Property( 'Foo' ) );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -134,7 +134,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPrintrequests' )
 			->willReturn( [ $printRequest ] );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -182,7 +182,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPrintrequests' )
 			->willReturn( [ $printRequest ] );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -248,7 +248,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPrintrequests' )
 			->willReturn( [ $printRequest ] );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -303,7 +303,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPrintrequests' )
 			->willReturn( [ $printRequest ] );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 

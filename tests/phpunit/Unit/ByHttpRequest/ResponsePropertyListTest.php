@@ -3,7 +3,7 @@
 namespace SEQL\ByHttpRequest\Tests;
 
 use SEQL\ByHttpRequest\ResponsePropertyList;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 
 /**
  * @covers \SEQL\ByHttpRequest\ResponsePropertyList
@@ -28,7 +28,7 @@ class ResponsePropertyListTest extends \PHPUnit\Framework\TestCase {
 			'label' => 'Category', 'mode' => 0
 		];
 
-		$property = new DIProperty( '_INST' );
+		$property = new Property( '_INST' );
 		$property->setInterwiki( 'abc' );
 
 		$instance = new ResponsePropertyList( 'abc' );
@@ -50,9 +50,9 @@ class ResponsePropertyListTest extends \PHPUnit\Framework\TestCase {
 			'label' => 'Foo', 'mode' => 2, 'redi' => 'was redirect from Bar', 'typeid' => '_wpg'
 		];
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setInterwiki( 'abc' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property->setPropertyValueType( '_wpg' );
 
 		$instance = new ResponsePropertyList( 'abc' );
 		$instance->addToPropertyList( $value );

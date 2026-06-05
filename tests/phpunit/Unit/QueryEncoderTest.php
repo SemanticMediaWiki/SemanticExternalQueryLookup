@@ -19,7 +19,7 @@ class QueryEncoderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider queryElementProvider
 	 */
 	public function testEncode( $sortKeys, $extraPrintouts, $expectedEncode, $expectedRawEncode ) {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 

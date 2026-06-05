@@ -3,14 +3,15 @@
 namespace SEQL;
 
 use MediaWiki\MediaWikiServices;
+use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use Onoi\HttpRequest\HttpRequestFactory;
 use SEQL\ByHttpRequest\JsonResponseParser;
 use SEQL\ByHttpRequest\QueryResultFetcher;
 use SMW\CacheFactory;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -68,7 +69,7 @@ class ByHttpRequestQueryLookup extends SQLStore {
 
 	protected function fetchQueryResultFor( Query $query, $interwiki, $credentials = false ) {
 		$queryResultFetcher = new QueryResultFetcher(
-			new HttpRequestFactory( $this->getCacheFactory()->newMediaWikiCompositeCache( $GLOBALS['seqlgHttpResponseCacheType'] ) ),
+			new HttpRequestFactory( $this->newHttpResponseCache( $GLOBALS['seqlgHttpResponseCacheType'] ) ),
 			$this->queryResultFactory,
 			new JsonResponseParser( new DataValueDeserializer( $query->getQuerySource() ) ),
 			$credentials
@@ -89,6 +90,21 @@ class ByHttpRequestQueryLookup extends SQLStore {
 		}
 
 		return $this->cacheFactory;
+	}
+
+	/**
+	 * Builds the Onoi cache used by the HTTP request layer. Replaces the
+	 * removed SMW `CacheFactory::newMediaWikiCompositeCache` by composing the
+	 * equivalent Onoi caches directly on top of a MediaWiki BagOStuff.
+	 */
+	private function newHttpResponseCache( $cacheType ) {
+		$objectCacheFactory = MediaWikiServices::getInstance()->getObjectCacheFactory();
+		$cacheFactory = OnoiCacheFactory::getInstance();
+
+		return $cacheFactory->newCompositeCache( [
+			$cacheFactory->newFixedInMemoryCache( 500 ),
+			$cacheFactory->newMediaWikiCache( $objectCacheFactory->getInstance( $cacheType ) )
+		] );
 	}
 
 }

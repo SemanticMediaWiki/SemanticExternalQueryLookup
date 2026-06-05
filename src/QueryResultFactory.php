@@ -4,9 +4,9 @@ namespace SEQL;
 
 use SEQL\ByHttpRequest\JsonResponseParser;
 use SEQL\ByHttpRequest\QueryResult as ByHttpRequestQueryResult;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Store;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
