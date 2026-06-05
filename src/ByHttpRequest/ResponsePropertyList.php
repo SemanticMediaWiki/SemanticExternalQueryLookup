@@ -118,10 +118,10 @@ class ResponsePropertyList {
 		$property = DIProperty::newFromUserLabel( $value['label'] );
 
 		if ( $property->isUserDefined() ) {
-			return $property->setPropertyTypeId( $value['typeid'] );
+			return $property->setPropertyValueType( $value['typeid'] );
 		}
 
-		if ( $property->findPropertyTypeID() === $value['typeid'] ) {
+		if ( $property->findPropertyValueType() === $value['typeid'] ) {
 			return $property;
 		}
 
