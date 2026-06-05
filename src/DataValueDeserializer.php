@@ -2,13 +2,14 @@
 
 namespace SEQL;
 
+use MediaWiki\Title\Title;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMWDIBlob as DIBlob;
-use SMWDIContainer as DIContainer;
-use SMWDITime as DITime;
 
 /**
  * @license GPL-2.0-or-later
@@ -50,25 +51,25 @@ class DataValueDeserializer {
 	/**
 	 * @since 1.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param array|string $value
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueFrom( DIProperty $property, $value ) {
+	public function newDataValueFrom( Property $property, $value ) {
 		$dv = null;
 		$propertyList = [];
 
-		if ( $property->findPropertyTypeId() === '_wpg' || isset( $value['fulltext'] ) ) {
+		if ( $property->findPropertyValueType() === '_wpg' || isset( $value['fulltext'] ) ) {
 			$dv = $this->newDataValueFromDataItem( $property, $this->newDiWikiPage( $value ) );
-		} elseif ( strpos( $property->findPropertyTypeId(), '_rec' ) !== false ) {
+		} elseif ( strpos( $property->findPropertyValueType(), '_rec' ) !== false ) {
 			$dv = $this->newDataValueFromDataItem( $property, $this->newDiContainerOnRecordType( $value, $propertyList ) );
 			$dv->setFieldProperties( $propertyList );
-		} elseif ( $property->findPropertyTypeId() === '_dat' ) {
+		} elseif ( $property->findPropertyValueType() === '_dat' ) {
 			$dv = $this->newDataValueFromDataItem( $property, $this->newDiTime( $value ) );
-		} elseif ( strpos( $property->findPropertyTypeId(), '_txt' ) !== false ) {
+		} elseif ( strpos( $property->findPropertyValueType(), '_txt' ) !== false ) {
 			$dv = $this->newDataValueFromDataItem( $property, $this->newDiBlob( $value ) );
-		} elseif ( $property->findPropertyTypeId() === '_qty' ) {
+		} elseif ( $property->findPropertyValueType() === '_qty' ) {
 			$dv = $this->newDataValueFromPropertyObject( $property, $value['value'] . ' ' . $value['unit'] );
 		}
 
@@ -84,7 +85,7 @@ class DataValueDeserializer {
 	 *
 	 * @param array $value
 	 *
-	 * @return DIWikiPage|false
+	 * @return WikiPage|false
 	 */
 	public function newDiWikiPage( array $value ) {
 		if ( !isset( $value['namespace'] ) || !isset( $value['fulltext'] ) ) {
@@ -97,14 +98,14 @@ class DataValueDeserializer {
 			$value['fulltext'] = substr( $value['fulltext'], ( $pos = strpos( $value['fulltext'], ':' ) ) !== false ? $pos + 1 : 0 );
 		}
 
-		$title = \Title::newFromText( $this->querySource . ':' . str_replace( " ", "_", $value['fulltext'] ), $ns );
+		$title = Title::newFromText( $this->querySource . ':' . str_replace( " ", "_", $value['fulltext'] ), $ns );
 
-		return DIWikiPage::newFromTitle( $title );
+		return WikiPage::newFromTitle( $title );
 	}
 
 	private function newDiTime( $value ) {
 		if ( isset( $value['raw'] ) ) {
-			return DITime::doUnserialize( $value['raw'] );
+			return Time::doUnserialize( $value['raw'] );
 		}
 
 		// < 0.7 API format
@@ -112,21 +113,21 @@ class DataValueDeserializer {
 		// doesn't sent a raw format
 		// return 9999 BC to indicate that we hit a bounds with the timespamp
 		try {
-			$dataItem = DITime::newFromTimestamp( $value );
+			$dataItem = Time::newFromTimestamp( $value );
 		} catch ( \Exception $e ) {
-			$dataItem = DITime::doUnserialize( '2/-9999' );
+			$dataItem = Time::doUnserialize( '2/-9999' );
 		}
 
 		return $dataItem;
 	}
 
 	private function newDiBlob( $value ) {
-		return new DIBlob( $this->embeddedLinksReplacer->replace( $value ) );
+		return new Blob( $this->embeddedLinksReplacer->replace( $value ) );
 	}
 
 	private function newDataValueFromPropertyObject( $property, $value ) {
 		try {
-			$dv = DataValueFactory::newPropertyObjectValue( $property, $value );
+			$dv = DataValueFactory::getInstance()->newDataValueByProperty( $property, $value );
 		} catch ( \Exception $e ) {
 			$dv = false;
 		}
@@ -140,7 +141,7 @@ class DataValueDeserializer {
 		}
 
 		try {
-			$dv = DataValueFactory::newDataItemValue( $dataItem, $property );
+			$dv = DataValueFactory::getInstance()->newDataValueByItem( $dataItem, $property );
 		} catch ( \Exception $e ) {
 			$dv = false;
 		}
@@ -153,9 +154,9 @@ class DataValueDeserializer {
 		$semanticData = ContainerSemanticData::makeAnonymousContainer();
 
 		foreach ( $value as $recValue ) {
-			$recordProperty = DIProperty::newFromUserLabel( $recValue['label'] );
+			$recordProperty = Property::newFromUserLabel( $recValue['label'] );
 			$recordProperty->setInterwiki( $this->querySource );
-			$recordProperty->setPropertyTypeId( $recValue['typeid'] );
+			$recordProperty->setPropertyValueType( $recValue['typeid'] );
 			$propertyList[] = $recordProperty;
 
 			foreach ( $recValue['item'] as $item ) {
@@ -169,7 +170,7 @@ class DataValueDeserializer {
 			}
 		}
 
-		return new DIContainer( $semanticData );
+		return new Container( $semanticData );
 	}
 
 }

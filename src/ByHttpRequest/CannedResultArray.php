@@ -2,13 +2,13 @@
 
 namespace SEQL\ByHttpRequest;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Query\PrintRequest;
 use SMW\Query\Result\ResultArray;
-use SMWDataItem;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -24,7 +24,7 @@ class CannedResultArray extends ResultArray {
 	private $mPrintRequest;
 
 	/**
-	 * @var DIWikiPage
+	 * @var WikiPage
 	 */
 	private $mResult;
 
@@ -41,11 +41,11 @@ class CannedResultArray extends ResultArray {
 	/**
 	 * @since 1.0
 	 *
-	 * @param DIWikiPage $resultPage
+	 * @param WikiPage $resultPage
 	 * @param PrintRequest $printRequest
 	 * @param JsonResponseParser $jsonResponseParser
 	 */
-	public function __construct( DIWikiPage $resultPage, PrintRequest $printRequest, JsonResponseParser $jsonResponseParser ) {
+	public function __construct( WikiPage $resultPage, PrintRequest $printRequest, JsonResponseParser $jsonResponseParser ) {
 		$this->mResult = $resultPage;
 		$this->mPrintRequest = $printRequest;
 		$this->jsonResponseParser = $jsonResponseParser;
@@ -55,18 +55,18 @@ class CannedResultArray extends ResultArray {
 	/**
 	 * @see ResultArray::getResultSubject
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	public function getResultSubject() {
+	public function getResultSubject(): WikiPage {
 		return $this->mResult;
 	}
 
 	/**
 	 * @see ResultArray::getContent
 	 *
-	 * @return SMWDataItem[]|false
+	 * @return DataItem[]|false
 	 */
-	public function getContent() {
+	public function getContent(): array|false {
 		$this->loadContent();
 
 		if ( !$this->mContent ) {
@@ -87,7 +87,7 @@ class CannedResultArray extends ResultArray {
 	 *
 	 * @return PrintRequest
 	 */
-	public function getPrintRequest() {
+	public function getPrintRequest(): PrintRequest {
 		return $this->mPrintRequest;
 	}
 
@@ -96,7 +96,7 @@ class CannedResultArray extends ResultArray {
 	 *
 	 * @since 1.6
 	 *
-	 * @return SMWDataItem|false
+	 * @return DataItem|false
 	 */
 	public function getNextDataItem() {
 		$this->loadContent();
@@ -111,9 +111,9 @@ class CannedResultArray extends ResultArray {
 	 *
 	 * @since 1.7.1
 	 *
-	 * @return SMWDataItem|false
+	 * @return mixed
 	 */
-	public function reset() {
+	public function reset(): mixed {
 		$this->loadContent();
 		$result = reset( $this->mContent );
 
@@ -142,12 +142,12 @@ class CannedResultArray extends ResultArray {
 		// therefore don't try to recreate a DataValue and use the DV created
 		// from the raw API response
 		if ( $this->mPrintRequest->getMode() === PrintRequest::PRINT_PROP &&
-			$property->findPropertyTypeId() === '_qty' ) {
+			$property->findPropertyValueType() === '_qty' ) {
 			return $content;
 		}
 
 		if ( $this->mPrintRequest->getMode() === PrintRequest::PRINT_PROP &&
-			strpos( $property->findPropertyTypeId(), '_rec' ) !== false ) {
+			strpos( $property->findPropertyValueType(), '_rec' ) !== false ) {
 
 			if ( $this->mPrintRequest->getParameter( 'index' ) === false ) {
 				return $content;
@@ -180,7 +180,7 @@ class CannedResultArray extends ResultArray {
 			$content = $content->getDataItem();
 		}
 
-		$dataValue = DataValueFactory::getInstance()->newDataItemValue(
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$content,
 			$diProperty
 		);
@@ -215,7 +215,7 @@ class CannedResultArray extends ResultArray {
 			case PrintRequest::PRINT_CATS:
 				$this->mContent = $this->jsonResponseParser->getPropertyValuesFor(
 					$this->mResult,
-					new DIProperty( '_INST' )
+					new Property( '_INST' )
 				);
 
 				break;
@@ -251,7 +251,7 @@ class CannedResultArray extends ResultArray {
 		// label
 		if ( $this->mPrintRequest->getLabel() !== '' && $this->mPrintRequest->getLabel() !== $property->getLabel() ) {
 			return $this->jsonResponseParser->findPropertyFromInMemoryExternalRepositoryCache(
-				DIProperty::newFromUserLabel( $this->mPrintRequest->getLabel() )
+				Property::newFromUserLabel( $this->mPrintRequest->getLabel() )
 			);
 		}
 

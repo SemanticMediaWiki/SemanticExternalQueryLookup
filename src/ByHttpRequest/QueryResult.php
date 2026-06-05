@@ -2,8 +2,8 @@
 
 namespace SEQL\ByHttpRequest;
 
+use SMW\Formatters\Infolink;
 use SMW\Query\QueryResult as RootQueryResult;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later
@@ -48,7 +48,7 @@ class QueryResult extends RootQueryResult {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return $this->jsonResponseParser->getRawResponseResult();
 	}
 
@@ -59,7 +59,7 @@ class QueryResult extends RootQueryResult {
 	 *
 	 * @return array
 	 */
-	public function serializeToArray() {
+	public function serializeToArray(): array {
 		return $this->toArray();
 	}
 
@@ -68,7 +68,7 @@ class QueryResult extends RootQueryResult {
 	 *
 	 * @return CannedResultArray[]|false
 	 */
-	public function getNext() {
+	public function getNext(): false|array {
 		$page = current( $this->mResults );
 		next( $this->mResults );
 
@@ -86,11 +86,15 @@ class QueryResult extends RootQueryResult {
 	}
 
 	/**
+	 * @see QueryResult::getQueryLink
+	 *
 	 * @since 1.0
 	 *
-	 * @return SMWInfolink
+	 * @param string|false $caption
+	 *
+	 * @return Infolink
 	 */
-	public function getLink() {
+	public function getQueryLink( $caption = false ): Infolink {
 		$params = [ trim( $this->getQuery()->getQueryString() ?? '' ) ];
 
 		foreach ( $this->getQuery()->getExtraPrintouts() as $printout ) {

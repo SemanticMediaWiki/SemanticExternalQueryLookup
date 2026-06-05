@@ -35,7 +35,7 @@ class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -60,7 +60,7 @@ class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 

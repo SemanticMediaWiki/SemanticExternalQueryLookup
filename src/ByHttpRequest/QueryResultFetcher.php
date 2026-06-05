@@ -2,10 +2,11 @@
 
 namespace SEQL\ByHttpRequest;
 
-use Onoi\HttpRequest\HttpRequestFactory;
+use MediaWiki\Http\HttpRequestFactory;
 use SEQL\QueryEncoder;
 use SEQL\QueryResultFactory;
-use SMWQuery as Query;
+use SMW\Query\Query;
+use Wikimedia\ObjectCache\BagOStuff;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,6 +20,11 @@ class QueryResultFetcher {
 	 * @var HttpRequestFactory
 	 */
 	private $httpRequestFactory;
+
+	/**
+	 * @var BagOStuff
+	 */
+	private $cache;
 
 	/**
 	 * @var QueryResultFactory
@@ -43,12 +49,12 @@ class QueryResultFetcher {
 	/**
 	 * @var string
 	 */
-	private $httpResponseCachePrefix;
+	private $httpResponseCachePrefix = '';
 
 	/**
 	 * @var int
 	 */
-	private $httpResponseCacheLifetime;
+	private $httpResponseCacheLifetime = 0;
 
 	/**
 	 * @var array
@@ -56,19 +62,22 @@ class QueryResultFetcher {
 	private $credentials;
 
 	/**
-	 * @var string
+	 * @var \CookieJar|null
 	 */
-	private static $cookies;
+	private static $cookieJar;
 
 	/**
 	 * @since 1.0
 	 *
 	 * @param HttpRequestFactory $httpRequestFactory
+	 * @param BagOStuff $cache
 	 * @param QueryResultFactory $queryResultFactory
 	 * @param JsonResponseParser $jsonResponseParser
+	 * @param array|false $credentials
 	 */
-	public function __construct( HttpRequestFactory $httpRequestFactory, QueryResultFactory $queryResultFactory, JsonResponseParser $jsonResponseParser, $credentials ) {
+	public function __construct( HttpRequestFactory $httpRequestFactory, BagOStuff $cache, QueryResultFactory $queryResultFactory, JsonResponseParser $jsonResponseParser, $credentials ) {
 		$this->httpRequestFactory = $httpRequestFactory;
+		$this->cache = $cache;
 		$this->queryResultFactory = $queryResultFactory;
 		$this->jsonResponseParser = $jsonResponseParser;
 		$this->credentials = $credentials;
@@ -117,53 +126,65 @@ class QueryResultFetcher {
 	 * @param array $credentials
 	 */
 	public function doAuthenticateRemoteWiki( $credentials ) {
-		$cookiefile = 'seql_' . time();
+		$cookieJar = new \CookieJar();
 
-		$httpRequest = $this->httpRequestFactory->newCurlRequest();
+		// (1) Fetch a login token while collecting session cookies into the jar.
+		$tokenRequest = $this->httpRequestFactory->create(
+			$this->httpRequestEndpoint . '?action=query&format=json&meta=tokens&type=login',
+			[
+				'method' => 'GET',
+				'followRedirects' => true,
+				'sslVerifyCert' => false,
+				'sslVerifyHost' => false,
+			],
+			__METHOD__
+		);
 
-		$httpRequest->setOption( CURLOPT_FOLLOWLOCATION, true );
+		$tokenRequest->setCookieJar( $cookieJar );
 
-		$httpRequest->setOption( CURLOPT_RETURNTRANSFER, true );
-		$httpRequest->setOption( CURLOPT_FAILONERROR, true );
-		$httpRequest->setOption( CURLOPT_SSL_VERIFYPEER, false );
-		$httpRequest->setOption( CURLOPT_COOKIESESSION, true );
-		$httpRequest->setOption( CURLOPT_COOKIEJAR, $cookiefile );
-		$httpRequest->setOption( CURLOPT_COOKIEFILE, $cookiefile );
+		if ( !$tokenRequest->execute()->isOK() ) {
+			return;
+		}
 
-		$httpRequest->setOption( CURLOPT_URL, $this->httpRequestEndpoint . '?action=query&format=json&meta=tokens&type=login' );
+		// Pull the same jar back so the Set-Cookie response is merged in.
+		$cookieJar = $tokenRequest->getCookieJar();
+		$result = json_decode( $tokenRequest->getContent() ?? '', true );
 
-		$response = $httpRequest->execute();
-		$result = json_decode( $response, true );
+		if ( !isset( $result['query']['tokens']['logintoken'] ) ) {
+			return;
+		}
 
-		if ( isset( $result['query']['tokens']['logintoken'] ) ) {
+		$token = $result['query']['tokens']['logintoken'];
 
-			$token = $result['query']['tokens']['logintoken'];
-
-			$httpRequest->setOption( CURLOPT_FOLLOWLOCATION, true );
-			$httpRequest->setOption( CURLOPT_RETURNTRANSFER, true );
-			$httpRequest->setOption( CURLOPT_FAILONERROR, true );
-			$httpRequest->setOption( CURLOPT_SSL_VERIFYPEER, false );
-			$httpRequest->setOption( CURLOPT_POST, true );
-			$httpRequest->setOption( CURLOPT_URL, $this->httpRequestEndpoint );
-			$httpRequest->setOption( CURLOPT_COOKIEJAR, $cookiefile );
-			$httpRequest->setOption( CURLOPT_COOKIEFILE, $cookiefile );
-
-			$httpRequest->setOption( CURLOPT_POSTFIELDS, http_build_query( [
+		// (2) Log in, reusing the same jar (sends the session cookies).
+		$loginRequest = $this->httpRequestFactory->create(
+			$this->httpRequestEndpoint,
+			[
+				'method' => 'POST',
+				'sslVerifyCert' => false,
+				'sslVerifyHost' => false,
+				'postData' => http_build_query( [
 					'action' => 'login',
 					'format' => 'json',
 					'lgname' => $credentials['username'],
 					'lgpassword' => $credentials['password'],
 					'lgtoken' => $token
-				] )
-			);
+				] ),
+			],
+			__METHOD__
+		);
 
-			$response = $httpRequest->execute();
-			$result = json_decode( $response, true );
+		$loginRequest->setCookieJar( $cookieJar );
 
-			if ( isset( $result['login']['lguserid'] ) ) {
-				self::$cookies = $cookiefile;
-			}
+		if ( !$loginRequest->execute()->isOK() ) {
+			return;
+		}
 
+		$cookieJar = $loginRequest->getCookieJar();
+		$result = json_decode( $loginRequest->getContent() ?? '', true );
+
+		if ( isset( $result['login']['lguserid'] ) ) {
+			self::$cookieJar = $cookieJar;
 		}
 	}
 
@@ -177,7 +198,7 @@ class QueryResultFetcher {
 	public function fetchQueryResult( Query $query ) {
 		$this->doResetPrintRequestsToQuerySource( $query );
 
-		if ( $this->credentials && !self::$cookies ) {
+		if ( $this->credentials && self::$cookieJar === null ) {
 			$this->doAuthenticateRemoteWiki( $this->credentials );
 		}
 
@@ -236,32 +257,54 @@ class QueryResultFetcher {
 	}
 
 	private function doMakeHttpRequestFor( $query ) {
-		$httpRequest = $this->httpRequestFactory->newCachedCurlRequest();
+		$url = $this->httpRequestEndpoint . '?action=ask&format=json&query=' . QueryEncoder::rawUrlEncode( $query );
 
-		$httpRequest->setOption( ONOI_HTTP_REQUEST_RESPONSECACHE_TTL, $this->httpResponseCacheLifetime );
-		$httpRequest->setOption( ONOI_HTTP_REQUEST_RESPONSECACHE_PREFIX, $this->httpResponseCachePrefix . ':seql:' );
+		// Replicate the former ':seql:' response-cache namespace as key
+		// components; makeKey() is wiki-scoped and escapes the separators.
+		$key = $this->cache->makeKey( 'seql', $this->httpResponseCachePrefix, md5( $url ) );
 
-		$httpRequest->setOption( CURLOPT_FOLLOWLOCATION, true );
+		$isFromCache = true;
+		$response = $this->cache->get( $key );
 
-		$httpRequest->setOption( CURLOPT_RETURNTRANSFER, true );
-		$httpRequest->setOption( CURLOPT_FAILONERROR, true );
-		$httpRequest->setOption( CURLOPT_SSL_VERIFYPEER, false );
+		if ( $response === false ) {
+			$isFromCache = false;
+			$response = $this->fetchHttpResponse( $url );
 
-		$httpRequest->setOption( CURLOPT_URL, $this->httpRequestEndpoint . '?action=ask&format=json&query=' . QueryEncoder::rawUrlEncode( $query ) );
-
-		$httpRequest->setOption( CURLOPT_HTTPHEADER, [
-			'Accept: application/json',
-			'Content-Type: application/json; charset=utf-8'
-		] );
-
-		if ( self::$cookies ) {
-			$httpRequest->setOption( CURLOPT_COOKIEJAR, self::$cookies );
-			$httpRequest->setOption( CURLOPT_COOKIEFILE, self::$cookies );
+			if ( is_string( $response ) && $response !== '' ) {
+				$this->cache->set( $key, $response, $this->httpResponseCacheLifetime );
+			}
 		}
 
-		$response = $httpRequest->execute();
+		return [ json_decode( $response ?? '', true ), $isFromCache ];
+	}
 
-		return [ json_decode( $response ?? '', true ), $httpRequest->isFromCache() ];
+	private function fetchHttpResponse( $url ) {
+		$request = $this->httpRequestFactory->create(
+			$url,
+			[
+				'method' => 'GET',
+				'followRedirects' => true,
+				// Preserve the legacy "do not verify the remote certificate"
+				// behaviour. MediaWiki's Guzzle backend only skips verification
+				// when both flags are false, so both are required here.
+				'sslVerifyCert' => false,
+				'sslVerifyHost' => false,
+			],
+			__METHOD__
+		);
+
+		$request->setHeader( 'Accept', 'application/json' );
+		$request->setHeader( 'Content-Type', 'application/json; charset=utf-8' );
+
+		if ( self::$cookieJar !== null ) {
+			$request->setCookieJar( self::$cookieJar );
+		}
+
+		if ( !$request->execute()->isOK() ) {
+			return false;
+		}
+
+		return $request->getContent();
 	}
 
 }

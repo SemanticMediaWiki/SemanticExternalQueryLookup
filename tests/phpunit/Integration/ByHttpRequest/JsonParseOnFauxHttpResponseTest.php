@@ -5,8 +5,8 @@ namespace SEQL\Tests\Integration\ByHttpRequest;
 use SEQL\ByHttpRequest\JsonResponseParser;
 use SEQL\DataValueDeserializer;
 use SEQL\HookRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -37,7 +37,7 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers I18nJsonFileIntegrity
+	 * @covers \SEQL\ByHttpRequest\JsonResponseParser
 	 * @dataProvider jsonFileProvider
 	 */
 	public function testQueryResultFetcherFromCannedJsonResponse( $file ) {
@@ -69,7 +69,7 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit\Framework\TestCase {
 	private function assertSubjectList( $expectedSubjectList, $subjectList ) {
 		foreach ( $subjectList as $subject ) {
 			foreach ( $expectedSubjectList as $key => $sub ) {
-				$sub = DIWikiPage::doUnserialize( str_replace( " ", "_", $sub ) );
+				$sub = WikiPage::doUnserialize( str_replace( " ", "_", $sub ) );
 				if ( $subject->equals( $sub ) ) {
 					unset( $expectedSubjectList[$key] );
 					break;
@@ -86,7 +86,7 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit\Framework\TestCase {
 	private function assertPrintRequestPropertyList( $expectedPropertyList, $printRequestPropertyList ) {
 		foreach ( $printRequestPropertyList as $property ) {
 			foreach ( $expectedPropertyList as $key => $prop ) {
-				$prop = new DIProperty( str_replace( " ", "_", $prop ) );
+				$prop = new Property( str_replace( " ", "_", $prop ) );
 				if ( $property->equals( $prop ) ) {
 					unset( $expectedPropertyList[$key] );
 					break;

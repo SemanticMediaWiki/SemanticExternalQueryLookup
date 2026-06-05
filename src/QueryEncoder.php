@@ -2,7 +2,7 @@
 
 namespace SEQL;
 
-use SMWQuery as Query;
+use SMW\Query\Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -38,7 +38,7 @@ class QueryEncoder {
 		$serialized['parameters'] = [
 			'limit=' . $query->getLimit(),
 			'offset=' . $query->getOffset(),
-			'mainlabel=' . $query->getMainlabel(),
+			'mainlabel=' . $query->getMainLabel(),
 		// 'source=' . $query->getQuerySource()
 		];
 

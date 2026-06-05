@@ -1,2 +1,12 @@
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+        removed_code_behavior: adjust_base
+    patch:
+      default:
+        informational: true
+
 fixes:
   - "/var/www/html/extensions/SemanticExternalQueryLookup/::"

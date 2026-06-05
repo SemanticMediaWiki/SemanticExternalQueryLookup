@@ -3,9 +3,9 @@
 namespace SEQL\ByHttpRequest\Tests;
 
 use SEQL\ByHttpRequest\CannedResultArray;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMWDINumber as DINumber;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 
 /**
  * @covers \SEQL\ByHttpRequest\CannedResultArray
@@ -33,12 +33,12 @@ class CannedResultArrayTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertInstanceOf(
 			'\SEQL\ByHttpRequest\CannedResultArray',
-			new CannedResultArray( new DIWikiPage( 'Foo', NS_MAIN ), $printRequest, $this->jsonResponseParser )
+			new CannedResultArray( new WikiPage( 'Foo', NS_MAIN ), $printRequest, $this->jsonResponseParser )
 		);
 	}
 
 	public function testGetResultSubject() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -57,7 +57,7 @@ class CannedResultArrayTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetContentForMode_PRINT_THIS() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -80,14 +80,14 @@ class CannedResultArrayTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetContentForMode_PRINT_CCAT() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
-		$category = new DIWikiPage( 'Bar', NS_CATEGORY, 'mw-foo' );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
+		$category = new WikiPage( 'Bar', NS_CATEGORY, 'mw-foo' );
 
 		$this->jsonResponseParser->expects( $this->any() )
 			->method( 'getPropertyValuesFor' )
 			->with(
 				$subject,
-				new DIProperty( '_INST' ) )
+				new Property( '_INST' ) )
 			->willReturn( [ $category ] );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
@@ -111,8 +111,8 @@ class CannedResultArrayTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetContentOnDifferentPropertyLabelForMode_PRINT_PROP() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
-		$dataItem = new DINumber( 1001 );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
+		$dataItem = new Number( 1001 );
 
 		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
@@ -124,9 +124,9 @@ class CannedResultArrayTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->willReturn( new DIProperty( 'ABC' ) );
+			->willReturn( new Property( 'ABC' ) );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( '\SMW\DataValues\DataValue' )
 			->disableOriginalConstructor()
 			->onlyMethods( [ 'getDataItem' ] )
 			->getMockForAbstractClass();
@@ -139,14 +139,14 @@ class CannedResultArrayTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValuesFor' )
 			->with(
 				$subject,
-				new DIProperty( 'isPropertyFromInMemoryExternalRepositoryCache' ) )
+				new Property( 'isPropertyFromInMemoryExternalRepositoryCache' ) )
 			->willReturn( [ $dataValue ] );
 
 		$this->jsonResponseParser->expects( $this->any() )
 			->method( 'findPropertyFromInMemoryExternalRepositoryCache' )
 			->with(
-				new DIProperty( 'withDifferentPropertyLabel' ) )
-			->willReturn( new DIProperty( 'isPropertyFromInMemoryExternalRepositoryCache' ) );
+				new Property( 'withDifferentPropertyLabel' ) )
+			->willReturn( new Property( 'isPropertyFromInMemoryExternalRepositoryCache' ) );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -177,12 +177,12 @@ class CannedResultArrayTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetContentOnQuantityTypeWithSameLabelForMode_PRINT_PROP() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
-		$property = new DIProperty( 'QuantityType' );
-		$property->setPropertyTypeId( '_qty' );
+		$property = new Property( 'QuantityType' );
+		$property->setPropertyValueType( '_qty' );
 
-		$dataItem = new DINumber( 1001 );
+		$dataItem = new Number( 1001 );
 
 		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
@@ -194,9 +194,9 @@ class CannedResultArrayTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->willReturn( new DIProperty( 'ABC' ) );
+			->willReturn( new Property( 'ABC' ) );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( '\SMW\DataValues\DataValue' )
 			->disableOriginalConstructor()
 			->onlyMethods( [ 'getDataItem' ] )
 			->getMockForAbstractClass();
@@ -215,7 +215,7 @@ class CannedResultArrayTest extends \PHPUnit\Framework\TestCase {
 		$this->jsonResponseParser->expects( $this->any() )
 			->method( 'findPropertyFromInMemoryExternalRepositoryCache' )
 			->with(
-				new DIProperty( 'ABC' ) )
+				new Property( 'ABC' ) )
 			->willReturn( $property );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
@@ -247,7 +247,7 @@ class CannedResultArrayTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOptions() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
@@ -285,7 +285,7 @@ class CannedResultArrayTest extends \PHPUnit\Framework\TestCase {
 		$instance->reset();
 
 		$this->assertInstanceOf(
-			'\SMWDataValue',
+			'\SMW\DataValues\DataValue',
 			$instance->getNextDataValue()
 		);
 

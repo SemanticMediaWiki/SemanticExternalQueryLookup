@@ -30,7 +30,10 @@
 	</rule>
 	<rule ref="MediaWiki.NamingConventions.ValidGlobalName">
 		<properties>
-			<property name="allowedPrefixes" type="array" value="eg,wg" />
+			<property name="allowedPrefixes" type="array">
+				<element value="eg"/>
+				<element value="wg"/>
+			</property>
 		</properties>
 	</rule>
 	<rule ref="MediaWiki.Commenting.FunctionComment.ObjectTypeHintReturn">

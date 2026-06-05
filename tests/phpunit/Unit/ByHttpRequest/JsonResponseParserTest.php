@@ -3,7 +3,7 @@
 namespace SEQL\ByHttpRequest\Tests;
 
 use SEQL\ByHttpRequest\JsonResponseParser;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 
 /**
  * @covers \SEQL\ByHttpRequest\JsonResponseParser
@@ -74,8 +74,8 @@ class JsonResponseParserTest extends \PHPUnit\Framework\TestCase {
 			'results' => []
 		];
 
-		$property = new DIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_wpg' );
+		$property = new Property( 'Foo' );
+		$property->setPropertyValueType( '_wpg' );
 		$property->setInterwiki( 'abc' );
 
 		$dataValueDeserializer = $this->getMockBuilder( '\SEQL\DataValueDeserializer' )
@@ -97,12 +97,12 @@ class JsonResponseParserTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertEquals(
 			$property,
-			$instance->findPropertyFromInMemoryExternalRepositoryCache( new DIProperty( 'Bar' ) )
+			$instance->findPropertyFromInMemoryExternalRepositoryCache( new Property( 'Bar' ) )
 		);
 
 		$this->assertEquals(
 			$property,
-			$instance->findPropertyFromInMemoryExternalRepositoryCache( new DIProperty( 'Foo' ) )
+			$instance->findPropertyFromInMemoryExternalRepositoryCache( new Property( 'Foo' ) )
 		);
 	}
 
@@ -142,7 +142,7 @@ class JsonResponseParserTest extends \PHPUnit\Framework\TestCase {
 				]
 			],
 			true,
-			new DIProperty( '_INST' )
+			new Property( '_INST' )
 		];
 
 		# 3
@@ -162,7 +162,7 @@ class JsonResponseParserTest extends \PHPUnit\Framework\TestCase {
 				'results' => []
 			],
 			false,
-			new DIProperty( '_INST' )
+			new Property( '_INST' )
 		];
 
 		return $provider;

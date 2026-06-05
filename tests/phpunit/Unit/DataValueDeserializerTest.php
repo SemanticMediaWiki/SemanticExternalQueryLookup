@@ -3,9 +3,9 @@
 namespace SEQL\Tests;
 
 use SEQL\DataValueDeserializer;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMWDITime as DITime;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 
 /**
  * @covers \SEQL\DataValueDeserializer
@@ -34,7 +34,7 @@ class DataValueDeserializerTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$this->assertEquals(
-			new DIWikiPage( 'Foo:abc_def', NS_MAIN ),
+			new WikiPage( 'Foo:abc_def', NS_MAIN ),
 			$instance->newDiWikiPage( $value )
 		);
 	}
@@ -50,11 +50,11 @@ class DataValueDeserializerTest extends \PHPUnit\Framework\TestCase {
 	public function testNewTimeValueForOutOfRangeTimestamp() {
 		$instance = new DataValueDeserializer( 'foo' );
 
-		$property = new DIProperty( 'Bar' );
-		$property->setPropertyTypeId( '_dat' );
+		$property = new Property( 'Bar' );
+		$property->setPropertyValueType( '_dat' );
 
 		$this->assertNotEquals(
-			DITime::doUnserialize( '2/-200' ),
+			Time::doUnserialize( '2/-200' ),
 			$instance->newDataValueFrom( $property, '-2000101000000' )
 		);
 	}
@@ -62,11 +62,11 @@ class DataValueDeserializerTest extends \PHPUnit\Framework\TestCase {
 	public function testNewTimeValueForRawTimeFromat() {
 		$instance = new DataValueDeserializer( 'foo' );
 
-		$property = new DIProperty( 'Bar' );
-		$property->setPropertyTypeId( '_dat' );
+		$property = new Property( 'Bar' );
+		$property->setPropertyValueType( '_dat' );
 
 		$this->assertEquals(
-			DITime::doUnserialize( '2/-200' ),
+			Time::doUnserialize( '2/-200' ),
 			$instance->newDataValueFrom( $property, [ 'raw' => '2/-200' ] )->getDataItem()
 		);
 	}
@@ -74,8 +74,8 @@ class DataValueDeserializerTest extends \PHPUnit\Framework\TestCase {
 	public function testNewRecordValue() {
 		$instance = new DataValueDeserializer( 'foo' );
 
-		$property = new DIProperty( 'Foo' );
-		$property->setPropertyTypeId( '_rec' );
+		$property = new Property( 'Foo' );
+		$property->setPropertyValueType( '_rec' );
 
 		$item = [
 			'namespace' => NS_MAIN,
@@ -89,7 +89,7 @@ class DataValueDeserializerTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$this->assertInstanceOf(
-			'\SMWRecordValue',
+			'\SMW\DataValues\RecordValue',
 			$instance->newDataValueFrom( $property, $record )
 		);
 	}
@@ -97,8 +97,8 @@ class DataValueDeserializerTest extends \PHPUnit\Framework\TestCase {
 	public function testTextValueWithEmbeddedLink() {
 		$instance = new DataValueDeserializer( 'abc' );
 
-		$property = new DIProperty( 'Bar' );
-		$property->setPropertyTypeId( '_txt' );
+		$property = new Property( 'Bar' );
+		$property->setPropertyValueType( '_txt' );
 
 		$dataValue = $instance->newDataValueFrom( $property, 'Foo [[42]] bar' );
 

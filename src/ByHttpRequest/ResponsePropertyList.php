@@ -3,7 +3,7 @@
 namespace SEQL\ByHttpRequest;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 
 /**
  * @license GPL-2.0-or-later
@@ -40,7 +40,7 @@ class ResponsePropertyList {
 	/**
 	 * @since 1.0
 	 *
-	 * @return DIProperty[]
+	 * @return Property[]
 	 */
 	public function getPropertyList() {
 		return $this->propertyList;
@@ -77,7 +77,7 @@ class ResponsePropertyList {
 	 *
 	 * @param string $key
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
 	public function getProperty( $key ) {
 		$key = $this->findPropertyKey( $key );
@@ -100,7 +100,7 @@ class ResponsePropertyList {
 		}
 
 		if ( $value['mode'] == 0 ) {
-			$property = new DIProperty( '_INST' );
+			$property = new Property( '_INST' );
 			$this->internalLabelToKeyMap[$value['label']] = $property->getKey();
 		} else {
 			$property = $this->newProperty( $value );
@@ -115,13 +115,13 @@ class ResponsePropertyList {
 	}
 
 	private function newProperty( $value ) {
-		$property = DIProperty::newFromUserLabel( $value['label'] );
+		$property = Property::newFromUserLabel( $value['label'] );
 
 		if ( $property->isUserDefined() ) {
-			return $property->setPropertyTypeId( $value['typeid'] );
+			return $property->setPropertyValueType( $value['typeid'] );
 		}
 
-		if ( $property->findPropertyTypeID() === $value['typeid'] ) {
+		if ( $property->findPropertyValueType() === $value['typeid'] ) {
 			return $property;
 		}
 

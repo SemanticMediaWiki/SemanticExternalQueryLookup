@@ -3,7 +3,7 @@
 namespace SEQL\ByHttpRequest\Tests;
 
 use SEQL\ByHttpRequest\QueryResult;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * @covers \SEQL\ByHttpRequest\QueryResult
@@ -25,7 +25,7 @@ class QueryResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +43,7 @@ class QueryResultTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,7 +56,7 @@ class QueryResultTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$results = [
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		];
 
 		$instance = new QueryResult( $printRequests, $query, $results, $this->store, false );
@@ -75,7 +75,7 @@ class QueryResultTest extends \PHPUnit\Framework\TestCase {
 			'Foo'
 		];
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -108,7 +108,7 @@ class QueryResultTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testGetLink() {
+	public function testGetQueryLink() {
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -117,7 +117,7 @@ class QueryResultTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSerialisation' )
 			->willReturn( '?ABC' );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -132,8 +132,8 @@ class QueryResultTest extends \PHPUnit\Framework\TestCase {
 		$instance->setRemoteTargetUrl( 'http://example.org:8080' );
 
 		$this->assertInstanceOf(
-			'\SMWInfolink',
-			$instance->getLink()
+			'\SMW\Formatters\Infolink',
+			$instance->getQueryLink()
 		);
 	}
 

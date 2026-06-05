@@ -3,14 +3,13 @@
 namespace SEQL;
 
 use MediaWiki\MediaWikiServices;
-use Onoi\HttpRequest\HttpRequestFactory;
 use SEQL\ByHttpRequest\JsonResponseParser;
 use SEQL\ByHttpRequest\QueryResultFetcher;
 use SMW\CacheFactory;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -67,8 +66,11 @@ class ByHttpRequestQueryLookup extends SQLStore {
 	}
 
 	protected function fetchQueryResultFor( Query $query, $interwiki, $credentials = false ) {
+		$services = MediaWikiServices::getInstance();
+
 		$queryResultFetcher = new QueryResultFetcher(
-			new HttpRequestFactory( $this->getCacheFactory()->newMediaWikiCompositeCache( $GLOBALS['seqlgHttpResponseCacheType'] ) ),
+			$services->getHttpRequestFactory(),
+			$services->getObjectCacheFactory()->getInstance( $GLOBALS['seqlgHttpResponseCacheType'] ),
 			$this->queryResultFactory,
 			new JsonResponseParser( new DataValueDeserializer( $query->getQuerySource() ) ),
 			$credentials
