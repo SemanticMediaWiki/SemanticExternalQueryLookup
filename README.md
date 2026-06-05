@@ -1,21 +1,20 @@
 # Semantic External Query Lookup
 
-[![Build Status](https://secure.travis-ci.org/SemanticMediaWiki/SemanticExternalQueryLookup.svg?branch=master)](http://travis-ci.org/SemanticMediaWiki/SemanticExternalQueryLookup)
-[![Code Coverage](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticExternalQueryLookup/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticExternalQueryLookup/?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticExternalQueryLookup/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticExternalQueryLookup/?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-external-query-lookup/version.png)](https://packagist.org/packages/mediawiki/semantic-external-query-lookup)
-[![Packagist download count](https://poser.pugx.org/mediawiki/semantic-external-query-lookup/d/total.png)](https://packagist.org/packages/mediawiki/semantic-external-query-lookup)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/SemanticMediaWiki/SemanticExternalQueryLookup/ci.yaml?branch=master)](https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/actions/workflows/ci.yaml)
+[![Code Coverage](https://codecov.io/gh/SemanticMediaWiki/SemanticExternalQueryLookup/branch/master/graph/badge.svg)](https://codecov.io/gh/SemanticMediaWiki/SemanticExternalQueryLookup)
+[![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-external-query-lookup/v/stable)](https://packagist.org/packages/mediawiki/semantic-external-query-lookup)
+[![Download count](https://poser.pugx.org/mediawiki/semantic-external-query-lookup/downloads)](https://packagist.org/packages/mediawiki/semantic-external-query-lookup)
 
-Semantic External Query Lookup (a.k.a. SEQL) is a [Semantic Mediawiki][smw] extension to seamlessly integrate
+Semantic External Query Lookup (a.k.a. SEQL) is a [Semantic MediaWiki][smw] extension to seamlessly integrate
 query results from an external query source to a local repository or wiki.
 
 The following [video](https://youtu.be/sOCh9M2sSvU) demonstrates the features of this extension.
 
 ## Requirements
 
-- PHP 5.3.2 or later
-- MediaWiki 1.28 or later
-- [Semantic MediaWiki][smw] __3.0__ or later
+- PHP 8.1 or later
+- MediaWiki 1.43 or later
+- [Semantic MediaWiki][smw] 7.0 or later
 
 ## Installation
 
@@ -24,15 +23,15 @@ The recommended way to install Semantic External Query Lookup is by using [Compo
 ```json
 {
 	"require": {
-		"mediawiki/semantic-external-query-lookup": "~1.0"
+		"mediawiki/semantic-external-query-lookup": "~2"
 	}
 }
 ```
 1. From your MediaWiki installation directory, execute
-   `composer require mediawiki/semantic-external-query-lookup:~1.0`
-2. Add `wfLoadExtension('SemenaticExternalQueryLookup');` to the bottom of `LocalSettings.php`
+   `composer require mediawiki/semantic-external-query-lookup:~2`
+2. Add `wfLoadExtension( 'SemanticExternalQueryLookup' );` to the bottom of `LocalSettings.php`
 3. Navigate to _Special:Version_ on your wiki and verify that the package
-   have been successfully installed.
+   has been successfully installed.
 
 ## Usage
 
@@ -68,7 +67,7 @@ have a look at the contribution guideline.
 
 ## Tests
 
-This extension provides unit and integration tests that are run by a [continues integration platform][travis]
+This extension provides unit and integration tests that are run by a [continuous integration platform][github-actions]
 but can also be executed using `composer phpunit` from the extension base directory.
 
 ## License
@@ -76,8 +75,7 @@ but can also be executed using `composer phpunit` from the extension base direct
 [GNU General Public License, version 2 or later][gpl-licence].
 
 [smw]: https://github.com/SemanticMediaWiki/SemanticMediaWiki
-[contributors]: https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/graphs/contributors
-[travis]: https://travis-ci.org/SemanticMediaWiki/SemanticExternalQueryLookup
+[github-actions]: https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/actions/workflows/ci.yaml
 [gpl-licence]: https://www.gnu.org/copyleft/gpl.html
 [composer]: https://getcomposer.org/
 [iwp]: https://www.mediawiki.org/wiki/Manual:Interwiki
