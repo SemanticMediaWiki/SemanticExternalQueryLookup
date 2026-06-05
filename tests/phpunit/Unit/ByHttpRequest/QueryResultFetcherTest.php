@@ -2,9 +2,11 @@
 
 namespace SEQL\ByHttpRequest\Tests;
 
+use MediaWiki\Status\Status;
 use SEQL\ByHttpRequest\QueryResultFetcher;
 use SEQL\QueryResultFactory;
 use SMW\DataItems\Property;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @covers \SEQL\ByHttpRequest\QueryResultFetcher
@@ -20,6 +22,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 	private $store;
 	private $httpRequest;
 	private $httpRequestFactory;
+	private $cache;
 	private $jsonResponseParser;
 
 	protected function setUp(): void {
@@ -27,17 +30,23 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\CachedCurlRequest' )
+		$this->httpRequest = $this->getMockBuilder( '\MWHttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->httpRequestFactory = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequestFactory' )
+		$this->httpRequest->expects( $this->any() )
+			->method( 'execute' )
+			->willReturn( Status::newGood() );
+
+		$this->httpRequestFactory = $this->getMockBuilder( '\MediaWiki\Http\HttpRequestFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->httpRequestFactory->expects( $this->any() )
-			->method( 'newCachedCurlRequest' )
+			->method( 'create' )
 			->willReturn( $this->httpRequest );
+
+		$this->cache = new HashBagOStuff();
 
 		$this->jsonResponseParser = $this->getMockBuilder( '\SEQL\ByHttpRequest\JsonResponseParser' )
 			->disableOriginalConstructor()
@@ -51,7 +60,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertInstanceOf(
 			'\SEQL\ByHttpRequest\QueryResultFetcher',
-			new QueryResultFetcher( $this->httpRequestFactory, $queryResultFactory, $this->jsonResponseParser, [] )
+			new QueryResultFetcher( $this->httpRequestFactory, $this->cache, $queryResultFactory, $this->jsonResponseParser, [] )
 		);
 	}
 
@@ -92,6 +101,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
+			$this->cache,
 			$queryResultFactory,
 			$this->jsonResponseParser,
 			[]
@@ -152,6 +162,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
+			$this->cache,
 			$queryResultFactory,
 			$this->jsonResponseParser,
 			[]
@@ -163,7 +174,8 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testFetchQueryResultWithResponseCache() {
+	public function testFetchQueryResultUsesResponseCache() {
+		$cache = new HashBagOStuff();
 		$queryResultFactory = new QueryResultFactory( $this->store );
 
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
@@ -198,30 +210,33 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDescription' )
 			->willReturn( $description );
 
+		$this->jsonResponseParser->expects( $this->any() )
+			->method( 'getResultSubjectList' )
+			->willReturn( [] );
+
+		// The live fetch must happen exactly once across two identical queries;
+		// the second call has to be served from the response cache.
+		$this->httpRequest->expects( $this->once() )
+			->method( 'getContent' )
+			->willReturn( json_encode( [ 'query' => [] ] ) );
+
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
+			$cache,
 			$queryResultFactory,
 			$this->jsonResponseParser,
 			[]
 		);
 
+		$instance->setHttpRequestEndpoint( 'http://example.org/api.php' );
+		$instance->setRepositoryTargetUrl( 'http://example.org/$1' );
 		$instance->setHttpResponseCacheLifetime( 42 );
 		$instance->setHttpResponseCachePrefix( 'Foo' );
 
-		// PHUNIT 4.1
-	//	$this->httpRequest->expects( $this->any() )
-	//		->method( 'setOption' )
-	//		->withConsecutive(
-	//			array( $this->anything(), $this->equalTo( 42 ) ),
-	//			array( $this->anything(), $this->equalTo( 'Foo:' ) ) );
-
-		$this->httpRequest->expects( $this->at( 0 ) )
-			->method( 'setOption' )
-			->with( $this->anything(), 42 );
-
-		$this->httpRequest->expects( $this->at( 1 ) )
-			->method( 'setOption' )
-			->with( $this->anything(), 'Foo:seql:' );
+		$this->assertInstanceOf(
+			'\SMW\Query\QueryResult',
+			$instance->fetchQueryResult( $query )
+		);
 
 		$this->assertInstanceOf(
 			'\SMW\Query\QueryResult',
@@ -266,6 +281,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
+			$this->cache,
 			$queryResultFactory,
 			$this->jsonResponseParser,
 			[]
@@ -275,7 +291,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 		$instance->setRepositoryTargetUrl( 'http://example.org/$1' );
 
 		$this->httpRequest->expects( $this->any() )
-			->method( 'execute' )
+			->method( 'getContent' )
 			->willReturn( json_encode( [ 'error' => [ 'info' => 'error' ] ] ) );
 
 		$this->assertInstanceOf(
@@ -325,6 +341,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new QueryResultFetcher(
 			$this->httpRequestFactory,
+			$this->cache,
 			$queryResultFactory,
 			$this->jsonResponseParser,
 			[]
@@ -339,7 +356,7 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$this->httpRequest->expects( $this->once() )
-			->method( 'execute' )
+			->method( 'getContent' )
 			->willReturn( json_encode( $expected ) );
 
 		$this->assertInstanceOf(
