@@ -1,6 +1,6 @@
 # Semantic External Query Lookup
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/SemanticMediaWiki/SemanticExternalQueryLookup/ci.yaml?branch=master)](https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/actions/workflows/ci.yaml)
+[![CI](https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/actions/workflows/ci.yaml/badge.svg)](https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup/actions/workflows/ci.yaml)
 [![Code Coverage](https://codecov.io/gh/SemanticMediaWiki/SemanticExternalQueryLookup/branch/master/graph/badge.svg)](https://codecov.io/gh/SemanticMediaWiki/SemanticExternalQueryLookup)
 [![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-external-query-lookup/v/stable)](https://packagist.org/packages/mediawiki/semantic-external-query-lookup)
 [![Download count](https://poser.pugx.org/mediawiki/semantic-external-query-lookup/downloads)](https://packagist.org/packages/mediawiki/semantic-external-query-lookup)
