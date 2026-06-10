@@ -3,7 +3,9 @@ This file contains the RELEASE-NOTES of the Semantic External Query Lookup (a.k.
 ### 2.0.0 (2026-06-08)
 
 - Added support for Semantic MediaWiki 7.0
-- Raised the minimum requirements to MediaWiki 1.43 and Semantic MediaWiki 7.0
+- Raised the minimum requirement to MediaWiki 1.43
+- Raised the minimum requirement to Semantic MediaWiki 7.0
+- Raised the minimum requirement to PHP 8.1
 - Replaced the `mediawiki/http-request` dependency with MediaWiki core's `HttpRequestFactory`
 
 ### 1.0.0 (2016-??-??)
