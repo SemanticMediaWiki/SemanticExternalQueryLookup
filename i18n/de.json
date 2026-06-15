@@ -6,6 +6,7 @@
 		]
 	},
 	"seql-desc": "Ermöglicht das Abfragen semantischer Daten eines fremden semantischen Wikis im lokalen semantischen Wiki",
+	"seql-name": "Semantic External Query Lookup",
 	"seql-interwiki-prefix-is-missing": "Der angegebenen Quelle „$1“ wurden keine Interwiki-Daten zugeordnet.",
 	"seql-debug-query-not-supported": "Die Anzeige von Ergebnissen bei einer Abfrage zu Fehlerbehebung wird aufgrund der Nutzung einer externen Datenquelle nicht unterstützt."
 }
