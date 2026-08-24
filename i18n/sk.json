@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Wizzard"
+		]
+	},
+	"seql-desc": "Umožňuje integrovať výsledky dopytov zo vzdialenej [https://semantic-mediawiki.org Semantic MediaWiki] do lokálnej wiki",
+	"seql-name": "Semantic External Query Lookup",
+	"seql-interwiki-prefix-is-missing": "Vybranému zdroju „$1“ chýba zodpovedajúca interwiki predpona.",
+	"seql-debug-query-not-supported": "Zobrazenie výsledkov ladiaceho dopytu nie je pri použití externého zdroja dopytov podporované."
+}
