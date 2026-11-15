@@ -1,6 +1,6 @@
 {
 	"name": "SemanticExternalQueryLookup",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"author": [
 		"James Hong Kong"
 	],
@@ -19,6 +19,14 @@
 		"SemanticExternalQueryLookup": [
 			"i18n"
 		]
+	},
+	"Hooks": {
+		"MediaWikiServices": "main"
+	},
+	"HookHandlers": {
+		"main": {
+			"class": "SEQL\\MediaWikiServicesHandler"
+		}
 	},
 	"AutoloadNamespaces": {
 		"SEQL\\": "src/"

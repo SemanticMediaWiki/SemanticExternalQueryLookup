@@ -300,6 +300,179 @@ class QueryResultFetcherTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
+	public function testTransportFailureAddsErrorInsteadOfSilentEmptyResult() {
+		$queryResultFactory = new QueryResultFactory( $this->store );
+
+		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$printRequest->expects( $this->any() )
+			->method( 'getSerialisation' )
+			->willReturn( '?ABC' );
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$description->expects( $this->any() )
+			->method( 'getPrintrequests' )
+			->willReturn( [ $printRequest ] );
+
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->any() )
+			->method( 'getQuerySource' )
+			->willReturn( 'mw-foo' );
+
+		$query->expects( $this->any() )
+			->method( 'getSortKeys' )
+			->willReturn( [] );
+
+		$query->expects( $this->any() )
+			->method( 'getExtraPrintouts' )
+			->willReturn( [ $printRequest ] );
+
+		$query->expects( $this->any() )
+			->method( 'getDescription' )
+			->willReturn( $description );
+
+		$errors = [];
+
+		$query->expects( $this->once() )
+			->method( 'addErrors' )
+			->willReturnCallback( static function ( $e ) use ( &$errors ) {
+				$errors = $e;
+			} );
+
+		$this->httpRequest->expects( $this->any() )
+			->method( 'execute' )
+			->willReturn( Status::newFatal( 'http-bad-status', '503', 'Service Unavailable' ) );
+
+		$instance = new QueryResultFetcher(
+			$this->httpRequestFactory,
+			$this->cache,
+			$queryResultFactory,
+			$this->jsonResponseParser,
+			[]
+		);
+
+		$instance->setHttpRequestEndpoint( 'http://example.org/api.php' );
+		$instance->setRepositoryTargetUrl( 'http://example.org/$1' );
+
+		$this->assertInstanceOf(
+			'\SMW\Query\QueryResult',
+			$instance->fetchQueryResult( $query )
+		);
+
+		$this->assertCount( 1, $errors );
+		$this->assertStringContainsString( 'mw-foo', $errors[0] );
+	}
+
+	public function testUndecodableResponseAddsErrorAndIsNotCached() {
+		$queryResultFactory = new QueryResultFactory( $this->store );
+		$cache = new HashBagOStuff();
+
+		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$printRequest->expects( $this->any() )
+			->method( 'getSerialisation' )
+			->willReturn( '?ABC' );
+
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$description->expects( $this->any() )
+			->method( 'getPrintrequests' )
+			->willReturn( [ $printRequest ] );
+
+		$query = $this->getMockBuilder( '\SMW\Query\Query' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$query->expects( $this->any() )
+			->method( 'getQueryString' )
+			->willReturn( '[[Category:City]]' );
+
+		$query->expects( $this->any() )
+			->method( 'getQuerySource' )
+			->willReturn( 'mw-foo' );
+
+		$query->expects( $this->any() )
+			->method( 'getLimit' )
+			->willReturn( 10 );
+
+		$query->expects( $this->any() )
+			->method( 'getOffset' )
+			->willReturn( 0 );
+
+		$query->expects( $this->any() )
+			->method( 'getMainLabel' )
+			->willReturn( '' );
+
+		$query->expects( $this->any() )
+			->method( 'getSortKeys' )
+			->willReturn( [] );
+
+		$query->expects( $this->any() )
+			->method( 'getExtraPrintouts' )
+			->willReturn( [ $printRequest ] );
+
+		$query->expects( $this->any() )
+			->method( 'getDescription' )
+			->willReturn( $description );
+
+		$errors = [];
+
+		$query->expects( $this->once() )
+			->method( 'addErrors' )
+			->willReturnCallback( static function ( $e ) use ( &$errors ) {
+				$errors = $e;
+			} );
+
+		// A HTML error page or similar: the transport succeeded but the
+		// body is no JSON
+		$this->httpRequest->expects( $this->any() )
+			->method( 'getContent' )
+			->willReturn( '<html><body>Blocked by crawler protection</body></html>' );
+
+		$instance = new QueryResultFetcher(
+			$this->httpRequestFactory,
+			$cache,
+			$queryResultFactory,
+			$this->jsonResponseParser,
+			[]
+		);
+
+		$instance->setHttpRequestEndpoint( 'http://example.org/api.php' );
+		$instance->setRepositoryTargetUrl( 'http://example.org/$1' );
+		$instance->setHttpResponseCachePrefix( 'Foo' );
+		$instance->setHttpResponseCacheLifetime( 42 );
+
+		$this->assertInstanceOf(
+			'\SMW\Query\QueryResult',
+			$instance->fetchQueryResult( $query )
+		);
+
+		$this->assertCount( 1, $errors );
+		$this->assertStringContainsString( 'mw-foo', $errors[0] );
+
+		// The garbage response must not have been written to the response
+		// cache, otherwise the error would be frozen for the cache lifetime
+		$url = 'http://example.org/api.php?action=ask&format=json&query=' . rawurlencode(
+			'[[Category:City]]|?ABC|limit=10|offset=0|mainlabel='
+		);
+
+		$this->assertFalse(
+			$cache->get( $cache->makeKey( 'seql', 'Foo', md5( $url ) ) )
+		);
+	}
+
 	public function testHttpRequestToReturnWithValidJson() {
 		$queryResultFactory = new QueryResultFactory( $this->store );
 

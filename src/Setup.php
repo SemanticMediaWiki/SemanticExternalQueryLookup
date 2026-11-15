@@ -17,15 +17,15 @@ class Setup {
 		class_alias( ByHttpRequestQueryLookup::class, 'SMWExternalQueryLookup' ); // deprecated
 		class_alias( ByHttpRequestQueryLookup::class, 'SMWExternalAskQueryLookup' );
 
-		$options = [
-			'externalRepositoryEndpoints' => $GLOBALS['seqlgExternalRepositoryEndpoints']
-		];
-
 		$hookRegistry = new HookRegistry(
-			$options
+			[]
 		);
 
 		$hookRegistry->register();
+
+		// The InterwikiLookup decoration for `seqlgExternalRepositoryEndpoints`
+		// happens in `MediaWikiServicesHandler` via the `MediaWikiServices` hook
+		// (see extension.json), ahead of any service instantiation.
 	}
 
 }

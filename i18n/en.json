@@ -8,5 +8,7 @@
 	"seql-desc": "Allows to integrate query results from a remote [https://semantic-mediawiki.org Semantic MediaWiki] into a local wiki",
 	"seql-name": "Semantic External Query Lookup",
 	"seql-interwiki-prefix-is-missing": "The selected \"$1\" source is missing a matching interwiki prefix.",
-	"seql-debug-query-not-supported": "The display of results for a debug query is not supported when using an external query source."
+	"seql-debug-query-not-supported": "The display of results for a debug query is not supported when using an external query source.",
+	"seql-http-request-failed": "The request to the external repository, selected by the \"$1\" source, failed or could not be answered with a usable response.",
+	"seql-http-response-invalid": "The response from the external repository, selected by the \"$1\" source, could not be decoded."
 }
