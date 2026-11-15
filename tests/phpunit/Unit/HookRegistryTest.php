@@ -2,6 +2,7 @@
 
 namespace SEQL\Tests;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use SEQL\HookRegistry;
 
 /**
@@ -16,50 +17,69 @@ use SEQL\HookRegistry;
 class HookRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-		$options = [
-			'externalRepositoryEndpoints' => [],
-		];
-
 		$this->assertInstanceOf(
 			'\SEQL\HookRegistry',
-			new HookRegistry( $options )
+			new HookRegistry( [] )
 		);
 	}
 
 	public function testRegister() {
-		$options = [
-			'externalRepositoryEndpoints' => [],
-		];
-
 		$instance = new HookRegistry(
-			$options
+			[]
 		);
 
 		$instance->register();
 
-		$this->doTestRegisteredInterwikiLoadPrefixHandler( $instance );
+		$this->doTestRegisteredSmwAskParserFunctionHandler( $instance );
+		$this->doTestRegisteredSmwShowParserFunctionHandler( $instance );
 	}
 
-	public function doTestRegisteredInterwikiLoadPrefixHandler( $instance ) {
-		$handler = 'InterwikiLoadPrefix';
-
-		$prefix = '';
-		$interwiki = [];
+	public function doTestRegisteredSmwAskParserFunctionHandler( $instance ) {
+		$handler = 'smwAskParserFunction';
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )
 		);
 
+		$override = false;
+
 		$this->assertThatHookIsExcutable(
 			$instance->getHandlerFor( $handler ),
-			[ $prefix, &$interwiki ]
+			[ $this->newParserMock(), false, [], &$override ]
 		);
 	}
 
+	public function doTestRegisteredSmwShowParserFunctionHandler( $instance ) {
+		$handler = 'smwShowParserFunction';
+
+		$this->assertTrue(
+			$instance->isRegistered( $handler )
+		);
+
+		$override = false;
+
+		$this->assertThatHookIsExcutable(
+			$instance->getHandlerFor( $handler ),
+			[ $this->newParserMock(), false, [], &$override ]
+		);
+	}
+
+	/**
+	 * The `smwAskParserFunction`/`smwShowParserFunction` handlers communicate
+	 * through the `$override` reference and return no value.
+	 */
 	private function assertThatHookIsExcutable( \Closure $handler, $arguments ) {
-		$this->assertIsBool(
+		$this->assertNull(
 			call_user_func_array( $handler, $arguments )
 		);
+	}
+
+	private function newParserMock(): MockObject {
+		$parser = $this->getMockBuilder( '\Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		return $parser;
 	}
 
 }

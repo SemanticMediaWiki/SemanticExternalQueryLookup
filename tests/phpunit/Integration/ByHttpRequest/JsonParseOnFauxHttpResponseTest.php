@@ -2,9 +2,9 @@
 
 namespace SEQL\Tests\Integration\ByHttpRequest;
 
+use MediaWiki\MediaWikiServices;
 use SEQL\ByHttpRequest\JsonResponseParser;
 use SEQL\DataValueDeserializer;
-use SEQL\HookRegistry;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\Tests\Utils\UtilityFactory;
@@ -20,6 +20,8 @@ use SMW\Tests\Utils\UtilityFactory;
  */
 class JsonParseOnFauxHttpResponseTest extends \PHPUnit\Framework\TestCase {
 
+	private $oldExternalRepositoryEndpoints;
+
 	protected function setUp(): void {
 		$externalRepositoryEndpoints = [
 			'api-foo' => [
@@ -29,11 +31,37 @@ class JsonParseOnFauxHttpResponseTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$hookRegistry = new HookRegistry( [
-			'externalRepositoryEndpoints' => $externalRepositoryEndpoints
-		] );
+		// The `api-foo` prefix is resolved by the InterwikiLookup decorator
+		// (registered via the `MediaWikiServices` hook), which reads the
+		// endpoints from the global when the decorator is instantiated.
+		// `Title::newFromText` consults the `TitleParser`/`_MediaWikiTitleCodec`
+		// services and those captured the `InterwikiLookup` at their own
+		// instantiation, therefore the whole chain has to be reset to make
+		// the endpoints above visible to title parsing.
+		$this->oldExternalRepositoryEndpoints = $GLOBALS['seqlgExternalRepositoryEndpoints'] ?? false;
+		$GLOBALS['seqlgExternalRepositoryEndpoints'] = $externalRepositoryEndpoints;
 
-		$hookRegistry->register();
+		$services = MediaWikiServices::getInstance();
+		$services->resetServiceForTesting( 'InterwikiLookup' );
+		$services->resetServiceForTesting( '_MediaWikiTitleCodec' );
+		$services->resetServiceForTesting( 'TitleParser' );
+	}
+
+	protected function tearDown(): void {
+		if ( $this->oldExternalRepositoryEndpoints === false ) {
+			unset( $GLOBALS['seqlgExternalRepositoryEndpoints'] );
+		} else {
+			$GLOBALS['seqlgExternalRepositoryEndpoints'] = $this->oldExternalRepositoryEndpoints;
+		}
+
+		if ( MediaWikiServices::hasInstance() ) {
+			$services = MediaWikiServices::getInstance();
+			$services->resetServiceForTesting( 'InterwikiLookup' );
+			$services->resetServiceForTesting( '_MediaWikiTitleCodec' );
+			$services->resetServiceForTesting( 'TitleParser' );
+		}
+
+		parent::tearDown();
 	}
 
 	/**

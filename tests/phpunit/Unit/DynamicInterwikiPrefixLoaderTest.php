@@ -24,6 +24,74 @@ class DynamicInterwikiPrefixLoaderTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
+	public function testIsEnabledPrefixForExternalRepository() {
+		$interwikiPrefixMap = [
+			'mw-foo' => [
+				'http://example.org:8080/mw-foo/index.php/$1',
+				'http://example.org:8080/mw-foo/api.php',
+				true
+			]
+		];
+
+		$instance = new DynamicInterwikiPrefixLoader( $interwikiPrefixMap );
+
+		$this->assertTrue(
+			$instance->isEnabledPrefixForExternalRepository( 'mw-foo' )
+		);
+
+		$this->assertFalse(
+			$instance->isEnabledPrefixForExternalRepository( 'mw-bar' )
+		);
+	}
+
+	public function testNewInterwikiForExternalRepositoryMatch() {
+		$interwikiPrefixMap = [
+			'mw-foo' => [
+				'http://example.org:8080/mw-foo/index.php/$1', // corresponds to iw_url
+				'http://example.org:8080/mw-foo/api.php', // corresponds to iw_api
+				true                                           // corresponds to iw_local
+			]
+		];
+
+		$instance = new DynamicInterwikiPrefixLoader( $interwikiPrefixMap );
+
+		$interwiki = $instance->newInterwiki( 'mw-foo' );
+
+		$this->assertInstanceOf(
+			'\Interwiki',
+			$interwiki
+		);
+
+		$this->assertEquals(
+			'http://example.org:8080/mw-foo/index.php/$1',
+			$interwiki->getURL()
+		);
+
+		$this->assertEquals(
+			'http://example.org:8080/mw-foo/api.php',
+			$interwiki->getAPI()
+		);
+
+		$this->assertEquals(
+			'mw-foo',
+			$interwiki->getWikiID()
+		);
+
+		$this->assertTrue(
+			$interwiki->isLocal()
+		);
+	}
+
+	public function testNewInterwikiForNoExternalRepositoryMatch() {
+		$interwikiPrefixMap = [];
+
+		$instance = new DynamicInterwikiPrefixLoader( $interwikiPrefixMap );
+
+		$this->assertNull(
+			$instance->newInterwiki( 'mw-foo' )
+		);
+	}
+
 	public function testLoadIwMapForExternalRepositoryMatch() {
 		$interwikiPrefixMap = [
 			'mw-foo' => [

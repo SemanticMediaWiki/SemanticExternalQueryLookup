@@ -23,6 +23,30 @@ $GLOBALS['seqlgExternalRepositoryEndpoints'] = array(
     )
 );
 ````
+
+#### Names must align
+
+The `source=` value used in a `#ask`/`#show` query, the key in `$GLOBALS['smwgQuerySources']`, and the key in
+`$GLOBALS['seqlgExternalRepositoryEndpoints']` (or the interwiki table) must carry **the same name**. In the examples
+above that name is `mw-foo`; queries use `{{#ask: ... |source=mw-foo }}`.
+
+The failure modes of a mismatch are silent:
+
+- If `source=X` names no key in `$GLOBALS['smwgQuerySources']`, Semantic MediaWiki resets the source to its default and
+  runs the query against the **local** store without raising an error. The rendered output is an empty result whenever
+  the local wiki cannot answer the query, which is indistinguishable from a broken endpoint.
+- If `X` names a query source but is not resolvable as an interwiki prefix, SEQL renders the
+  `seql-interwiki-prefix-is-missing` warning instead of results.
+
+When adding a source with `= array( ... )`, use the array-append operator (`$GLOBALS['smwgQuerySources']['mw-foo'] = ...`)
+or merge with existing entries. A wholesale re-assignment in a settings file that is loaded **after** this registration
+(for example a farm- or host-level configuration layered on top of `LocalSettings.php`) discards the query source
+without any notice.
+
+A quick check for a suspected fallback: `{{#ask: ... |source=X |format=debug }}`. Debug queries are not supported by
+external query sources, so a *normal local* debug pane is the signature of the local-store fallback; an error message
+about debug queries confirms that the external source was selected.
+
 ### Cache
 
 To help limit the amount of request made to an endpoint, SEQL provides:

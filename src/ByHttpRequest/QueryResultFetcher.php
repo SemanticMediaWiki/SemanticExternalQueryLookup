@@ -202,9 +202,20 @@ class QueryResultFetcher {
 			$this->doAuthenticateRemoteWiki( $this->credentials );
 		}
 
-		[ $result, $isFromCache ] = $this->doMakeHttpRequestFor( $query );
+		[ $result, $isFromCache, $failureReason ] = $this->doMakeHttpRequestFor( $query );
 
-		if ( $result === [] || $result === false || $result === null ) {
+		if ( $result === null ) {
+			// The response could not be fetched or decoded; make the failure
+			// visible instead of silently rendering an empty result.
+			$query->addErrors( [ wfMessage(
+				$failureReason === 'decode' ? 'seql-http-response-invalid' : 'seql-http-request-failed',
+				$query->getQuerySource()
+			)->text() ] );
+
+			return $this->queryResultFactory->newEmptyQueryResult( $query );
+		}
+
+		if ( $result === [] ) {
 			return $this->queryResultFactory->newEmptyQueryResult( $query );
 		}
 
@@ -270,12 +281,27 @@ class QueryResultFetcher {
 			$isFromCache = false;
 			$response = $this->fetchHttpResponse( $url );
 
-			if ( is_string( $response ) && $response !== '' ) {
+			// Only cache responses that at least decode as JSON so that a
+			// failed or corrupted fetch is retried on the next request
+			// instead of being served from the cache.
+			if ( is_string( $response ) && $response !== '' && is_array( json_decode( $response, true ) ) ) {
 				$this->cache->set( $key, $response, $this->httpResponseCacheLifetime );
 			}
 		}
 
-		return [ json_decode( $response ?? '', true ), $isFromCache ];
+		if ( $response === false || $response === null || $response === '' ) {
+			// The response could not be fetched at all (transport failure)
+			return [ null, $isFromCache, 'request' ];
+		}
+
+		$result = json_decode( $response, true );
+
+		if ( !is_array( $result ) ) {
+			// The response was fetched but is no valid JSON
+			return [ null, $isFromCache, 'decode' ];
+		}
+
+		return [ $result, $isFromCache, '' ];
 	}
 
 	private function fetchHttpResponse( $url ) {

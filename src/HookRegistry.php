@@ -59,14 +59,6 @@ class HookRegistry {
 	}
 
 	private function addCallbackHandlers( $options ) {
-		$dynamicInterwikiPrefixLoader = new DynamicInterwikiPrefixLoader(
-			$options['externalRepositoryEndpoints']
-		);
-
-		$this->handlers['InterwikiLoadPrefix'] = static function ( $prefix, &$interwiki ) use( $dynamicInterwikiPrefixLoader ) {
-			return $dynamicInterwikiPrefixLoader->tryToLoadIwMapForExternalRepository( $prefix, $interwiki );
-		};
-
 		/**
 		 * Prevents ask parser function with "source" parameter defined from
 		 * being executed outside of allowed namespaces. This supports transclusion too.
