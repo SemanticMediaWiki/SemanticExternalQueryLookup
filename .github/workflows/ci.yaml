@@ -85,5 +85,5 @@ jobs:
           # build/coverage/ (see build/docker-compose-ci.yml), NOT at the
           # repo root. Using the correct paths ensures Codecov applies the
           # codecov.yml path fixes and resolves PHP paths correctly.
-          files: build/coverage/php/coverage.xml,build/coverage/js/clover.xml
+          files: build/coverage/php/coverage.xml
         if: matrix.coverage == true
