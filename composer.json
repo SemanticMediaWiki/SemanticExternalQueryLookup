@@ -25,7 +25,7 @@
 		"source": "https://github.com/SemanticMediaWiki/SemanticExternalQueryLookup"
 	},
 	"require": {
-		"php": ">=8.1.0",
+		"php": ">=8.2.0",
 		"composer/installers": "^2|^1.0.1"
 	},
 	"require-dev": {

@@ -18,35 +18,28 @@ jobs:
       matrix:
         include:
           - mediawiki_version: '1.43'
-            smw_version: dev-master
-            php_version: 8.1
+            smw_version: 7.2.0
+            php_version: 8.2
             database_type: mysql
-            database_image: "mariadb:10.11"
+            database_image: "mariadb:11.2"
             coverage: false
             experimental: false
           - mediawiki_version: '1.43'
-            smw_version: dev-master
-            php_version: 8.2
-            database_type: mysql
-            database_image: "mariadb:11.4"
-            coverage: true
-            experimental: false
-          - mediawiki_version: '1.44'
-            smw_version: dev-master
+            smw_version: 7.2.0
             php_version: 8.3
             database_type: mysql
-            database_image: "mariadb:11.8"
-            coverage: false
+            database_image: "mariadb:11.2"
+            coverage: true
             experimental: false
           - mediawiki_version: '1.45'
-            smw_version: dev-master
+            smw_version: 7.2.0
             php_version: 8.4
             database_type: mysql
             database_image: "mariadb:12.3"
             coverage: false
             experimental: false
           - mediawiki_version: '1.46'
-            smw_version: dev-master
+            smw_version: 7.2.0
             php_version: 8.4
             database_type: mysql
             database_image: "mariadb:12.3"
